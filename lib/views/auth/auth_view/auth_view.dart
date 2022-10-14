@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/widgets/app_buttons.dart';
-
-import '../../../themes/project_themes.dart';
-import '../../../widgets/app_input.dart';
+import 'package:help_me_to_speak/views/auth/auth_view/sign_in_view/sign_in_view.dart';
+import 'package:help_me_to_speak/views/auth/auth_view/sign_up_view/sign_up_view.dart';
 
 class AuthView extends StatefulWidget {
   const AuthView({super.key});
@@ -13,6 +10,14 @@ class AuthView extends StatefulWidget {
 }
 
 class _AuthViewState extends State<AuthView> {
+  final PageController _pageController =
+      PageController(initialPage: 0, keepPage: false, viewportFraction: 1);
+  late int _currentPage;
+  final ValueNotifier<String> _pageNameNotifier =
+      ValueNotifier<String>('Hesap Oluştur');
+
+  bool _animationComplated = true;
+
   @override
   Widget build(BuildContext context) {
     var padding = MediaQuery.of(context).padding;
@@ -28,77 +33,32 @@ class _AuthViewState extends State<AuthView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(child: _buildLogo),
-              Form(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  AppTextFormField(
-                    hint: 'Email',
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  AppTextFormField(
-                    hint: 'Password',
-                    obscureText: true,
-                    keyboardType: TextInputType.visiblePassword,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                ],
-              )),
-              buildButton(text: 'Giriş Yap'),
-              const SizedBox(
-                height: 10,
+              Expanded(flex: 1, child: _buildLogo),
+              Expanded(
+                flex: 2,
+                child: PageView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    pageSnapping: true,
+                    controller: _pageController,
+                    onPageChanged: (value) {
+                      if (value == 0) {
+                        _pageNameNotifier.value = 'Hesap Oluştur';
+                      } else {
+                        _pageNameNotifier.value = 'Giriş Yap';
+                      }
+                    },
+                    itemCount: 2,
+                    itemBuilder: (context, index) {
+                      _currentPage = index;
+                      return index == 0 ? SingInView() : SignUpView();
+                    }),
               ),
-              Row(
-                children: [
-                  const Expanded(
-                    child: Divider(
-                      height: 0.5,
-                      thickness: 1.5,
-                      color: colorHint,
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text('Veya',
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle2!
-                            .copyWith(color: colorHint)),
-                  ),
-                  const Expanded(
-                    child: Divider(
-                      height: 0.5,
-                      thickness: 1.5,
-                      color: colorHint,
-                    ),
-                  ),
-                ],
-              ),
-              buildLoginButtonForAnotherPlatform(context,
-                  icon: Icon(
-                    FontAwesomeIcons.google,
-                  ),
-                  text: 'Google ile giriş yap'),
-              buildLoginButtonForAnotherPlatform(context,
-                  color: Colors.white,
-                  textColor: Colors.black,
-                  icon: Icon(
-                    FontAwesomeIcons.apple,
-                    color: Colors.black,
-                  ),
-                  text: 'Apple ile giriş yap'),
-              buildLoginButtonForAnotherPlatform(
-                  color: Colors.indigo,
-                  icon: Icon(FontAwesomeIcons.facebookF),
-                  context,
-                  text: 'Facebook ile giriş yap'),
-              TextButton(onPressed: () => null, child: Text('Hesap oluştur'))
+              TextButton(
+                  onPressed: _changePage,
+                  child: ValueListenableBuilder(
+                    valueListenable: _pageNameNotifier,
+                    builder: (context, value, child) => Text(value),
+                  ))
             ],
           ),
         ),
@@ -106,47 +66,24 @@ class _AuthViewState extends State<AuthView> {
     );
   }
 
-  Widget get _buildLogo => Padding(
-        padding: const EdgeInsets.all(50.0),
-        child: const FlutterLogo(
+  void _changePage() async {
+    if (_currentPage == 0 && _animationComplated) {
+      _animationComplated = false;
+      await _pageController.nextPage(
+          duration: const Duration(milliseconds: 150), curve: Curves.easeIn);
+      _animationComplated = true;
+    } else if (_animationComplated) {
+      _animationComplated = false;
+      await _pageController.previousPage(
+          duration: const Duration(milliseconds: 150), curve: Curves.easeIn);
+      _animationComplated = true;
+    }
+  }
+
+  Widget get _buildLogo => const Padding(
+        padding: EdgeInsets.all(50.0),
+        child: FlutterLogo(
           size: 100,
         ),
       );
-  Widget get _buildFooter => Column(
-        children: [
-          // SignInButtonBuilder(
-          //   text: 'Sign in with Email',
-          //   icon: Icons.email,
-          //   onPressed: () {},
-          //   shape: _getShape,
-          //   backgroundColor: Colors.grey[700]!,
-          // ),
-          // SignInButton(
-          //   Buttons.Google,
-          //   text: 'Sign in with Google',
-          //   shape: _getShape,
-          //   onPressed: () {},
-          // ),
-          // SignInButton(
-          //   Buttons.Apple,
-          //   text: 'Sign in with Apple',
-          //   shape: _getShape,
-          //   onPressed: () {},
-          // ),
-          // SignInButton(
-          //   Buttons.FacebookNew,
-          //   text: 'Sign in with Facebook',
-          //   shape: _getShape,
-          //   onPressed: () {},
-          // ),
-          const SizedBox(
-            height: 15,
-          ),
-          TextButton(
-              onPressed: () => null, child: const Text('Register account'))
-        ],
-      );
-
-  RoundedRectangleBorder get _getShape =>
-      RoundedRectangleBorder(borderRadius: BorderRadius.circular(5));
 }
