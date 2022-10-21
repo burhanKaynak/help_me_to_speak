@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:help_me_to_speak/widgets/app_divider.dart';
 
@@ -42,17 +43,13 @@ class _SingInViewState extends State<SingInView> {
             hint: 'Email',
             keyboardType: TextInputType.emailAddress,
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          10.verticalSpace,
           AppTextFormField(
             hint: 'Password',
             obscureText: true,
             keyboardType: TextInputType.visiblePassword,
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          10.verticalSpace,
         ],
       ));
 
@@ -63,6 +60,7 @@ class _SingInViewState extends State<SingInView> {
                 FontAwesomeIcons.google,
               ),
               text: 'Google ile giriş yap'),
+          5.verticalSpace,
           buildLoginButtonForAnotherPlatform(context,
               color: Colors.white,
               textColor: Colors.black,
@@ -71,6 +69,7 @@ class _SingInViewState extends State<SingInView> {
                 color: Colors.black,
               ),
               text: 'Apple ile giriş yap'),
+          5.verticalSpace,
           buildLoginButtonForAnotherPlatform(
               color: Colors.indigo,
               icon: const Icon(FontAwesomeIcons.facebookF),

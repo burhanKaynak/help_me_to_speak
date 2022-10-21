@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:help_me_to_speak/themes/project_themes.dart';
 import 'package:im_stepper/stepper.dart';
 
 import '../../../../widgets/app_buttons.dart';
-import '../../../../widgets/app_divider.dart';
 import '../../../../widgets/app_input.dart';
 
 class SignUpView extends StatefulWidget {
@@ -20,21 +20,80 @@ class _SignUpViewState extends State<SignUpView> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        _buildSignUpForm,
-        buildButton(text: 'Kayıt Ol'),
-        const AppDivider(),
-        _buildLoginButtonsForAnotherPlatform,
+        _buildStep,
+        10.verticalSpace,
+        _buildChooseUserType,
+        // buildButton(text: 'Kayıt Ol'),
+        //const AppDivider(),
+        //_buildLoginButtonsForAnotherPlatform,
       ],
     );
   }
 
+  final ValueNotifier<int> _selectedUserType = ValueNotifier(0);
+
+  Widget get _buildChooseUserType => ValueListenableBuilder(
+        valueListenable: _selectedUserType,
+        builder: (context, value, child) => Column(children: [
+          InkWell(
+            onTap: () => _selectedUserType.value = 0,
+            child: Card(
+              color: value != 0 ? null : colorLightGreen,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0).r,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        FlutterLogo(
+                          size: 50,
+                        ),
+                        Text(
+                          'Tercüman',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(
+                                  color: value != 0 ? colorHint : Colors.white),
+                        )
+                      ],
+                    ),
+                    if (value == 0)
+                      Container(
+                        height: 100.h,
+                      )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () => _selectedUserType.value = 1,
+            child: Card(
+              color: value != 1 ? null : colorLightGreen,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0).r,
+                child: Row(
+                  children: [
+                    const FlutterLogo(
+                      size: 50,
+                    ),
+                    Text(
+                      'Kullanıcı',
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: value != 1 ? colorHint : Colors.white),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          )
+        ]),
+      );
+
   Widget get _buildSignUpForm => Form(
           child: Column(
         children: [
-          _buildStep,
-          const SizedBox(
-            height: 10,
-          ),
           Row(
             children: [
               Expanded(
@@ -43,9 +102,7 @@ class _SignUpViewState extends State<SignUpView> {
                   keyboardType: TextInputType.emailAddress,
                 ),
               ),
-              const SizedBox(
-                width: 10,
-              ),
+              10.horizontalSpace,
               Expanded(
                 child: AppTextFormField(
                   hint: 'Soy ismi',
@@ -54,24 +111,18 @@ class _SignUpViewState extends State<SignUpView> {
               ),
             ],
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          10.verticalSpace,
           AppTextFormField(
             hint: 'Email',
             keyboardType: TextInputType.emailAddress,
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          10.verticalSpace,
           AppTextFormField(
             hint: 'Password',
             obscureText: true,
             keyboardType: TextInputType.visiblePassword,
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          10.verticalSpace,
         ],
       ));
 
@@ -82,6 +133,7 @@ class _SignUpViewState extends State<SignUpView> {
                 FontAwesomeIcons.google,
               ),
               text: 'Google ile kayıt ol'),
+          5.verticalSpace,
           buildLoginButtonForAnotherPlatform(context,
               color: Colors.white,
               textColor: Colors.black,
@@ -90,6 +142,7 @@ class _SignUpViewState extends State<SignUpView> {
                 color: Colors.black,
               ),
               text: 'Apple ile kayıt ol'),
+          5.verticalSpace,
           buildLoginButtonForAnotherPlatform(
               color: Colors.indigo,
               icon: const Icon(FontAwesomeIcons.facebookF),
@@ -99,12 +152,13 @@ class _SignUpViewState extends State<SignUpView> {
       );
 
   Widget get _buildStep => DotStepper(
+        tappingEnabled: false,
         dotCount: 3,
-        dotRadius: 8,
+        dotRadius: 8.r,
         shape: Shape.circle,
-        spacing: 20,
+        spacing: 20.sp,
         indicator: Indicator.worm,
-        indicatorDecoration: IndicatorDecoration(color: colorLightGreen),
+        indicatorDecoration: const IndicatorDecoration(color: colorLightGreen),
         activeStep: 0,
       );
 }
