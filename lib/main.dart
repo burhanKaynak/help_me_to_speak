@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:help_me_to_speak/views/auth/auth_view/auth_view.dart';
 
 import 'themes/project_theme_manager.dart';
 import 'themes/project_themes.dart';
+import 'views/home/account_view/password_change_view/password_change_view.dart';
 import 'widgets/app_scroll_behavior.dart';
 
 void main() {
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
               theme: lightTheme,
               darkTheme: darkTheme,
               themeMode: _themeManager.themeMode,
-              home: const AuthView(),
+              home: const PasswordChangeView(),
             ));
   }
 }

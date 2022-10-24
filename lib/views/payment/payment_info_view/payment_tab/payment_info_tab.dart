@@ -1,188 +1,88 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/themes/project_themes.dart';
-import 'package:help_me_to_speak/widgets/app_header.dart';
 
-//TODO: Hacı burda çok karmaşık kod var bunları düzenle.
-class PaymentView extends StatefulWidget {
-  const PaymentView({super.key});
+import '../../../../themes/project_themes.dart';
 
-  @override
-  State<PaymentView> createState() => _PaymentViewState();
-}
+class PaymentInfoTab extends StatelessWidget {
+  const PaymentInfoTab({super.key});
 
-class _PaymentViewState extends State<PaymentView>
-    with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const AppHeader(
-        title: 'Ödeme',
-        backButton: true,
-      ),
-      body: _buildTabBar,
+    return Column(
+      children: [
+        _buildPaymentInfoHeader(context),
+        _buildPaymentInfo(context),
+        _buildPaymentTotal(context),
+        _buildSavedCreditCards(context),
+        _buildPayButton(context)
+      ],
     );
   }
 
-  Widget get _buildTabBar => DefaultTabController(
-        length: 2,
-        initialIndex: 0,
-        child: Column(
+  Widget _buildPaymentInfoHeader(context) => Padding(
+        padding: const EdgeInsets.all(20.0).r,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TabBar(
-              labelColor: colorLightGreen,
-              indicatorColor: colorLightGreen,
-              unselectedLabelColor: Colors.black45,
-              tabs: [
-                Tab(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const [
-                      FaIcon(FontAwesomeIcons.hourglass),
-                      Text(
-                        'Bekleyen Ödemeler',
-                      )
-                    ],
-                  ),
-                ),
-                Tab(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const [
-                      FaIcon(FontAwesomeIcons.clockRotateLeft),
-                      Text('Ödeme Geçmişi')
-                    ],
-                  ),
-                )
-              ],
+            Text(
+              'Hizmet',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5!
+                  .copyWith(color: colorDarkGreen, fontWeight: FontWeight.w600),
             ),
-            Expanded(child: _buildTabBarView)
+            Text(
+              'Ücret',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5!
+                  .copyWith(color: colorDarkGreen, fontWeight: FontWeight.w600),
+            )
           ],
         ),
       );
 
-  Widget get _buildTabBarView => TabBarView(
-        physics: const NeverScrollableScrollPhysics(),
-        children: [_buildTab, Placeholder()],
+  Widget _buildPaymentInfo(context) => Column(
+        children: [
+          const Divider(
+            height: 0.5,
+            thickness: 1.5,
+            color: Colors.white,
+          ),
+          _buildLine(context,
+              icon: FontAwesomeIcons.video,
+              title: '2 Dakika 1 Saniye Görüntülü Görüşme:',
+              price: '40 kr'),
+          const Divider(
+            height: 0.5,
+            thickness: 1.5,
+            color: Colors.white,
+          ),
+          _buildLine(context,
+              icon: FontAwesomeIcons.phone,
+              title: '1 Dakika 30 Saniye Sesli Görüşme:',
+              price: '15 kr'),
+          const Divider(
+            height: 0.5,
+            thickness: 1.5,
+            color: Colors.white,
+          ),
+          _buildLine(context,
+              icon: FontAwesomeIcons.download,
+              title: '1 Dosya İndirmesi:',
+              price: '40 kr'),
+          const Divider(
+            height: 0.5,
+            thickness: 1.5,
+            color: Colors.white,
+          ),
+        ],
       );
 
-  Widget get _buildTab => Column(
+  Widget _buildPaymentTotal(context) => Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Hizmet',
-                  style: Theme.of(context).textTheme.headline5!.copyWith(
-                      color: colorDarkGreen, fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  'Ücret',
-                  style: Theme.of(context).textTheme.headline5!.copyWith(
-                      color: colorDarkGreen, fontWeight: FontWeight.w600),
-                )
-              ],
-            ),
-          ),
-          const Divider(
-            height: 0.5,
-            thickness: 1.5,
-            color: Colors.white,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                FaIcon(FontAwesomeIcons.video),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: Text('2 Dakika 1 Saniye Görüntülü Görüşme:',
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(color: Colors.black45)),
-                ),
-                Text('40 kr',
-                    textAlign: TextAlign.end,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6!
-                        .copyWith(color: colorDarkGreen))
-              ],
-            ),
-          ),
-          const Divider(
-            height: 0.5,
-            thickness: 1.5,
-            color: Colors.white,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              children: [
-                FaIcon(FontAwesomeIcons.phone),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: Text('1 Dakika 30 Saniye Sesli Görüşme:',
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(color: Colors.black45)),
-                ),
-                Text('15 kr',
-                    textAlign: TextAlign.end,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6!
-                        .copyWith(color: colorDarkGreen))
-              ],
-            ),
-          ),
-          const Divider(
-            height: 0.5,
-            thickness: 1.5,
-            color: Colors.white,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              children: [
-                FaIcon(FontAwesomeIcons.download),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: Text('1 Dosya İndirmesi:',
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .copyWith(color: Colors.black45)),
-                ),
-                Text('40 kr',
-                    textAlign: TextAlign.end,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6!
-                        .copyWith(color: colorDarkGreen))
-              ],
-            ),
-          ),
-          const Divider(
-            height: 0.5,
-            thickness: 1.5,
-            color: Colors.white,
-          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
             child: Row(
@@ -234,7 +134,8 @@ class _PaymentViewState extends State<PaymentView>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5).r,
             child: Row(
               children: [
                 Expanded(
@@ -258,13 +159,18 @@ class _PaymentViewState extends State<PaymentView>
               ],
             ),
           ),
+        ],
+      );
+
+  Widget _buildSavedCreditCards(context) => Column(
+        children: [
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5).r,
             child: Container(
               decoration: BoxDecoration(
                   border: Border.all(color: colorLightGreen),
                   borderRadius: BorderRadius.circular(10)),
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(10).r,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -286,7 +192,7 @@ class _PaymentViewState extends State<PaymentView>
                     ],
                   ),
                   CachedNetworkImage(
-                      width: 60,
+                      width: 60.w,
                       imageUrl:
                           'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png'),
                 ],
@@ -296,8 +202,14 @@ class _PaymentViewState extends State<PaymentView>
           Text('Ödeme Yöntemini Değiştir',
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
                   color: colorLightGreen, fontWeight: FontWeight.w500)),
+        ],
+      );
+
+  Widget _buildPayButton(context) => Column(
+        children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5).r,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -328,5 +240,33 @@ class _PaymentViewState extends State<PaymentView>
                 )),
           )
         ],
+      );
+
+  Widget _buildLine(context,
+          {required String title,
+          required IconData icon,
+          required String price}) =>
+      Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          children: [
+            FaIcon(icon),
+            10.horizontalSpace,
+            Expanded(
+              child: Text(title,
+                  textAlign: TextAlign.start,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(color: Colors.black45)),
+            ),
+            Text(price,
+                textAlign: TextAlign.end,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6!
+                    .copyWith(color: colorDarkGreen))
+          ],
+        ),
       );
 }
