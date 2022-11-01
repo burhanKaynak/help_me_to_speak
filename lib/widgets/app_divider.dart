@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:help_me_to_speak/utils/const/app_padding.dart';
 
 import '../themes/project_themes.dart';
 
@@ -8,7 +9,7 @@ class AppDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 15),
+      margin: AppPadding.verticalPadding,
       child: Row(
         children: [
           const Expanded(
@@ -19,7 +20,7 @@ class AppDivider extends StatelessWidget {
             ),
           ),
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
+            margin: AppPadding.horizontalPadding,
             child: Text('Veya',
                 style: Theme.of(context)
                     .textTheme

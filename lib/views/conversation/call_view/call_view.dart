@@ -31,10 +31,6 @@ class _CallViewState extends State<CallView> {
   Widget get _buildHeader => Column(
         children: [
           const AppListCircleAvatar(
-              circleRadius: 100,
-              avatarHeight: 180,
-              avatarWidth: 180,
-              iconSize: 25,
               url:
                   'https://img.freepik.com/free-photo/modern-woman-taking-selfie_23-2147893976.jpg?w=1380&t=st=1664901155~exp=1664901755~hmac=9127862f43915452a82d24ac02ba9768ff5b63354f3f46bcaf54bbf830d34235',
               isOnline: true,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:help_me_to_speak/utils/const/app_padding.dart';
 import 'package:help_me_to_speak/widgets/app_silver_grid_delegate_fixed_cross_axis_count_and_fixed_heigth.dart';
 
 import '../../../themes/project_themes.dart';
@@ -89,13 +90,8 @@ class _TranslatorListViewState extends State<TranslatorListView> {
   @override
   Widget build(BuildContext context) {
     _themeData = Theme.of(context);
-
-    final Size size = MediaQuery.of(context).size;
-    final double itemHeigth = (size.height - kToolbarHeight - 24) / 2.4;
-    final double itemWidth = size.width / 2;
-
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: AppPadding.horizontalPadding,
       child: Column(
         children: [
           AppSearchBarField(),

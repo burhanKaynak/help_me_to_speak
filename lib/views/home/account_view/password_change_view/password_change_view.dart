@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:help_me_to_speak/utils/const/app_padding.dart';
 
 import '../../../../widgets/app_buttons.dart';
 import '../../../../widgets/app_header.dart';
@@ -14,7 +15,7 @@ class PasswordChangeView extends StatelessWidget {
     return Scaffold(
       appBar: const AppHeader(backButton: true, title: 'Şifre Değiştir'),
       body: Padding(
-        padding: const EdgeInsets.all(20.0).r,
+        padding: AppPadding.layoutPadding,
         child: Form(
             child: Column(
           children: [

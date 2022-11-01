@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:help_me_to_speak/utils/const/app_padding.dart';
 import 'package:help_me_to_speak/widgets/app_card.dart';
 import 'package:help_me_to_speak/widgets/app_search_field.dart';
 
@@ -56,7 +57,7 @@ class _ChatListViewState extends State<ChatListView> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: AppPadding.horizontalPadding,
           child: Column(
             children: [
               AppSearchBarField(),

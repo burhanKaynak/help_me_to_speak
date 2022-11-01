@@ -1,23 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:help_me_to_speak/utils/const/app_padding.dart';
+import 'package:help_me_to_speak/utils/const/app_sizer.dart';
 
 import '../themes/project_themes.dart';
+import '../utils/const/app_spacer.dart';
 
 class AppCircleAvatar extends StatelessWidget {
   final String url;
-  final double circleRadius;
-  final double avatarWidth;
-  final double avatarHeight;
-  final double iconSize;
 
   const AppCircleAvatar({
     super.key,
     required this.url,
-    this.avatarHeight = 100,
-    this.avatarWidth = 100,
-    this.iconSize = 15,
-    this.circleRadius = 50,
   });
 
   @override
@@ -38,14 +33,14 @@ class AppCircleAvatar extends StatelessWidget {
           ),
           child: CircleAvatar(
             backgroundColor: colorLightGreen,
-            maxRadius: circleRadius,
+            maxRadius: AppSizer.avatarSmall,
             child: Padding(
-              padding: const EdgeInsets.all(5),
+              padding: AppPadding.avatarPadding,
               child: ClipOval(
                 child: CachedNetworkImage(
                   imageUrl: url,
-                  width: avatarWidth,
-                  height: avatarHeight,
+                  width: AppSizer.imageLargeW,
+                  height: AppSizer.imageLargeH,
                   fit: BoxFit.fitHeight,
                 ),
               ),
@@ -64,19 +59,11 @@ class AppListCircleAvatar extends StatelessWidget {
   final bool showLangs;
   final bool showAddRemoveButton;
   final bool hasChat;
-  final double circleRadius;
-  final double avatarWidth;
-  final double avatarHeight;
-  final double iconSize;
 
   const AppListCircleAvatar(
       {super.key,
       required this.url,
       this.showAddRemoveButton = false,
-      this.avatarHeight = 100,
-      this.avatarWidth = 100,
-      this.iconSize = 15,
-      this.circleRadius = 50,
       required this.isOnline,
       this.hasChat = false,
       required this.langs,
@@ -102,14 +89,14 @@ class AppListCircleAvatar extends StatelessWidget {
           child: Stack(children: [
             CircleAvatar(
               backgroundColor: isOnline ? colorLightGreen : Colors.white,
-              maxRadius: circleRadius,
+              maxRadius: AppSizer.avatarSmall,
               child: Padding(
-                padding: const EdgeInsets.all(5),
+                padding: AppPadding.avatarPadding,
                 child: ClipOval(
                   child: CachedNetworkImage(
                     imageUrl: url,
-                    width: avatarWidth,
-                    height: avatarHeight,
+                    width: AppSizer.imageLargeW,
+                    height: AppSizer.imageLargeH,
                     fit: BoxFit.fitHeight,
                   ),
                 ),
@@ -125,26 +112,23 @@ class AppListCircleAvatar extends StatelessWidget {
                       color: hasChat ? colorPrimary : colorLightGreen,
                     ),
                     alignment: Alignment.center,
-                    width: 25,
-                    height: 25,
+                    width: AppSizer.circleSmall,
+                    height: AppSizer.circleSmall,
                     child: hasChat
-                        ? const FaIcon(
+                        ? FaIcon(
                             FontAwesomeIcons.minus,
                             color: Colors.white,
-                            size: 15,
+                            size: AppSizer.iconSmall,
                           )
-                        : const FaIcon(
+                        : FaIcon(
                             FontAwesomeIcons.plus,
                             color: Colors.white,
-                            size: 15,
+                            size: AppSizer.iconSmall,
                           )),
               ),
           ]),
         ),
-        if (showLangs)
-          const SizedBox(
-            height: 15,
-          ),
+        if (showLangs) AppSpacer.verticalLargeSpace,
         if (showLangs)
           Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -156,18 +140,16 @@ class AppListCircleAvatar extends StatelessWidget {
   List<Widget> get _buildLangIcons {
     var widgetCollection = <Widget>[];
 
-    for (var item in langs) {
+    for (var i = 0; i < langs.length; i++) {
       widgetCollection.add(
         FaIcon(
           FontAwesomeIcons.globe,
-          size: iconSize,
+          size: AppSizer.iconSmall,
         ),
       );
-      widgetCollection.add(
-        const SizedBox(
-          width: 10,
-        ),
-      );
+      if ((i + 1) != langs.length) {
+        widgetCollection.add(AppSpacer.horizontalLargeSpace);
+      }
     }
 
     return widgetCollection;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:help_me_to_speak/themes/project_themes.dart';
+import 'package:help_me_to_speak/utils/const/app_padding.dart';
 import 'package:help_me_to_speak/views/home/chat_list_view/chat_list_view.dart';
 import 'package:help_me_to_speak/widgets/app_card.dart';
 import 'package:help_me_to_speak/widgets/app_header.dart';
@@ -41,7 +42,7 @@ class _TranslatorAppointmentViewState extends State<TranslatorAppointmentView> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: AppPadding.layoutPadding,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -50,33 +51,6 @@ class _TranslatorAppointmentViewState extends State<TranslatorAppointmentView> {
                     style: Theme.of(context).textTheme.headline5!.copyWith(
                         color: colorDarkGreen, fontWeight: FontWeight.w400),
                   ),
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //       color: colorLightGreen,
-                  //       borderRadius: BorderRadius.circular(10)),
-                  //   padding: const EdgeInsets.all(15),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: [
-                  //       IconButton(
-                  //           onPressed: null,
-                  //           icon: FaIcon(
-                  //             FontAwesomeIcons.chevronLeft,
-                  //             color: Colors.white,
-                  //           )),
-                  //       Text(
-                  //         'Haziran 2022',
-                  //         style: Theme.of(context).textTheme.headline6,
-                  //       ),
-                  //       IconButton(
-                  //           onPressed: null,
-                  //           icon: FaIcon(
-                  //             FontAwesomeIcons.chevronRight,
-                  //             color: Colors.white,
-                  //           )),
-                  //     ],
-                  //   ),
-                  // ),
                   _buildCalendar,
                   _buildFooter
                 ],

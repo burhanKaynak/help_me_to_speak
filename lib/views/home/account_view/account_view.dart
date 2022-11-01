@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:help_me_to_speak/themes/project_themes.dart';
+import 'package:help_me_to_speak/utils/const/app_padding.dart';
 import 'package:help_me_to_speak/widgets/app_buttons.dart';
 import 'package:help_me_to_speak/widgets/app_circle_avatar.dart';
 
@@ -16,7 +17,7 @@ class _AccountViewState extends State<AccountView> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: AppPadding.horizontalPadding,
       child: Column(
         children: [
           15.verticalSpace,

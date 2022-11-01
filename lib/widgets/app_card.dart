@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:help_me_to_speak/utils/const/app_padding.dart';
+import 'package:help_me_to_speak/utils/const/app_sizer.dart';
+import 'package:help_me_to_speak/utils/const/app_spacer.dart';
 import 'package:help_me_to_speak/views/home/chat_list_view/chat_list_view.dart';
 
 import '../themes/project_themes.dart';
@@ -11,11 +14,9 @@ class AppCard extends StatelessWidget {
   final bool topDivider;
   AppCard({super.key, required this.chat, this.topDivider = true});
 
-  double? _cardHeight;
   ThemeData? _themeData;
   @override
   Widget build(BuildContext context) {
-    _cardHeight = 145;
     _themeData = Theme.of(context);
 
     return Container(
@@ -29,14 +30,12 @@ class AppCard extends StatelessWidget {
               color: Colors.white,
             ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: AppPadding.layoutPadding,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildCardLeftSide,
-                const SizedBox(
-                  width: 10,
-                ),
+                AppSpacer.horizontalLargeSpace,
                 Expanded(
                   child: _buildCardMiddle,
                 ),
@@ -51,7 +50,7 @@ class AppCard extends StatelessWidget {
 
   Widget get _buildCardLeftSide {
     return SizedBox(
-      height: _cardHeight,
+      height: AppSizer.cardLarge,
       child: AppListCircleAvatar(
         url: chat.avatar,
         isOnline: chat.isOnline,
@@ -64,7 +63,7 @@ class AppCard extends StatelessWidget {
   }
 
   Widget get _buildCardMiddle => SizedBox(
-        height: _cardHeight,
+        height: AppSizer.cardLarge,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -79,24 +78,20 @@ class AppCard extends StatelessWidget {
                       style: _themeData!.textTheme.headline5!
                           .copyWith(color: colorDarkGreen),
                     ),
-                    const SizedBox(
-                      width: 15,
-                    ),
+                    AppSpacer.horizontalLargeSpace,
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                         color: colorLightGreen,
                       ),
                       alignment: Alignment.center,
-                      width: 25,
-                      height: 25,
+                      width: AppSizer.circleSmall,
+                      height: AppSizer.circleSmall,
                       child: const Text('1'),
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+                AppSpacer.verticalSmallSpace,
                 Text(chat.isOnline ? 'Şu an Çeviriye Hazır' : 'Çevirimdışı',
                     style: _themeData!.textTheme.bodyText1!.copyWith(
                         color: chat.isOnline ? colorLightGreen : colorHint)),
@@ -112,14 +107,10 @@ class AppCard extends StatelessWidget {
                       style: _themeData!.textTheme.caption!
                           .copyWith(color: colorHint),
                     ),
-                    const SizedBox(
-                      width: 15,
-                    ),
+                    AppSpacer.horizontalMediumSpace,
                   ],
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+                AppSpacer.verticalSmallSpace,
                 Text(chat.lastMessage,
                     overflow: TextOverflow.ellipsis,
                     style: _themeData!.textTheme.bodyText1!.copyWith(
@@ -134,7 +125,7 @@ class AppCard extends StatelessWidget {
       );
 
   Widget get _buildCardRightSide => SizedBox(
-        height: _cardHeight,
+        height: AppSizer.cardLarge,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: const [
