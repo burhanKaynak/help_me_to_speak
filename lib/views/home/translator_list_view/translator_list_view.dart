@@ -122,7 +122,7 @@ class _TranslatorListViewState extends State<TranslatorListView> {
                 children: [
                   SizedBox(
                     height: 135,
-                    child: AppCircleAvatar(
+                    child: AppListCircleAvatar(
                       url: item.avatar,
                       isOnline: item.isOnline,
                       langs: const ['asdasd', 'asdas'],

@@ -52,7 +52,7 @@ class AppCard extends StatelessWidget {
   Widget get _buildCardLeftSide {
     return SizedBox(
       height: _cardHeight,
-      child: AppCircleAvatar(
+      child: AppListCircleAvatar(
         url: chat.avatar,
         isOnline: chat.isOnline,
         langs: const [

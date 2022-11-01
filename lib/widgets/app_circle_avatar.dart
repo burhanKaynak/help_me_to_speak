@@ -6,6 +6,59 @@ import '../themes/project_themes.dart';
 
 class AppCircleAvatar extends StatelessWidget {
   final String url;
+  final double circleRadius;
+  final double avatarWidth;
+  final double avatarHeight;
+  final double iconSize;
+
+  const AppCircleAvatar({
+    super.key,
+    required this.url,
+    this.avatarHeight = 100,
+    this.avatarWidth = 100,
+    this.iconSize = 15,
+    this.circleRadius = 50,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                  offset: const Offset(2, 5),
+                  blurRadius: 5,
+                  color: colorLightGreen.withAlpha(50),
+                  blurStyle: BlurStyle.normal,
+                  spreadRadius: 1)
+            ],
+          ),
+          child: CircleAvatar(
+            backgroundColor: colorLightGreen,
+            maxRadius: circleRadius,
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: ClipOval(
+                child: CachedNetworkImage(
+                  imageUrl: url,
+                  width: avatarWidth,
+                  height: avatarHeight,
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class AppListCircleAvatar extends StatelessWidget {
+  final String url;
   final bool isOnline;
   final List<String> langs;
   final bool showLangs;
@@ -16,7 +69,7 @@ class AppCircleAvatar extends StatelessWidget {
   final double avatarHeight;
   final double iconSize;
 
-  const AppCircleAvatar(
+  const AppListCircleAvatar(
       {super.key,
       required this.url,
       this.showAddRemoveButton = false,

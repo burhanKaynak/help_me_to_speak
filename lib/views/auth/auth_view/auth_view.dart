@@ -39,7 +39,7 @@ class _AuthViewState extends State<AuthView> {
               Expanded(
                 flex: 3,
                 child: PageView.builder(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     pageSnapping: true,
                     controller: _pageController,
                     onPageChanged: (value) {
@@ -52,7 +52,9 @@ class _AuthViewState extends State<AuthView> {
                     itemCount: 2,
                     itemBuilder: (context, index) {
                       _currentPage = index;
-                      return index == 0 ? SingInView() : SignUpView();
+                      return index == 0
+                          ? const SingInView()
+                          : const SignUpView();
                     }),
               ),
               TextButton(

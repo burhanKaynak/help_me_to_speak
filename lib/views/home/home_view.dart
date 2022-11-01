@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/views/home/translator_list_view/translator_list_view.dart';
 
 import '../../widgets/app_header.dart';
+import 'account_view/account_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -16,7 +16,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppHeader(title: 'Messages'),
-      body: TranslatorListView(),
+      body: const AccountView(),
       bottomNavigationBar:
           BottomNavigationBar(items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
@@ -26,6 +26,8 @@ class _HomeViewState extends State<HomeView> {
         BottomNavigationBarItem(
             icon: FaIcon(FontAwesomeIcons.download),
             label: 'Kayıtlı Çeviriler'),
+        BottomNavigationBarItem(
+            icon: FaIcon(FontAwesomeIcons.gear), label: 'Ayarlar'),
       ]),
     );
   }

@@ -30,7 +30,7 @@ class _CallViewState extends State<CallView> {
 
   Widget get _buildHeader => Column(
         children: [
-          const AppCircleAvatar(
+          const AppListCircleAvatar(
               circleRadius: 100,
               avatarHeight: 180,
               avatarWidth: 180,

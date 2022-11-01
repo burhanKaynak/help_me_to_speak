@@ -26,7 +26,7 @@ class _SingInViewState extends State<SingInView> {
           alignment: Alignment.centerRight,
           child: TextButton(
             onPressed: () => null,
-            child: Text('Şifremi unuttum'),
+            child: const Text('Şifremi unuttum'),
           ),
         ),
         buildButton(text: 'Giriş Yap'),

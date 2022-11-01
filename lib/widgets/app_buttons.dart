@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-Widget buildButton({required String text, Widget? icon}) {
+Widget buildButton({required String text, Widget? sufix, Widget? prefix}) {
   return ElevatedButton(
       onPressed: null,
       child: Row(
         children: [
+          prefix ?? const SizedBox.shrink(),
           Expanded(
               child: Align(alignment: Alignment.center, child: Text(text))),
-          icon ?? const SizedBox.shrink()
+          sufix ?? const SizedBox.shrink()
         ],
       ));
 }

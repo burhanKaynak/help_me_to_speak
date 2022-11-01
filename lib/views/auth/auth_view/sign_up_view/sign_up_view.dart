@@ -45,7 +45,7 @@ class _SignUpViewState extends State<SignUpView> {
                   children: [
                     Row(
                       children: [
-                        FlutterLogo(
+                        const FlutterLogo(
                           size: 50,
                         ),
                         Text(
