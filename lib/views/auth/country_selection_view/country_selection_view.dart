@@ -214,7 +214,7 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
               itemCount: _countries.length,
             ),
           ),
-          FaIcon(FontAwesomeIcons.chevronDown)
+          const FaIcon(FontAwesomeIcons.chevronDown)
         ],
       );
   Widget _sectionMainLanguage(
@@ -281,7 +281,7 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
               itemCount: _languages.length,
             ),
           ),
-          FaIcon(FontAwesomeIcons.chevronDown)
+          const FaIcon(FontAwesomeIcons.chevronDown)
         ],
       );
 
