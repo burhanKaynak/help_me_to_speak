@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:im_stepper/stepper.dart';
 
+import '../../../utils/const/app_padding.dart';
+
 class Slide {
   final String imageUrl;
   final String title;
@@ -71,12 +73,12 @@ class _WelcomeViewState extends State<WelcomeView> {
   Widget _buildSlideItem(Slide slide) => SizedBox.expand(
         child: Image.asset(
           slide.imageUrl,
-          fit: BoxFit.fitHeight,
+          fit: BoxFit.fitWidth,
         ),
       );
 
   Widget get _buildHeader => Container(
-        margin: const EdgeInsets.all(30),
+        margin: AppPadding.layoutPadding,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -96,7 +98,7 @@ class _WelcomeViewState extends State<WelcomeView> {
   Widget get _buildBody => const SizedBox.shrink();
 
   Widget get _buildFooter => Padding(
-        padding: const EdgeInsets.all(50.0),
+        padding: AppPadding.layoutPadding,
         child: Column(
           children: [
             Text(_page[_pageNotifier.value].title,

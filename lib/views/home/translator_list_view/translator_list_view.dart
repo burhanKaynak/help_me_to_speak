@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:help_me_to_speak/utils/const/app_padding.dart';
-import 'package:help_me_to_speak/widgets/app_silver_grid_delegate_fixed_cross_axis_count_and_fixed_heigth.dart';
 
 import '../../../themes/project_themes.dart';
+import '../../../utils/const/app_padding.dart';
+import '../../../utils/const/app_sizer.dart';
+import '../../../utils/const/app_spacer.dart';
 import '../../../widgets/app_circle_avatar.dart';
 import '../../../widgets/app_search_field.dart';
+import '../../../widgets/app_silver_grid_delegate_fixed_cross_axis_count_and_fixed_heigth.dart';
 
 //TODO: Hacı burda çok karmaşık kod var bunları düzenle.
 class Translator {
@@ -91,41 +93,35 @@ class _TranslatorListViewState extends State<TranslatorListView> {
   Widget build(BuildContext context) {
     _themeData = Theme.of(context);
     return Padding(
-      padding: AppPadding.horizontalPadding,
+      padding: AppPadding.horizontalPaddingMedium,
       child: Column(
         children: [
           AppSearchBarField(),
-          const SizedBox(
-            height: 20,
-          ),
+          AppSpacer.verticalLargeSpace,
           _buildFilterBar,
-          const SizedBox(
-            height: 20,
-          ),
+          AppSpacer.verticalLargeSpace,
           Expanded(
               child: GridView.builder(
             itemCount: _translators.length,
             shrinkWrap: true,
             gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+                SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
                     crossAxisCount: 3,
                     crossAxisSpacing: 5.0,
                     mainAxisSpacing: 5.0,
-                    height: 180),
+                    height: AppSizer.gridSmall),
             itemBuilder: (context, index) {
               var item = _translators[index];
               return Column(
                 children: [
-                  SizedBox(
-                    height: 135,
-                    child: AppListCircleAvatar(
-                      url: item.avatar,
-                      isOnline: item.isOnline,
-                      langs: const ['asdasd', 'asdas'],
-                      showAddRemoveButton: true,
-                      hasChat: item.hasChat,
-                    ),
+                  AppListCircleAvatar(
+                    url: item.avatar,
+                    isOnline: item.isOnline,
+                    langs: const ['asdasd', 'asdas'],
+                    showAddRemoveButton: true,
+                    hasChat: item.hasChat,
                   ),
+                  AppSpacer.verticalSmallSpace,
                   _buildNameAndState(
                       fullName: item.fullName, isOnline: item.isOnline)
                 ],

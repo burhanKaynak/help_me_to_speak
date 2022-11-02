@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/themes/project_themes.dart';
-import 'package:help_me_to_speak/views/payment/payment_info_view/payment_tab/payment_info_tab.dart';
-import 'package:help_me_to_speak/views/payment/payment_info_view/payment_tab/payment_order_history_tab.dart';
-import 'package:help_me_to_speak/widgets/app_header.dart';
+
+import '../../../themes/project_themes.dart';
+import '../../../widgets/app_header.dart';
+import 'payment_tab/payment_info_tab.dart';
+import 'payment_tab/payment_order_history_tab.dart';
 
 //TODO: Hacı burda çok karmaşık kod var bunları düzenle.
 class PaymentView extends StatefulWidget {

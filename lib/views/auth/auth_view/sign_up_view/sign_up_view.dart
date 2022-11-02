@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/themes/project_themes.dart';
 import 'package:im_stepper/stepper.dart';
 
+import '../../../../themes/project_themes.dart';
+import '../../../../utils/const/app_padding.dart';
+import '../../../../utils/const/app_sizer.dart';
+import '../../../../utils/const/app_spacer.dart';
 import '../../../../widgets/app_buttons.dart';
+import '../../../../widgets/app_divider.dart';
 import '../../../../widgets/app_input.dart';
 
 class SignUpView extends StatefulWidget {
@@ -21,11 +25,15 @@ class _SignUpViewState extends State<SignUpView> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _buildStep,
-        10.verticalSpace,
-        _buildChooseUserType,
-        // buildButton(text: 'Kayıt Ol'),
-        //const AppDivider(),
-        //_buildLoginButtonsForAnotherPlatform,
+        AppSpacer.verticalSmallSpace,
+        // _buildChooseUserType,
+        _buildSignUpForm,
+        buildButton(text: 'Kayıt Ol'),
+        AppOrDivider(
+          height: AppSizer.dividerH,
+          tickness: AppSizer.dividerTicknessSmall,
+        ),
+        _buildLoginButtonsForAnotherPlatform,
       ],
     );
   }
@@ -60,7 +68,7 @@ class _SignUpViewState extends State<SignUpView> {
                     ),
                     if (value == 0)
                       Container(
-                        height: 100.h,
+                        height: AppSizer.cardMedium,
                       )
                   ],
                 ),
@@ -72,7 +80,7 @@ class _SignUpViewState extends State<SignUpView> {
             child: Card(
               color: value != 1 ? null : colorLightGreen,
               child: Padding(
-                padding: const EdgeInsets.all(10.0).r,
+                padding: AppPadding.layoutPadding,
                 child: Row(
                   children: [
                     const FlutterLogo(
@@ -102,7 +110,7 @@ class _SignUpViewState extends State<SignUpView> {
                   keyboardType: TextInputType.emailAddress,
                 ),
               ),
-              10.horizontalSpace,
+              AppSpacer.horizontalSmallSpace,
               Expanded(
                 child: AppTextFormField(
                   hint: 'Soy ismi',
@@ -111,18 +119,18 @@ class _SignUpViewState extends State<SignUpView> {
               ),
             ],
           ),
-          10.verticalSpace,
+          AppSpacer.verticalSmallSpace,
           AppTextFormField(
             hint: 'Email',
             keyboardType: TextInputType.emailAddress,
           ),
-          10.verticalSpace,
+          AppSpacer.verticalSmallSpace,
           AppTextFormField(
             hint: 'Password',
             obscureText: true,
             keyboardType: TextInputType.visiblePassword,
           ),
-          10.verticalSpace,
+          AppSpacer.verticalSmallSpace,
         ],
       ));
 
@@ -133,7 +141,7 @@ class _SignUpViewState extends State<SignUpView> {
                 FontAwesomeIcons.google,
               ),
               text: 'Google ile kayıt ol'),
-          5.verticalSpace,
+          AppSpacer.verticalSmallSpace,
           buildLoginButtonForAnotherPlatform(context,
               color: Colors.white,
               textColor: Colors.black,
@@ -142,7 +150,7 @@ class _SignUpViewState extends State<SignUpView> {
                 color: Colors.black,
               ),
               text: 'Apple ile kayıt ol'),
-          5.verticalSpace,
+          AppSpacer.verticalSmallSpace,
           buildLoginButtonForAnotherPlatform(
               color: Colors.indigo,
               icon: const Icon(FontAwesomeIcons.facebookF),

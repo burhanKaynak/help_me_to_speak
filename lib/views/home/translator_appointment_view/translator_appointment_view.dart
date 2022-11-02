@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/themes/project_themes.dart';
-import 'package:help_me_to_speak/utils/const/app_padding.dart';
-import 'package:help_me_to_speak/views/home/chat_list_view/chat_list_view.dart';
-import 'package:help_me_to_speak/widgets/app_card.dart';
-import 'package:help_me_to_speak/widgets/app_header.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+
+import '../../../themes/project_themes.dart';
+import '../../../utils/const/app_padding.dart';
+import '../../../utils/const/app_sizer.dart';
+import '../../../widgets/app_card.dart';
+import '../../../widgets/app_divider.dart';
+import '../../../widgets/app_header.dart';
+import '../chat_list_view/chat_list_view.dart';
 
 class TranslatorAppointmentView extends StatefulWidget {
   const TranslatorAppointmentView({super.key});
@@ -35,11 +38,9 @@ class _TranslatorAppointmentViewState extends State<TranslatorAppointmentView> {
                 lastSeen: 'Pazartesi',
                 lastMessage: 'Fotoğraf ulaştı, tercüme ediyorum.'),
           ),
-          const Divider(
-            height: 0.5,
-            thickness: 1.5,
-            color: Colors.white,
-          ),
+          AppDivider(
+              height: AppSizer.dividerH,
+              tickness: AppSizer.dividerTicknessSmall),
           Expanded(
             child: Padding(
               padding: AppPadding.layoutPadding,
@@ -114,8 +115,8 @@ class _TranslatorAppointmentViewState extends State<TranslatorAppointmentView> {
             children: [
               ClipOval(
                 child: Container(
-                  height: 25,
-                  width: 25,
+                  height: AppSizer.circleSmall,
+                  width: AppSizer.circleSmall,
                   color: colorHint,
                 ),
               ),
@@ -133,8 +134,8 @@ class _TranslatorAppointmentViewState extends State<TranslatorAppointmentView> {
             children: [
               ClipOval(
                 child: Container(
-                  height: 25,
-                  width: 25,
+                  height: AppSizer.circleSmall,
+                  width: AppSizer.circleSmall,
                   color: colorLightGreen,
                 ),
               ),
@@ -150,11 +151,11 @@ class _TranslatorAppointmentViewState extends State<TranslatorAppointmentView> {
           ElevatedButton(
               onPressed: null,
               child: Row(
-                children: const [
-                  Text('Devam'),
+                children: [
+                  const Text('Devam'),
                   FaIcon(
                     FontAwesomeIcons.chevronRight,
-                    size: 15,
+                    size: AppSizer.iconSmall,
                   )
                 ],
               )),

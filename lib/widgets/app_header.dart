@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../themes/project_themes.dart';
+import '../utils/const/app_padding.dart';
+import '../utils/const/app_radius.dart';
+import '../utils/const/app_sizer.dart';
+import '../utils/const/app_spacer.dart';
 
 class AppHeader extends StatefulWidget implements PreferredSizeWidget {
   final bool backButton;
@@ -31,7 +35,7 @@ class _AppHeaderState extends State<AppHeader> {
 
     return Container(
         height: (kIsWeb || Platform.isWindows) ? 60 : null,
-        padding: EdgeInsets.only(top: padding * 1.5, right: 20, left: 20),
+        padding: AppPadding.layoutPadding.copyWith(top: padding * 1.5),
         child: _buildHeader(title: widget.title));
   }
 
@@ -41,10 +45,7 @@ class _AppHeaderState extends State<AppHeader> {
           Row(
             children: [
               if (widget.backButton) const FaIcon(FontAwesomeIcons.chevronLeft),
-              if (widget.backButton)
-                const SizedBox(
-                  width: 10,
-                ),
+              if (widget.backButton) AppSpacer.horizontalSmallSpace,
               Text(
                 widget.title,
                 style: Theme.of(context)
@@ -63,17 +64,15 @@ class _AppHeaderState extends State<AppHeader> {
         children: [
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: AppRadius.rectangleRadius,
               color: colorLightGreen,
             ),
             alignment: Alignment.center,
-            width: 25,
-            height: 25,
+            width: AppSizer.circleSmall,
+            height: AppSizer.circleSmall,
             child: const Text('1'),
           ),
-          const SizedBox(
-            width: 10,
-          ),
+          AppSpacer.horizontalSmallSpace,
           const FaIcon(FontAwesomeIcons.bars)
         ],
       );

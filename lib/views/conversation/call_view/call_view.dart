@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/themes/project_themes.dart';
-import 'package:help_me_to_speak/widgets/app_circle_avatar.dart';
+
+import '../../../themes/project_themes.dart';
+import '../../../utils/const/app_padding.dart';
+import '../../../utils/const/app_radius.dart';
+import '../../../utils/const/app_sizer.dart';
+import '../../../utils/const/app_spacer.dart';
+import '../../../widgets/app_circle_avatar.dart';
 
 class CallView extends StatefulWidget {
   const CallView({super.key});
@@ -18,8 +23,7 @@ class _CallViewState extends State<CallView> {
     return Scaffold(
       backgroundColor: colorDarkGreen,
       body: Padding(
-        padding:
-            EdgeInsets.only(top: paddingTop, left: 20, right: 20, bottom: 30),
+        padding: AppPadding.layoutPadding.copyWith(top: paddingTop),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [_buildHeader, _buildBody, _buildFooter],
@@ -38,9 +42,7 @@ class _CallViewState extends State<CallView> {
                 'asdasd',
                 'asdasd',
               ]),
-          const SizedBox(
-            height: 10,
-          ),
+          AppSpacer.verticalSmallSpace,
           Text(
             'Angelina',
             style: Theme.of(context)
@@ -48,9 +50,7 @@ class _CallViewState extends State<CallView> {
                 .headline3!
                 .copyWith(fontWeight: FontWeight.bold),
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          AppSpacer.verticalSmallSpace,
           Text(
             'Şu an Konuşmada',
             style: Theme.of(context).textTheme.headline6,
@@ -67,9 +67,7 @@ class _CallViewState extends State<CallView> {
             '1 Dakika 30 Saniye',
             style: Theme.of(context).textTheme.headline4,
           ),
-          SizedBox(
-            height: 20,
-          ),
+          AppSpacer.verticalLargeSpace,
           Text(
             'Toplam Ücret:',
             style: Theme.of(context).textTheme.headline6,
@@ -85,27 +83,26 @@ class _CallViewState extends State<CallView> {
         children: [
           Container(
             alignment: Alignment.center,
-            width: 75,
-            height: 75,
+            width: AppSizer.circleLarge + AppSizer.circleMedium,
+            height: AppSizer.circleLarge + AppSizer.circleMedium,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100), color: colorPrimary),
+                borderRadius: AppRadius.circleRadius, color: colorPrimary),
             child: FaIcon(
               FontAwesomeIcons.xmark,
               color: Colors.white,
-              size: 35,
+              size: AppSizer.iconLarge,
             ),
           ),
           Container(
             alignment: Alignment.center,
-            width: 75,
-            height: 75,
+            width: AppSizer.circleLarge + AppSizer.circleMedium,
+            height: AppSizer.circleLarge + AppSizer.circleMedium,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: colorLightGreen),
+                borderRadius: AppRadius.circleRadius, color: colorLightGreen),
             child: FaIcon(
               FontAwesomeIcons.volumeHigh,
               color: Colors.white,
-              size: 35,
+              size: AppSizer.iconLarge,
             ),
           )
         ],

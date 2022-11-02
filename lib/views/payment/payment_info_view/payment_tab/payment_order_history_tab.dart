@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../../../../utils/const/app_padding.dart';
+import '../../../../utils/const/app_spacer.dart';
 
 class PaymentOrderHistoryTab extends StatelessWidget {
   const PaymentOrderHistoryTab({super.key});
@@ -8,27 +10,27 @@ class PaymentOrderHistoryTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0).r,
+      padding: AppPadding.layoutPadding,
       child: ListView.builder(
           itemCount: 5,
           itemBuilder: (context, index) => Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: AppPadding.cardPadding,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildLine(context,
                           title: '2 Dakika 1 Saniye Görüntülü Görüşme: 40 kr',
                           icon: FontAwesomeIcons.video),
-                      10.verticalSpace,
+                      AppSpacer.verticalSmallSpace,
                       _buildLine(context,
                           title: '1 Dakika 30 Saniye Sesli Görüşme: 15 kr',
                           icon: FontAwesomeIcons.phone),
-                      10.verticalSpace,
+                      AppSpacer.verticalSmallSpace,
                       _buildLine(context,
                           title: '1 Dosya İndirmesi: 40 kr',
                           icon: FontAwesomeIcons.download),
-                      10.verticalSpace,
+                      AppSpacer.verticalSmallSpace,
                       Align(
                         alignment: Alignment.centerRight,
                         child: Text('Toplam: 82 kr',
@@ -51,7 +53,7 @@ class PaymentOrderHistoryTab extends StatelessWidget {
       Row(
         children: [
           FaIcon(icon),
-          10.horizontalSpace,
+          AppSpacer.horizontalSmallSpace,
           Text(title,
               textAlign: TextAlign.start,
               style: Theme.of(context)

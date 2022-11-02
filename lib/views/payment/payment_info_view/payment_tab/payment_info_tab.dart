@@ -1,9 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../../themes/project_themes.dart';
+import '../../../../utils/const/app_padding.dart';
+import '../../../../utils/const/app_radius.dart';
+import '../../../../utils/const/app_sizer.dart';
+import '../../../../utils/const/app_spacer.dart';
+import '../../../../widgets/app_divider.dart';
 
 class PaymentInfoTab extends StatelessWidget {
   const PaymentInfoTab({super.key});
@@ -22,7 +26,7 @@ class PaymentInfoTab extends StatelessWidget {
   }
 
   Widget _buildPaymentInfoHeader(context) => Padding(
-        padding: const EdgeInsets.all(20.0).r,
+        padding: AppPadding.layoutPadding,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -46,45 +50,38 @@ class PaymentInfoTab extends StatelessWidget {
 
   Widget _buildPaymentInfo(context) => Column(
         children: [
-          const Divider(
-            height: 0.5,
-            thickness: 1.5,
-            color: Colors.white,
-          ),
+          AppDivider(
+              height: AppSizer.dividerH,
+              tickness: AppSizer.dividerTicknessSmall),
           _buildLine(context,
               icon: FontAwesomeIcons.video,
               title: '2 Dakika 1 Saniye Görüntülü Görüşme:',
               price: '40 kr'),
-          const Divider(
-            height: 0.5,
-            thickness: 1.5,
-            color: Colors.white,
-          ),
+          AppDivider(
+              height: AppSizer.dividerH,
+              tickness: AppSizer.dividerTicknessSmall),
           _buildLine(context,
               icon: FontAwesomeIcons.phone,
               title: '1 Dakika 30 Saniye Sesli Görüşme:',
               price: '15 kr'),
-          const Divider(
-            height: 0.5,
-            thickness: 1.5,
-            color: Colors.white,
-          ),
+          AppDivider(
+              height: AppSizer.dividerH,
+              tickness: AppSizer.dividerTicknessSmall),
           _buildLine(context,
               icon: FontAwesomeIcons.download,
               title: '1 Dosya İndirmesi:',
               price: '40 kr'),
-          const Divider(
-            height: 0.5,
-            thickness: 1.5,
-            color: Colors.white,
-          ),
+          AppDivider(
+              height: AppSizer.dividerH,
+              tickness: AppSizer.dividerTicknessSmall),
         ],
       );
 
   Widget _buildPaymentTotal(context) => Column(
         children: [
+          AppSpacer.verticalSmallSpace,
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+            padding: AppPadding.horizontalPaddingMedium,
             child: Row(
               children: [
                 Expanded(
@@ -108,8 +105,9 @@ class PaymentInfoTab extends StatelessWidget {
               ],
             ),
           ),
+          AppSpacer.verticalSmallSpace,
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+            padding: AppPadding.horizontalPaddingMedium,
             child: Row(
               children: [
                 Expanded(
@@ -133,9 +131,9 @@ class PaymentInfoTab extends StatelessWidget {
               ],
             ),
           ),
+          AppSpacer.verticalSmallSpace,
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5).r,
+            padding: AppPadding.horizontalPaddingMedium,
             child: Row(
               children: [
                 Expanded(
@@ -159,18 +157,19 @@ class PaymentInfoTab extends StatelessWidget {
               ],
             ),
           ),
+          AppSpacer.verticalSmallSpace,
         ],
       );
 
   Widget _buildSavedCreditCards(context) => Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5).r,
+            padding: AppPadding.horizontalPaddingMedium,
             child: Container(
               decoration: BoxDecoration(
                   border: Border.all(color: colorLightGreen),
-                  borderRadius: BorderRadius.circular(10)),
-              padding: EdgeInsets.all(10).r,
+                  borderRadius: AppRadius.rectangleRadius),
+              padding: AppPadding.cardPadding,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -192,13 +191,14 @@ class PaymentInfoTab extends StatelessWidget {
                     ],
                   ),
                   CachedNetworkImage(
-                      width: 60.w,
+                      width: AppSizer.imageSmallW,
                       imageUrl:
                           'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png'),
                 ],
               ),
             ),
           ),
+          AppSpacer.verticalSmallSpace,
           Text('Ödeme Yöntemini Değiştir',
               style: Theme.of(context).textTheme.subtitle1!.copyWith(
                   color: colorLightGreen, fontWeight: FontWeight.w500)),
@@ -208,8 +208,7 @@ class PaymentInfoTab extends StatelessWidget {
   Widget _buildPayButton(context) => Column(
         children: [
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5).r,
+            padding: AppPadding.horizontalPaddingMedium,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -217,7 +216,7 @@ class PaymentInfoTab extends StatelessWidget {
                     textAlign: TextAlign.start,
                     style: Theme.of(context).textTheme.subtitle1!.copyWith(
                         color: Colors.black87, fontWeight: FontWeight.w500)),
-                Checkbox(
+                const Checkbox(
                   value: true,
                   onChanged: null,
                   shape: CircleBorder(),
@@ -226,7 +225,7 @@ class PaymentInfoTab extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            padding: AppPadding.horizontalPaddingMedium,
             child: ElevatedButton(
                 onPressed: null,
                 child: Row(
@@ -247,11 +246,11 @@ class PaymentInfoTab extends StatelessWidget {
           required IconData icon,
           required String price}) =>
       Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: AppPadding.layoutPadding,
         child: Row(
           children: [
             FaIcon(icon),
-            10.horizontalSpace,
+            AppSpacer.horizontalSmallSpace,
             Expanded(
               child: Text(title,
                   textAlign: TextAlign.start,

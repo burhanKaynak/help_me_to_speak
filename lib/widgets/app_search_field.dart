@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../utils/const/app_padding.dart';
+import '../utils/const/app_radius.dart';
+import '../utils/const/app_sizer.dart';
+
 class AppSearchBarField extends StatelessWidget {
   final String hint;
   AppSearchBarField({super.key, this.hint = 'Bir tecüman arayın'});
@@ -11,10 +15,10 @@ class AppSearchBarField extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: AppRadius.rectangleRadius,
         color: Colors.white,
       ),
-      padding: const EdgeInsets.all(5),
+      padding: AppPadding.inputPadding,
       child: TextField(
           cursorColor: const Color.fromARGB(31, 134, 134, 134),
           style: Theme.of(context)
@@ -23,9 +27,9 @@ class AppSearchBarField extends StatelessWidget {
               .copyWith(color: Colors.black87),
           controller: _textController,
           decoration: InputDecoration(
-            prefixIcon: const Icon(
+            prefixIcon: Icon(
               Icons.search_rounded,
-              size: 35,
+              size: AppSizer.iconLarge,
             ),
             hintText: hint,
           )),

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/utils/const/app_padding.dart';
-import 'package:help_me_to_speak/utils/const/app_sizer.dart';
-import 'package:help_me_to_speak/utils/const/app_spacer.dart';
-import 'package:help_me_to_speak/views/home/chat_list_view/chat_list_view.dart';
 
 import '../themes/project_themes.dart';
+import '../utils/const/app_padding.dart';
+import '../utils/const/app_radius.dart';
+import '../utils/const/app_sizer.dart';
+import '../utils/const/app_spacer.dart';
+import '../views/home/chat_list_view/chat_list_view.dart';
 import 'app_circle_avatar.dart';
+import 'app_divider.dart';
 
 //ignore: must_be_immutable
 class AppCard extends StatelessWidget {
@@ -18,16 +20,14 @@ class AppCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _themeData = Theme.of(context);
-
     return Container(
       color: _themeData!.scaffoldBackgroundColor,
       child: Column(
         children: [
           if (topDivider)
-            const Divider(
-              height: 0.5,
-              thickness: 1.5,
-              color: Colors.white,
+            AppDivider(
+              height: AppSizer.dividerH,
+              tickness: AppSizer.dividerTicknessSmall,
             ),
           Padding(
             padding: AppPadding.layoutPadding,
@@ -81,7 +81,7 @@ class AppCard extends StatelessWidget {
                     AppSpacer.horizontalLargeSpace,
                     Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
+                        borderRadius: AppRadius.circleRadius,
                         color: colorLightGreen,
                       ),
                       alignment: Alignment.center,

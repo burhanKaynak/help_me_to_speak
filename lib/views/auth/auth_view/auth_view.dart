@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:help_me_to_speak/views/auth/auth_view/sign_in_view/sign_in_view.dart';
-import 'package:help_me_to_speak/views/auth/auth_view/sign_up_view/sign_up_view.dart';
+
+import '../../../utils/const/app_padding.dart';
+import 'sign_in_view/sign_in_view.dart';
+import 'sign_up_view/sign_up_view.dart';
 
 class AuthView extends StatefulWidget {
   const AuthView({super.key});
@@ -25,12 +27,8 @@ class _AuthViewState extends State<AuthView> {
 
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
-                bottom: padding.bottom,
-                top: padding.top * 1.5)
-            .r,
+        padding: AppPadding.layoutPadding
+            .copyWith(bottom: padding.bottom, top: padding.top * 1.5),
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -85,7 +83,7 @@ class _AuthViewState extends State<AuthView> {
   }
 
   Widget get _buildLogo => Padding(
-        padding: EdgeInsets.all(20.r),
+        padding: AppPadding.layoutPadding,
         child: FlutterLogo(
           size: 100.r,
         ),

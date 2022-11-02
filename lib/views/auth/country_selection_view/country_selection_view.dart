@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/themes/project_themes.dart';
-import 'package:help_me_to_speak/widgets/app_header.dart';
-import 'package:help_me_to_speak/widgets/app_search_field.dart';
+
+import '../../../themes/project_themes.dart';
+import '../../../utils/const/app_padding.dart';
+import '../../../utils/const/app_sizer.dart';
+import '../../../utils/const/app_spacer.dart';
+import '../../../widgets/app_divider.dart';
+import '../../../widgets/app_header.dart';
+import '../../../widgets/app_search_field.dart';
 
 class Country {
   final String title;
@@ -24,13 +29,13 @@ class CountrySelectionView extends StatefulWidget {
 }
 
 class _CountrySelectionViewState extends State<CountrySelectionView> {
-  List<Country> _countries = <Country>[
+  final List<Country> _countries = <Country>[
     Country(title: 'İsveç', icon: FontAwesomeIcons.globe),
     Country(title: 'Türkiye', icon: FontAwesomeIcons.globe),
     Country(title: 'İngiltere', icon: FontAwesomeIcons.globe),
   ];
 
-  List<Language> _languages = <Language>[
+  final List<Language> _languages = <Language>[
     Language(title: 'İsveççe', icon: FontAwesomeIcons.globe),
     Language(title: 'Türkçe', icon: FontAwesomeIcons.globe),
     Language(title: 'İngilizce', icon: FontAwesomeIcons.globe),
@@ -68,29 +73,29 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
           Expanded(
             flex: 1,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: AppPadding.horizontalPaddingMedium,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
                       onPressed: null,
                       child: Row(
-                        children: const [
+                        children: [
                           FaIcon(
                             FontAwesomeIcons.chevronLeft,
-                            size: 15,
+                            size: AppSizer.iconSmall,
                           ),
-                          Text('Geri')
+                          const Text('Geri')
                         ],
                       )),
                   ElevatedButton(
                       onPressed: null,
                       child: Row(
-                        children: const [
-                          Text('Devam'),
+                        children: [
+                          const Text('Devam'),
                           FaIcon(
                             FontAwesomeIcons.chevronRight,
-                            size: 15,
+                            size: AppSizer.iconSmall,
                           )
                         ],
                       )),
@@ -112,29 +117,29 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
           Expanded(
             flex: 1,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: AppPadding.horizontalPaddingMedium,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
                       onPressed: null,
                       child: Row(
-                        children: const [
+                        children: [
                           FaIcon(
                             FontAwesomeIcons.chevronLeft,
-                            size: 15,
+                            size: AppSizer.iconSmall,
                           ),
-                          Text('Geri')
+                          const Text('Geri')
                         ],
                       )),
                   ElevatedButton(
                       onPressed: null,
                       child: Row(
-                        children: const [
-                          Text('Devam'),
+                        children: [
+                          const Text('Devam'),
                           FaIcon(
                             FontAwesomeIcons.chevronRight,
-                            size: 15,
+                            size: AppSizer.iconSmall,
                           )
                         ],
                       )),
@@ -152,7 +157,7 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
       Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: AppPadding.layoutPadding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -168,9 +173,7 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
                       .subtitle2!
                       .copyWith(color: Colors.black38),
                 ),
-                SizedBox(
-                  height: 15,
-                ),
+                AppSpacer.verticalMediumSpace,
                 AppSearchBarField(
                   hint: searchBarHint,
                 ),
@@ -183,16 +186,14 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
                 return Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: AppPadding.horizontalPaddingMedium,
                       child: CheckboxListTile(
                         value: true,
                         onChanged: (value) => null,
                         title: Row(
                           children: [
                             FaIcon(_countries[index].icon),
-                            SizedBox(
-                              width: 15,
-                            ),
+                            AppSpacer.horizontalMediumSpace,
                             Text(
                               _countries[index].title,
                               style: Theme.of(context)
@@ -204,11 +205,9 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
                         ),
                       ),
                     ),
-                    const Divider(
-                      height: 0.5,
-                      thickness: 1.5,
-                      color: Colors.white,
-                    ),
+                    AppDivider(
+                        height: AppSizer.dividerH,
+                        tickness: AppSizer.dividerTicknessSmall)
                   ],
                 );
               },
@@ -225,7 +224,7 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
       Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: AppPadding.layoutPadding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -241,9 +240,7 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
                       .subtitle2!
                       .copyWith(color: Colors.black38),
                 ),
-                SizedBox(
-                  height: 15,
-                ),
+                AppSpacer.verticalMediumSpace,
                 AppSearchBarField(
                   hint: searchBarHint,
                 ),
@@ -256,16 +253,14 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
                 return Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: AppPadding.horizontalPaddingMedium,
                       child: CheckboxListTile(
                         value: true,
                         onChanged: (value) => null,
                         title: Row(
                           children: [
                             FaIcon(_languages[index].icon),
-                            SizedBox(
-                              width: 15,
-                            ),
+                            AppSpacer.horizontalMediumSpace,
                             Text(
                               _languages[index].title,
                               style: Theme.of(context)
@@ -277,11 +272,9 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
                         ),
                       ),
                     ),
-                    const Divider(
-                      height: 0.5,
-                      thickness: 1.5,
-                      color: Colors.white,
-                    ),
+                    AppDivider(
+                        height: AppSizer.dividerH,
+                        tickness: AppSizer.dividerTicknessSmall)
                   ],
                 );
               },
@@ -299,7 +292,7 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
       Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: AppPadding.layoutPadding,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -315,9 +308,7 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
                       .subtitle2!
                       .copyWith(color: Colors.black38),
                 ),
-                SizedBox(
-                  height: 15,
-                ),
+                AppSpacer.verticalMediumSpace,
                 AppSearchBarField(
                   hint: searchBarHint,
                 ),
@@ -330,16 +321,14 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
                 return Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      padding: AppPadding.horizontalPaddingMedium,
                       child: CheckboxListTile(
                         value: true,
                         onChanged: (value) => null,
                         title: Row(
                           children: [
                             FaIcon(_languages[index].icon),
-                            SizedBox(
-                              width: 15,
-                            ),
+                            AppSpacer.horizontalMediumSpace,
                             Text(
                               _languages[index].title,
                               style: Theme.of(context)
@@ -351,18 +340,16 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
                         ),
                       ),
                     ),
-                    const Divider(
-                      height: 0.5,
-                      thickness: 1.5,
-                      color: Colors.white,
-                    ),
+                    AppDivider(
+                        height: AppSizer.dividerH,
+                        tickness: AppSizer.dividerTicknessSmall)
                   ],
                 );
               },
               itemCount: _languages.length,
             ),
           ),
-          Align(
+          const Align(
               alignment: Alignment.topCenter,
               child: FaIcon(FontAwesomeIcons.chevronDown))
         ],

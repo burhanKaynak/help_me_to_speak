@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/widgets/app_divider.dart';
 
+import '../../../../utils/const/app_sizer.dart';
+import '../../../../utils/const/app_spacer.dart';
 import '../../../../widgets/app_buttons.dart';
+import '../../../../widgets/app_divider.dart';
 import '../../../../widgets/app_input.dart';
 
 class SingInView extends StatefulWidget {
@@ -30,7 +29,10 @@ class _SingInViewState extends State<SingInView> {
           ),
         ),
         buildButton(text: 'Giriş Yap'),
-        const AppDivider(),
+        AppOrDivider(
+          height: AppSizer.dividerH,
+          tickness: AppSizer.dividerTicknessSmall,
+        ),
         _buildLoginButtonsForAnotherPlatform,
       ],
     );
@@ -43,13 +45,13 @@ class _SingInViewState extends State<SingInView> {
             hint: 'Email',
             keyboardType: TextInputType.emailAddress,
           ),
-          10.verticalSpace,
+          AppSpacer.verticalSmallSpace,
           AppTextFormField(
             hint: 'Password',
             obscureText: true,
             keyboardType: TextInputType.visiblePassword,
           ),
-          10.verticalSpace,
+          AppSpacer.verticalSmallSpace,
         ],
       ));
 
@@ -60,7 +62,7 @@ class _SingInViewState extends State<SingInView> {
                 FontAwesomeIcons.google,
               ),
               text: 'Google ile giriş yap'),
-          5.verticalSpace,
+          AppSpacer.verticalSmallSpace,
           buildLoginButtonForAnotherPlatform(context,
               color: Colors.white,
               textColor: Colors.black,
@@ -69,7 +71,7 @@ class _SingInViewState extends State<SingInView> {
                 color: Colors.black,
               ),
               text: 'Apple ile giriş yap'),
-          5.verticalSpace,
+          AppSpacer.verticalSmallSpace,
           buildLoginButtonForAnotherPlatform(
               color: Colors.indigo,
               icon: const Icon(FontAwesomeIcons.facebookF),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../utils/const/app_padding.dart';
+import '../utils/const/app_radius.dart';
+
 class AppTextFormField extends StatelessWidget {
   final String hint;
   final bool obscureText;
@@ -17,10 +20,10 @@ class AppTextFormField extends StatelessWidget {
     return Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: AppRadius.rectangleRadius,
           color: Colors.white,
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: AppPadding.horizontalPaddingMedium,
         child: TextFormField(
           keyboardType: keyboardType,
           cursorColor: const Color.fromARGB(31, 134, 134, 134),

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/themes/project_themes.dart';
 
+import '../../../themes/project_themes.dart';
+import '../../../utils/const/app_padding.dart';
+import '../../../utils/const/app_radius.dart';
+import '../../../utils/const/app_sizer.dart';
+import '../../../utils/const/app_spacer.dart';
+import '../../../widgets/app_divider.dart';
 import '../../../widgets/app_header.dart';
 
 class ChatView extends StatefulWidget {
@@ -50,16 +55,12 @@ class _ChatViewState extends State<ChatView> {
       appBar: AppHeader(
         rightChild: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            FaIcon(FontAwesomeIcons.magnifyingGlass),
-            SizedBox(
-              width: 10,
-            ),
-            FaIcon(FontAwesomeIcons.phone),
-            SizedBox(
-              width: 10,
-            ),
-            FaIcon(FontAwesomeIcons.video),
+          children: [
+            const FaIcon(FontAwesomeIcons.magnifyingGlass),
+            AppSpacer.horizontalSmallSpace,
+            const FaIcon(FontAwesomeIcons.phone),
+            AppSpacer.horizontalSmallSpace,
+            const FaIcon(FontAwesomeIcons.video),
           ],
         ),
         title: 'Angelina',
@@ -67,11 +68,9 @@ class _ChatViewState extends State<ChatView> {
       ),
       body: Column(
         children: [
-          const Divider(
-            height: 0.5,
-            thickness: 1.5,
-            color: Colors.white,
-          ),
+          AppDivider(
+              height: AppSizer.dividerH,
+              tickness: AppSizer.dividerTicknessSmall),
           Expanded(
               child: ListView.builder(
             controller: _scrollController,
@@ -100,14 +99,12 @@ class _ChatViewState extends State<ChatView> {
           style:
               Theme.of(context).textTheme.caption!.copyWith(color: colorHint),
         ),
-        SizedBox(
-          height: 5,
-        ),
+        AppSpacer.horizontalSmallSpace,
         Container(
-          padding: const EdgeInsets.all(15),
+          padding: AppPadding.layoutPadding,
           decoration: BoxDecoration(
               color: isWhite ? Colors.white : colorLightGreen.withAlpha(30),
-              borderRadius: BorderRadius.circular(5)),
+              borderRadius: AppRadius.rectangleRadius),
           child: Text(
             text,
             style: Theme.of(context)
@@ -121,13 +118,13 @@ class _ChatViewState extends State<ChatView> {
   }
 
   Widget get _buildTextField => Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: AppPadding.layoutPadding,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
           ),
-          padding: const EdgeInsets.all(5),
+          padding: AppPadding.inputPadding,
           child: TextField(
               textAlign: TextAlign.left,
               textAlignVertical: TextAlignVertical.center,
@@ -140,7 +137,7 @@ class _ChatViewState extends State<ChatView> {
                   suffixIcon: Row(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       IconButton(
                           onPressed: null,
                           icon: FaIcon(FontAwesomeIcons.paperclip)),

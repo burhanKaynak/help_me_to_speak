@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:help_me_to_speak/utils/const/app_padding.dart';
-import 'package:help_me_to_speak/widgets/app_card.dart';
-import 'package:help_me_to_speak/widgets/app_search_field.dart';
 
 import '../../../themes/project_themes.dart';
+import '../../../utils/const/app_padding.dart';
+import '../../../utils/const/app_sizer.dart';
+import '../../../utils/const/app_spacer.dart';
+import '../../../widgets/app_card.dart';
+import '../../../widgets/app_divider.dart';
+import '../../../widgets/app_search_field.dart';
 
 class Chat {
   final String fullName;
@@ -57,25 +60,18 @@ class _ChatListViewState extends State<ChatListView> {
     return Column(
       children: [
         Padding(
-          padding: AppPadding.horizontalPadding,
+          padding: AppPadding.horizontalPaddingMedium,
           child: Column(
             children: [
               AppSearchBarField(),
-              const SizedBox(
-                height: 20,
-              ),
+              AppSpacer.verticalLargeSpace,
               _buildFilterBar,
-              const SizedBox(
-                height: 20,
-              ),
+              AppSpacer.verticalLargeSpace,
             ],
           ),
         ),
-        const Divider(
-          height: 0.5,
-          thickness: 1.5,
-          color: Colors.white,
-        ),
+        AppDivider(
+            height: AppSizer.dividerH, tickness: AppSizer.dividerTicknessSmall),
         Expanded(
           child: ListView.builder(
             padding: EdgeInsets.zero,

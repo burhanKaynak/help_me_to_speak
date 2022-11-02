@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/utils/const/app_padding.dart';
-import 'package:help_me_to_speak/utils/const/app_sizer.dart';
 
 import '../themes/project_themes.dart';
+import '../utils/const/app_padding.dart';
+import '../utils/const/app_radius.dart';
+import '../utils/const/app_sizer.dart';
 import '../utils/const/app_spacer.dart';
 
 class AppCircleAvatar extends StatelessWidget {
@@ -108,7 +109,7 @@ class AppListCircleAvatar extends StatelessWidget {
                 right: 0,
                 child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: AppRadius.circleRadius,
                       color: hasChat ? colorPrimary : colorLightGreen,
                     ),
                     alignment: Alignment.center,

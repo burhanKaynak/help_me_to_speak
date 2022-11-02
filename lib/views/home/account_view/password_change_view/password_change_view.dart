@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:help_me_to_speak/utils/const/app_padding.dart';
 
+import '../../../../utils/const/app_padding.dart';
+import '../../../../utils/const/app_spacer.dart';
 import '../../../../widgets/app_buttons.dart';
 import '../../../../widgets/app_header.dart';
 import '../../../../widgets/app_input.dart';
@@ -24,19 +23,19 @@ class PasswordChangeView extends StatelessWidget {
               obscureText: true,
               keyboardType: TextInputType.visiblePassword,
             ),
-            30.verticalSpace,
+            AppSpacer.verticalLargeSpace,
             AppTextFormField(
               hint: 'Şifre *',
               obscureText: true,
               keyboardType: TextInputType.visiblePassword,
             ),
-            20.verticalSpace,
+            AppSpacer.verticalMediumSpace,
             AppTextFormField(
               hint: 'Şifre tekrar *',
               obscureText: true,
               keyboardType: TextInputType.visiblePassword,
             ),
-            20.verticalSpace,
+            AppSpacer.verticalMediumSpace,
             buildButton(text: 'Kaydet')
           ],
         )),

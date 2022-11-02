@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/themes/project_themes.dart';
-import 'package:help_me_to_speak/utils/const/app_padding.dart';
-import 'package:help_me_to_speak/widgets/app_buttons.dart';
-import 'package:help_me_to_speak/widgets/app_circle_avatar.dart';
+
+import '../../../themes/project_themes.dart';
+import '../../../utils/const/app_padding.dart';
+import '../../../utils/const/app_radius.dart';
+import '../../../utils/const/app_sizer.dart';
+import '../../../utils/const/app_spacer.dart';
+import '../../../widgets/app_buttons.dart';
+import '../../../widgets/app_circle_avatar.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({super.key});
@@ -17,23 +21,23 @@ class _AccountViewState extends State<AccountView> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: AppPadding.horizontalPadding,
+      padding: AppPadding.layoutPadding,
       child: Column(
         children: [
-          15.verticalSpace,
+          AppSpacer.verticalMediumSpace,
           _buildAvatar(context),
-          15.verticalSpace,
+          AppSpacer.verticalMediumSpace,
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FaIcon(
                 FontAwesomeIcons.globe,
-                size: 20.r,
+                size: AppSizer.iconSmall,
               ),
-              10.horizontalSpace,
+              AppSpacer.horizontalSmallSpace,
               FaIcon(
                 FontAwesomeIcons.globe,
-                size: 20.r,
+                size: AppSizer.iconSmall,
               ),
             ],
           ),
@@ -41,15 +45,17 @@ class _AccountViewState extends State<AccountView> {
           _buildIdentification(context),
           15.verticalSpace,
           buildButton(
-              text: 'Şifre Değiştir', prefix: FaIcon(FontAwesomeIcons.key)),
+              text: 'Şifre Değiştir',
+              prefix: const FaIcon(FontAwesomeIcons.key)),
           buildButton(
               text: 'Çıkış Yap',
-              prefix: FaIcon(FontAwesomeIcons.rightToBracket)),
+              prefix: const FaIcon(FontAwesomeIcons.rightToBracket)),
           buildButton(
-              text: 'Yardım', prefix: FaIcon(FontAwesomeIcons.circleInfo)),
+              text: 'Yardım',
+              prefix: const FaIcon(FontAwesomeIcons.circleInfo)),
           buildButton(
               text: 'Destek Dil Değiştir ',
-              prefix: FaIcon(FontAwesomeIcons.globe))
+              prefix: const FaIcon(FontAwesomeIcons.globe))
         ],
       ),
     );
@@ -57,7 +63,7 @@ class _AccountViewState extends State<AccountView> {
 
   Widget _buildAvatar(BuildContext context) => Stack(
         children: [
-          AppCircleAvatar(
+          const AppCircleAvatar(
             url:
                 'https://img.freepik.com/free-photo/modern-woman-taking-selfie_23-2147893976.jpg?w=1380&t=st=1664901155~exp=1664901755~hmac=9127862f43915452a82d24ac02ba9768ff5b63354f3f46bcaf54bbf830d34235',
           ),
@@ -66,14 +72,14 @@ class _AccountViewState extends State<AccountView> {
               bottom: 0,
               child: Container(
                 alignment: Alignment.center,
-                width: 25.w,
-                height: 25.w,
+                width: AppSizer.circleMedium,
+                height: AppSizer.circleMedium,
                 decoration: BoxDecoration(
                     color: colorDarkGreen,
-                    borderRadius: BorderRadius.circular(100)),
+                    borderRadius: AppRadius.circleRadius),
                 child: FaIcon(
                   FontAwesomeIcons.pencil,
-                  size: 15.r,
+                  size: AppSizer.iconSmall,
                 ),
               )),
         ],
