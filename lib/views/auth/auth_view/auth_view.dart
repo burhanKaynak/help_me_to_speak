@@ -26,7 +26,6 @@ class _AuthViewState extends State<AuthView> {
     var padding = MediaQuery.of(context).padding;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: AppPadding.layoutPadding
             .copyWith(bottom: padding.bottom, top: padding.top * 1.5),

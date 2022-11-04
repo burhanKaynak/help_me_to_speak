@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:help_me_to_speak/core/models/request/register_model.dart';
 import 'package:im_stepper/stepper.dart';
 
 import '../../../../core/const/app_padding.dart';
 import '../../../../core/const/app_sizer.dart';
 import '../../../../core/const/app_spacer.dart';
+import '../../../../core/error/auth_exeption_handler.dart';
+import '../../../../core/service/auth_service.dart';
 import '../../../../themes/project_themes.dart';
 import '../../../../widgets/app_buttons.dart';
 import '../../../../widgets/app_divider.dart';
@@ -19,6 +22,9 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
+  final _formKey = GlobalKey<FormState>();
+  final _registerModel = RegisterModel();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -28,7 +34,7 @@ class _SignUpViewState extends State<SignUpView> {
         AppSpacer.verticalSmallSpace,
         // _buildChooseUserType,
         _buildSignUpForm,
-        buildButton(onPressed: null, text: 'Kayıt Ol'),
+        buildButton(onPressed: _submitForm, text: 'Kayıt Ol'),
         AppOrDivider(
           height: AppSizer.dividerH,
           tickness: AppSizer.dividerTicknessSmall,
@@ -100,35 +106,26 @@ class _SignUpViewState extends State<SignUpView> {
       );
 
   Widget get _buildSignUpForm => Form(
-          child: Column(
+      key: _formKey,
+      child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: AppTextFormField(
-                  hint: 'İsim',
-                  keyboardType: TextInputType.emailAddress,
-                ),
-              ),
-              AppSpacer.horizontalSmallSpace,
-              Expanded(
-                child: AppTextFormField(
-                  hint: 'Soy ismi',
-                  keyboardType: TextInputType.emailAddress,
-                ),
-              ),
-            ],
+          AppTextFormField(
+            hint: 'İsim Soyisim',
+            keyboardType: TextInputType.emailAddress,
+            onSaved: (val) => _registerModel.fullName = val,
           ),
           AppSpacer.verticalSmallSpace,
           AppTextFormField(
             hint: 'Email',
             keyboardType: TextInputType.emailAddress,
+            onSaved: (val) => _registerModel.email = val,
           ),
           AppSpacer.verticalSmallSpace,
           AppTextFormField(
             hint: 'Password',
             obscureText: true,
             keyboardType: TextInputType.visiblePassword,
+            onSaved: (val) => _registerModel.password = val,
           ),
           AppSpacer.verticalSmallSpace,
         ],
@@ -158,6 +155,19 @@ class _SignUpViewState extends State<SignUpView> {
               text: 'Facebook ile kayıt ol'),
         ],
       );
+
+  void _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      var result = await AuthService.instance.createAccount(
+          email: _registerModel.email!,
+          password: _registerModel.password!,
+          name: _registerModel.fullName!);
+
+      if (result == AuthStatus.successful) {}
+      print(result);
+    }
+  }
 
   Widget get _buildStep => DotStepper(
         tappingEnabled: false,

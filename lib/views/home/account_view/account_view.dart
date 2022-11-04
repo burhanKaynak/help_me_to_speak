@@ -1,6 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:help_me_to_speak/core/enum/app_route_path_enum.dart';
+import 'package:help_me_to_speak/core/service/auth_service.dart';
 
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_radius.dart';
@@ -50,16 +53,17 @@ class _AccountViewState extends State<AccountView> {
               prefix: const FaIcon(FontAwesomeIcons.key)),
           buildButton(
               onPressed: null,
-              text: 'Çıkış Yap',
-              prefix: const FaIcon(FontAwesomeIcons.rightToBracket)),
-          buildButton(
-              onPressed: null,
               text: 'Yardım',
               prefix: const FaIcon(FontAwesomeIcons.circleInfo)),
           buildButton(
               onPressed: null,
               text: 'Destek Dil Değiştir ',
-              prefix: const FaIcon(FontAwesomeIcons.globe))
+              prefix: const FaIcon(FontAwesomeIcons.globe)),
+          buildButton(
+              onPressed: () async => await AuthService.instance.logout().then(
+                  (value) => context.router.replaceNamed(RoutePath.auth.value)),
+              text: 'Çıkış Yap',
+              prefix: const FaIcon(FontAwesomeIcons.rightToBracket))
         ],
       ),
     );

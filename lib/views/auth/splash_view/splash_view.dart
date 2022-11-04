@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:help_me_to_speak/core/enum/app_route_path_enum.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -14,9 +15,9 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     var user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      context.router.replaceNamed('/home');
+      context.router.replaceNamed(RoutePath.home.value);
     } else {
-      context.router.replaceNamed('/welcome');
+      context.router.replaceNamed(RoutePath.welcome.value);
     }
     super.initState();
   }

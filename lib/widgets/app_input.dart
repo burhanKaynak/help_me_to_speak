@@ -8,12 +8,13 @@ class AppTextFormField extends StatelessWidget {
   final bool obscureText;
   final Function(String?)? onSaved;
   final TextInputType keyboardType;
-  AppTextFormField(
-      {super.key,
-      this.hint = '',
-      this.obscureText = false,
-      this.keyboardType = TextInputType.text,
-      this.onSaved});
+  AppTextFormField({
+    super.key,
+    this.hint = '',
+    this.obscureText = false,
+    this.keyboardType = TextInputType.text,
+    this.onSaved,
+  });
 
   final _textController = TextEditingController(text: '');
 

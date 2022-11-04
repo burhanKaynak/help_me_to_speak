@@ -1,8 +1,12 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:help_me_to_speak/core/const/app_padding.dart';
+import 'package:help_me_to_speak/core/enum/app_route_path_enum.dart';
+import 'package:help_me_to_speak/core/error/auth_exeption_handler.dart';
 import 'package:help_me_to_speak/core/models/request/login_model.dart';
+import 'package:help_me_to_speak/core/service/auth_service.dart';
+import 'package:help_me_to_speak/themes/project_themes.dart';
 
 import '../../../../core/const/app_sizer.dart';
 import '../../../../core/const/app_spacer.dart';
@@ -18,8 +22,9 @@ class SingInView extends StatefulWidget {
 }
 
 class _SingInViewState extends State<SingInView> {
-  final _formKey = GlobalKey<FormState>();
-  final _loginModel = LoginModel();
+  final _loginFormKey = GlobalKey<FormState>();
+  final _forgotPasswordformKey = GlobalKey<FormState>();
+  final _loginModel = LoginModel(email: '', password: '');
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +35,33 @@ class _SingInViewState extends State<SingInView> {
         Align(
           alignment: Alignment.centerRight,
           child: TextButton(
-            onPressed: () => null,
+            onPressed: () => showBottomSheet(
+              context: context,
+              builder: (context) => Container(
+                padding: AppPadding.layoutPadding,
+                height: AppSizer.bottomSheetSmall,
+                color: colorBackground,
+                child: Form(
+                  key: _forgotPasswordformKey,
+                  child: Column(
+                    children: [
+                      AppTextFormField(
+                        onSaved: (val) => _loginModel.email = val,
+                        hint: 'Email',
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      AppSpacer.verticalMediumSpace,
+                      buildButton(
+                          onPressed: _submitForgotPasswordForm, text: 'Gönder')
+                    ],
+                  ),
+                ),
+              ),
+            ),
             child: const Text('Şifremi unuttum'),
           ),
         ),
-        buildButton(onPressed: _submitForm, text: 'Giriş Yap'),
+        buildButton(onPressed: _submitLoginForm, text: 'Giriş Yap'),
         AppOrDivider(
           height: AppSizer.dividerH,
           tickness: AppSizer.dividerTicknessSmall,
@@ -44,29 +71,30 @@ class _SingInViewState extends State<SingInView> {
     );
   }
 
-  void _submitForm() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      try {
-        final credential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
-                email: _loginModel.email!, password: _loginModel.password!);
+  void _submitLoginForm() async {
+    if (_loginFormKey.currentState!.validate()) {
+      _loginFormKey.currentState!.save();
+      var result = await AuthService.instance
+          .login(email: _loginModel.email!, password: _loginModel.password!);
 
-        FirebaseAuth.instance.authStateChanges().listen((event) {
-          if (credential.user != null) {
-            context.router.replaceNamed('/home');
-          } else {
-            throw FirebaseAuthException(code: '1001', message: 'Bla Bla');
-          }
-        });
-      } on FirebaseAuthException catch (e) {
-        print(e.message);
+      if (result == AuthStatus.successful) {
+        context.router.replaceNamed(RoutePath.home.value);
       }
     }
   }
 
+  void _submitForgotPasswordForm() async {
+    if (_forgotPasswordformKey.currentState!.validate()) {
+      _forgotPasswordformKey.currentState!.save();
+      var result =
+          await AuthService.instance.resetPassword(email: _loginModel.email!);
+
+      if (result == AuthStatus.successful) {}
+    }
+  }
+
   Widget get _buildSignUpForm => Form(
-      key: _formKey,
+      key: _loginFormKey,
       child: Column(
         children: [
           AppTextFormField(

@@ -75,4 +75,13 @@ class AppSizer {
 
   ///300 height
   static final gridLarge = 300.h;
+
+  ///200 height
+  static final bottomSheetSmall = 150.h;
+
+  ///250 height
+  static final bottomSheetMedium = 250.h;
+
+  ///300 height
+  static final bottomSheetLarge = 500.h;
 }
