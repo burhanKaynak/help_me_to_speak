@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/const/app_padding.dart';
+import '../../../core/const/app_sizer.dart';
+import '../../../core/const/app_spacer.dart';
 import '../../../themes/project_themes.dart';
-import '../../../utils/const/app_padding.dart';
-import '../../../utils/const/app_sizer.dart';
-import '../../../utils/const/app_spacer.dart';
 import '../../../widgets/app_circle_avatar.dart';
 import '../../../widgets/app_search_field.dart';
 import '../../../widgets/app_silver_grid_delegate_fixed_cross_axis_count_and_fixed_heigth.dart';

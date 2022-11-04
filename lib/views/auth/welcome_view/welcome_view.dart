@@ -1,7 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:im_stepper/stepper.dart';
 
-import '../../../utils/const/app_padding.dart';
+import '../../../core/const/app_padding.dart';
 
 class Slide {
   final String imageUrl;
@@ -104,7 +105,7 @@ class _WelcomeViewState extends State<WelcomeView> {
             Text(_page[_pageNotifier.value].title,
                 style: Theme.of(context).textTheme.headline4),
             ElevatedButton(
-                onPressed: null,
+                onPressed: () => context.router.replaceNamed('/auth'),
                 child: Row(
                   children: const [
                     Expanded(

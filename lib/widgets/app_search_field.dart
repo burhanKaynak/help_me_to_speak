@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../utils/const/app_padding.dart';
-import '../utils/const/app_radius.dart';
-import '../utils/const/app_sizer.dart';
+import '../core/const/app_padding.dart';
+import '../core/const/app_radius.dart';
+import '../core/const/app_sizer.dart';
 
 class AppSearchBarField extends StatelessWidget {
   final String hint;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../utils/const/app_padding.dart';
+import '../../../core/const/app_padding.dart';
 import 'sign_in_view/sign_in_view.dart';
 import 'sign_up_view/sign_up_view.dart';
 
@@ -26,6 +26,7 @@ class _AuthViewState extends State<AuthView> {
     var padding = MediaQuery.of(context).padding;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: AppPadding.layoutPadding
             .copyWith(bottom: padding.bottom, top: padding.top * 1.5),

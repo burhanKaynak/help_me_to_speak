@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:im_stepper/stepper.dart';
 
+import '../../../../core/const/app_padding.dart';
+import '../../../../core/const/app_sizer.dart';
+import '../../../../core/const/app_spacer.dart';
 import '../../../../themes/project_themes.dart';
-import '../../../../utils/const/app_padding.dart';
-import '../../../../utils/const/app_sizer.dart';
-import '../../../../utils/const/app_spacer.dart';
 import '../../../../widgets/app_buttons.dart';
 import '../../../../widgets/app_divider.dart';
 import '../../../../widgets/app_input.dart';
@@ -28,7 +28,7 @@ class _SignUpViewState extends State<SignUpView> {
         AppSpacer.verticalSmallSpace,
         // _buildChooseUserType,
         _buildSignUpForm,
-        buildButton(text: 'Kayıt Ol'),
+        buildButton(onPressed: null, text: 'Kayıt Ol'),
         AppOrDivider(
           height: AppSizer.dividerH,
           tickness: AppSizer.dividerTicknessSmall,
@@ -136,13 +136,13 @@ class _SignUpViewState extends State<SignUpView> {
 
   Widget get _buildLoginButtonsForAnotherPlatform => Column(
         children: [
-          buildLoginButtonForAnotherPlatform(context,
+          buildSignWithAnotherPlatform(context,
               icon: const Icon(
                 FontAwesomeIcons.google,
               ),
               text: 'Google ile kayıt ol'),
           AppSpacer.verticalSmallSpace,
-          buildLoginButtonForAnotherPlatform(context,
+          buildSignWithAnotherPlatform(context,
               color: Colors.white,
               textColor: Colors.black,
               icon: const Icon(
@@ -151,7 +151,7 @@ class _SignUpViewState extends State<SignUpView> {
               ),
               text: 'Apple ile kayıt ol'),
           AppSpacer.verticalSmallSpace,
-          buildLoginButtonForAnotherPlatform(
+          buildSignWithAnotherPlatform(
               color: Colors.indigo,
               icon: const Icon(FontAwesomeIcons.facebookF),
               context,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../utils/const/app_padding.dart';
-import '../../../../utils/const/app_spacer.dart';
+import '../../../../core/const/app_padding.dart';
+import '../../../../core/const/app_spacer.dart';
 import '../../../../widgets/app_buttons.dart';
 import '../../../../widgets/app_header.dart';
 import '../../../../widgets/app_input.dart';
@@ -36,7 +36,7 @@ class PasswordChangeView extends StatelessWidget {
               keyboardType: TextInputType.visiblePassword,
             ),
             AppSpacer.verticalMediumSpace,
-            buildButton(text: 'Kaydet')
+            buildButton(onPressed: null, text: 'Kaydet')
           ],
         )),
       ),

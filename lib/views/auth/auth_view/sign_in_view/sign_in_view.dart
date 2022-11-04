@@ -1,8 +1,11 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:help_me_to_speak/core/models/request/login_model.dart';
 
-import '../../../../utils/const/app_sizer.dart';
-import '../../../../utils/const/app_spacer.dart';
+import '../../../../core/const/app_sizer.dart';
+import '../../../../core/const/app_spacer.dart';
 import '../../../../widgets/app_buttons.dart';
 import '../../../../widgets/app_divider.dart';
 import '../../../../widgets/app_input.dart';
@@ -15,6 +18,9 @@ class SingInView extends StatefulWidget {
 }
 
 class _SingInViewState extends State<SingInView> {
+  final _formKey = GlobalKey<FormState>();
+  final _loginModel = LoginModel();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -28,7 +34,7 @@ class _SingInViewState extends State<SingInView> {
             child: const Text('Şifremi unuttum'),
           ),
         ),
-        buildButton(text: 'Giriş Yap'),
+        buildButton(onPressed: _submitForm, text: 'Giriş Yap'),
         AppOrDivider(
           height: AppSizer.dividerH,
           tickness: AppSizer.dividerTicknessSmall,
@@ -38,16 +44,40 @@ class _SingInViewState extends State<SingInView> {
     );
   }
 
+  void _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      try {
+        final credential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: _loginModel.email!, password: _loginModel.password!);
+
+        FirebaseAuth.instance.authStateChanges().listen((event) {
+          if (credential.user != null) {
+            context.router.replaceNamed('/home');
+          } else {
+            throw FirebaseAuthException(code: '1001', message: 'Bla Bla');
+          }
+        });
+      } on FirebaseAuthException catch (e) {
+        print(e.message);
+      }
+    }
+  }
+
   Widget get _buildSignUpForm => Form(
-          child: Column(
+      key: _formKey,
+      child: Column(
         children: [
           AppTextFormField(
+            onSaved: (val) => _loginModel.email = val,
             hint: 'Email',
             keyboardType: TextInputType.emailAddress,
           ),
           AppSpacer.verticalSmallSpace,
           AppTextFormField(
             hint: 'Password',
+            onSaved: (val) => _loginModel.password = val,
             obscureText: true,
             keyboardType: TextInputType.visiblePassword,
           ),
@@ -57,13 +87,13 @@ class _SingInViewState extends State<SingInView> {
 
   Widget get _buildLoginButtonsForAnotherPlatform => Column(
         children: [
-          buildLoginButtonForAnotherPlatform(context,
+          buildSignWithAnotherPlatform(context,
               icon: const Icon(
                 FontAwesomeIcons.google,
               ),
               text: 'Google ile giriş yap'),
           AppSpacer.verticalSmallSpace,
-          buildLoginButtonForAnotherPlatform(context,
+          buildSignWithAnotherPlatform(context,
               color: Colors.white,
               textColor: Colors.black,
               icon: const Icon(
@@ -72,7 +102,7 @@ class _SingInViewState extends State<SingInView> {
               ),
               text: 'Apple ile giriş yap'),
           AppSpacer.verticalSmallSpace,
-          buildLoginButtonForAnotherPlatform(
+          buildSignWithAnotherPlatform(
               color: Colors.indigo,
               icon: const Icon(FontAwesomeIcons.facebookF),
               context,

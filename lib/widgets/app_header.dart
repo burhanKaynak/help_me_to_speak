@@ -4,11 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../core/const/app_padding.dart';
+import '../core/const/app_radius.dart';
+import '../core/const/app_sizer.dart';
+import '../core/const/app_spacer.dart';
 import '../themes/project_themes.dart';
-import '../utils/const/app_padding.dart';
-import '../utils/const/app_radius.dart';
-import '../utils/const/app_sizer.dart';
-import '../utils/const/app_spacer.dart';
 
 class AppHeader extends StatefulWidget implements PreferredSizeWidget {
   final bool backButton;
@@ -22,13 +22,21 @@ class AppHeader extends StatefulWidget implements PreferredSizeWidget {
       this.rightChild = const SizedBox.shrink()});
 
   @override
-  State<AppHeader> createState() => _AppHeaderState();
+  State<AppHeader> createState() => AppHeaderState();
 
   @override
   Size get preferredSize => const Size(0, 80);
 }
 
-class _AppHeaderState extends State<AppHeader> {
+class AppHeaderState extends State<AppHeader> {
+  late final ValueNotifier<String> _titleNotifier = ValueNotifier(widget.title);
+
+  @override
+  void initState() {
+    _titleNotifier.value = widget.title;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var padding = MediaQuery.of(context).padding.top;
@@ -39,6 +47,10 @@ class _AppHeaderState extends State<AppHeader> {
         child: _buildHeader(title: widget.title));
   }
 
+  void setHeaderTitle(String title) {
+    _titleNotifier.value = title;
+  }
+
   Widget _buildHeader({required String title}) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -46,13 +58,26 @@ class _AppHeaderState extends State<AppHeader> {
             children: [
               if (widget.backButton) const FaIcon(FontAwesomeIcons.chevronLeft),
               if (widget.backButton) AppSpacer.horizontalSmallSpace,
-              Text(
-                widget.title,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5!
-                    .copyWith(color: colorDarkGreen),
-              ),
+              ValueListenableBuilder(
+                  valueListenable: _titleNotifier,
+                  builder: (context, value, child) => AnimatedSwitcher(
+                        transitionBuilder:
+                            (widget, Animation<double> animation) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: widget,
+                          );
+                        },
+                        duration: const Duration(milliseconds: 400),
+                        child: Text(
+                          value,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline5!
+                              .copyWith(color: colorDarkGreen),
+                          key: ValueKey<String>(value),
+                        ),
+                      ))
             ],
           ),
           widget.rightChild

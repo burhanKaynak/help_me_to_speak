@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../core/const/app_padding.dart';
+import '../core/const/app_sizer.dart';
 import '../themes/project_themes.dart';
-import '../utils/const/app_padding.dart';
-import '../utils/const/app_sizer.dart';
 
 class AppOrDivider extends StatelessWidget {
   final double height;

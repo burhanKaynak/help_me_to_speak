@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../core/const/app_padding.dart';
+import '../../../core/const/app_radius.dart';
+import '../../../core/const/app_sizer.dart';
+import '../../../core/const/app_spacer.dart';
 import '../../../themes/project_themes.dart';
-import '../../../utils/const/app_padding.dart';
-import '../../../utils/const/app_radius.dart';
-import '../../../utils/const/app_sizer.dart';
-import '../../../utils/const/app_spacer.dart';
 import '../../../widgets/app_buttons.dart';
 import '../../../widgets/app_circle_avatar.dart';
 
@@ -45,15 +45,19 @@ class _AccountViewState extends State<AccountView> {
           _buildIdentification(context),
           15.verticalSpace,
           buildButton(
+              onPressed: null,
               text: 'Şifre Değiştir',
               prefix: const FaIcon(FontAwesomeIcons.key)),
           buildButton(
+              onPressed: null,
               text: 'Çıkış Yap',
               prefix: const FaIcon(FontAwesomeIcons.rightToBracket)),
           buildButton(
+              onPressed: null,
               text: 'Yardım',
               prefix: const FaIcon(FontAwesomeIcons.circleInfo)),
           buildButton(
+              onPressed: null,
               text: 'Destek Dil Değiştir ',
               prefix: const FaIcon(FontAwesomeIcons.globe))
         ],

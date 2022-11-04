@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
-Widget buildButton({required String text, Widget? sufix, Widget? prefix}) {
+Widget buildButton(
+    {required Function()? onPressed,
+    required String text,
+    Widget? sufix,
+    Widget? prefix}) {
   return ElevatedButton(
-      onPressed: null,
+      onPressed: onPressed,
       child: Row(
         children: [
           prefix ?? const SizedBox.shrink(),
@@ -13,7 +17,7 @@ Widget buildButton({required String text, Widget? sufix, Widget? prefix}) {
       ));
 }
 
-Widget buildLoginButtonForAnotherPlatform(BuildContext context,
+Widget buildSignWithAnotherPlatform(BuildContext context,
     {required String text, Widget? icon, Color? color, Color? textColor}) {
   return ElevatedButton(
       style: ElevatedButton.styleFrom(

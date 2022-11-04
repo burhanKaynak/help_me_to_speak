@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "344583674231",
+    "project_id": "help-me-to-speak-dev",
+    "storage_bucket": "help-me-to-speak-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344583674231:android:4114fd81a3531ac3472972",
+        "android_client_info": {
+          "package_name": "com.example.help_me_to_speak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "344583674231-228uhkdgn3tqn0sl496tif6id59ucmh6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUa5Mxf-nfLfO4W8UfN_PkNUe_Rtjrlhg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "344583674231-228uhkdgn3tqn0sl496tif6id59ucmh6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

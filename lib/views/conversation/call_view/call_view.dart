@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../core/const/app_padding.dart';
+import '../../../core/const/app_radius.dart';
+import '../../../core/const/app_sizer.dart';
+import '../../../core/const/app_spacer.dart';
 import '../../../themes/project_themes.dart';
-import '../../../utils/const/app_padding.dart';
-import '../../../utils/const/app_radius.dart';
-import '../../../utils/const/app_sizer.dart';
-import '../../../utils/const/app_spacer.dart';
 import '../../../widgets/app_circle_avatar.dart';
 
 class CallView extends StatefulWidget {
