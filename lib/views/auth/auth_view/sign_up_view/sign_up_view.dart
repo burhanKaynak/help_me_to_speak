@@ -1,14 +1,18 @@
+import 'dart:async';
+
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:help_me_to_speak/core/models/request/register_model.dart';
+import 'package:help_me_to_speak/core/service/auth_service.dart';
+import 'package:help_me_to_speak/core/utils/utils.dart';
 import 'package:im_stepper/stepper.dart';
 
 import '../../../../core/const/app_padding.dart';
 import '../../../../core/const/app_sizer.dart';
 import '../../../../core/const/app_spacer.dart';
 import '../../../../core/error/auth_exeption_handler.dart';
-import '../../../../core/service/auth_service.dart';
 import '../../../../themes/project_themes.dart';
 import '../../../../widgets/app_buttons.dart';
 import '../../../../widgets/app_divider.dart';
@@ -24,29 +28,88 @@ class SignUpView extends StatefulWidget {
 class _SignUpViewState extends State<SignUpView> {
   final _formKey = GlobalKey<FormState>();
   final _registerModel = RegisterModel();
+  final ValueNotifier<int> _signUpStepNotifier = ValueNotifier(0);
+  final ValueNotifier<int> _selectedUserType = ValueNotifier(0);
+  Timer? _timer;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        _buildStep,
-        AppSpacer.verticalSmallSpace,
-        // _buildChooseUserType,
-        _buildSignUpForm,
-        buildButton(onPressed: _submitForm, text: 'Kayıt Ol'),
-        AppOrDivider(
-          height: AppSizer.dividerH,
-          tickness: AppSizer.dividerTicknessSmall,
-        ),
-        _buildLoginButtonsForAnotherPlatform,
-      ],
+    return ValueListenableBuilder(
+      valueListenable: _signUpStepNotifier,
+      builder: (context, value, child) {
+        if (value == 1) {
+          _timer = Timer.periodic(const Duration(seconds: 3), (timer) async {
+            var result = await AuthService.instance.checkEmailVerified();
+            if (result) {
+              _timer?.cancel();
+              _signUpStepNotifier.value = 2;
+            }
+          });
+        }
+
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            _buildStep,
+            AppSpacer.verticalSmallSpace,
+            if (value == 0) Expanded(child: _buildStepRegister),
+            if (value == 1) Expanded(child: _buildStepVerify),
+            if (value == 2) Expanded(child: _buildStepUserType)
+          ],
+        );
+      },
     );
   }
 
-  final ValueNotifier<int> _selectedUserType = ValueNotifier(0);
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
-  Widget get _buildChooseUserType => ValueListenableBuilder(
+  Widget get _buildStepRegister => Column(
+        children: [
+          _buildSignUpForm,
+          buildButton(onPressed: _submitForm, text: 'Kayıt Ol'),
+          AppOrDivider(
+            height: AppSizer.dividerH,
+            tickness: AppSizer.dividerTicknessSmall,
+          ),
+          _buildLoginButtonsForAnotherPlatform,
+        ],
+      );
+
+  Widget get _buildStepVerify => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'An email has been sent to ${AuthService.instance.currentUser!.email} please verify',
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium!
+                .copyWith(color: Colors.black87),
+          ),
+          AppSpacer.verticalMediumSpace,
+          buildButton(
+              onPressed: () async {
+                Utils.showCircleProgress();
+                var result = await AuthService.instance.sendMailVerification();
+                if (result == AuthStatus.successful) {}
+                context.router.navigatorKey.currentState!.pop();
+              },
+              text: ('Resend mail'),
+              prefix: FaIcon(FontAwesomeIcons.envelope)),
+          TextButton(
+              onPressed: () async {
+                await AuthService.instance.logout();
+                _timer?.cancel();
+                _signUpStepNotifier.value = 0;
+              },
+              child: const Text('Cancel'))
+        ],
+      );
+
+  Widget get _buildStepUserType => ValueListenableBuilder(
         valueListenable: _selectedUserType,
         builder: (context, value, child) => Column(children: [
           InkWell(
@@ -159,13 +222,16 @@ class _SignUpViewState extends State<SignUpView> {
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      Utils.showCircleProgress();
       var result = await AuthService.instance.createAccount(
           email: _registerModel.email!,
           password: _registerModel.password!,
           name: _registerModel.fullName!);
-
-      if (result == AuthStatus.successful) {}
-      print(result);
+      context.router.navigatorKey.currentState!.pop();
+      if (result == AuthStatus.successful) {
+        AuthService.instance.sendMailVerification();
+        _signUpStepNotifier.value = 1;
+      }
     }
   }
 
@@ -177,6 +243,6 @@ class _SignUpViewState extends State<SignUpView> {
         spacing: 20.sp,
         indicator: Indicator.worm,
         indicatorDecoration: const IndicatorDecoration(color: colorLightGreen),
-        activeStep: 0,
+        activeStep: _signUpStepNotifier.value,
       );
 }

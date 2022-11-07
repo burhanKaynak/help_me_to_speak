@@ -21,6 +21,7 @@ class AccountView extends StatefulWidget {
 }
 
 class _AccountViewState extends State<AccountView> {
+  final AuthService _authService = AuthService.instance;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -60,7 +61,7 @@ class _AccountViewState extends State<AccountView> {
               text: 'Destek Dil Değiştir ',
               prefix: const FaIcon(FontAwesomeIcons.globe)),
           buildButton(
-              onPressed: () async => await AuthService.instance.logout().then(
+              onPressed: () async => await _authService.logout().then(
                   (value) => context.router.replaceNamed(RoutePath.auth.value)),
               text: 'Çıkış Yap',
               prefix: const FaIcon(FontAwesomeIcons.rightToBracket))
@@ -97,7 +98,7 @@ class _AccountViewState extends State<AccountView> {
       textAlign: TextAlign.center,
       text: TextSpan(children: [
         TextSpan(
-          text: 'Angelina Blablabla\n',
+          text: '${_authService.currentUser!.displayName}\n',
           style: Theme.of(context)
               .textTheme
               .titleLarge!
