@@ -1,25 +1,33 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:help_me_to_speak/core/enum/app_route_path_enum.dart';
+import 'package:help_me_to_speak/core/enum/toast_type.dart';
 import 'package:help_me_to_speak/core/models/request/register_model.dart';
 import 'package:help_me_to_speak/core/service/auth_service.dart';
+import 'package:help_me_to_speak/core/service/storage_service.dart';
 import 'package:help_me_to_speak/core/utils/utils.dart';
 import 'package:im_stepper/stepper.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/const/app_padding.dart';
 import '../../../../core/const/app_sizer.dart';
 import '../../../../core/const/app_spacer.dart';
 import '../../../../core/error/auth_exeption_handler.dart';
+import '../../../../core/service/database_service.dart';
 import '../../../../themes/project_themes.dart';
 import '../../../../widgets/app_buttons.dart';
 import '../../../../widgets/app_divider.dart';
 import '../../../../widgets/app_input.dart';
 
 class SignUpView extends StatefulWidget {
-  const SignUpView({super.key});
+  final VoidCallback onTapSignIn;
+
+  const SignUpView({super.key, required this.onTapSignIn});
 
   @override
   State<SignUpView> createState() => _SignUpViewState();
@@ -27,9 +35,10 @@ class SignUpView extends StatefulWidget {
 
 class _SignUpViewState extends State<SignUpView> {
   final _formKey = GlobalKey<FormState>();
-  final _registerModel = RegisterModel();
+  final _registerModel = RegisterModel(email: '', fullName: '', password: '');
   final ValueNotifier<int> _signUpStepNotifier = ValueNotifier(0);
   final ValueNotifier<int> _selectedUserType = ValueNotifier(0);
+  final ValueNotifier<List<XFile>> _selectedImages = ValueNotifier([]);
   Timer? _timer;
 
   @override
@@ -68,6 +77,7 @@ class _SignUpViewState extends State<SignUpView> {
   }
 
   Widget get _buildStepRegister => Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildSignUpForm,
           buildButton(onPressed: _submitForm, text: 'Kayıt Ol'),
@@ -76,6 +86,11 @@ class _SignUpViewState extends State<SignUpView> {
             tickness: AppSizer.dividerTicknessSmall,
           ),
           _buildLoginButtonsForAnotherPlatform,
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: TextButton(
+                  onPressed: widget.onTapSignIn,
+                  child: const Text('Giriş Yap')))
         ],
       );
 
@@ -117,6 +132,27 @@ class _SignUpViewState extends State<SignUpView> {
             child: Card(
               color: value != 0 ? null : colorLightGreen,
               child: Padding(
+                padding: AppPadding.layoutPadding,
+                child: Row(
+                  children: [
+                    const FlutterLogo(
+                      size: 50,
+                    ),
+                    Text(
+                      'Kullanıcı',
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: value != 0 ? colorHint : Colors.white),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () => _selectedUserType.value = 1,
+            child: Card(
+              color: value != 1 ? null : colorLightGreen,
+              child: Padding(
                 padding: const EdgeInsets.all(10.0).r,
                 child: Column(
                   children: [
@@ -131,60 +167,72 @@ class _SignUpViewState extends State<SignUpView> {
                               .textTheme
                               .titleLarge!
                               .copyWith(
-                                  color: value != 0 ? colorHint : Colors.white),
+                                  color: value != 1 ? colorHint : Colors.white),
                         )
                       ],
                     ),
-                    if (value == 0)
-                      Container(
+                    if (value == 1)
+                      SizedBox(
                         height: AppSizer.cardMedium,
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: ValueListenableBuilder(
+                                valueListenable: _selectedImages,
+                                builder: (context, value, child) =>
+                                    ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: value.length,
+                                  itemBuilder: (context, index) => Padding(
+                                    padding: AppPadding.horizontalPaddingSmall,
+                                    child: Image.file(File(value[index].path)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            buildButton(
+                                onPressed: _pickImageFromGallery,
+                                text: 'Resim Seç')
+                          ],
+                        ),
                       )
                   ],
                 ),
               ),
             ),
           ),
-          InkWell(
-            onTap: () => _selectedUserType.value = 1,
-            child: Card(
-              color: value != 1 ? null : colorLightGreen,
-              child: Padding(
-                padding: AppPadding.layoutPadding,
-                child: Row(
-                  children: [
-                    const FlutterLogo(
-                      size: 50,
-                    ),
-                    Text(
-                      'Kullanıcı',
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color: value != 1 ? colorHint : Colors.white),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          )
+          buildButton(onPressed: _submitUserType, text: 'Devam Et')
         ]),
       );
+
+  final ImagePicker _picker = ImagePicker();
+  Future<void> _pickImageFromGallery() async {
+    _selectedImages.value = await _picker.pickMultiImage();
+  }
 
   Widget get _buildSignUpForm => Form(
       key: _formKey,
       child: Column(
         children: [
           AppTextFormField(
+            initialValue: _registerModel.fullName,
+            onChanged: (val) => _registerModel.fullName = val,
             hint: 'İsim Soyisim',
             keyboardType: TextInputType.emailAddress,
             onSaved: (val) => _registerModel.fullName = val,
           ),
           AppSpacer.verticalSmallSpace,
           AppTextFormField(
+            initialValue: _registerModel.email,
+            onChanged: (val) => _registerModel.email = val,
             hint: 'Email',
             keyboardType: TextInputType.emailAddress,
             onSaved: (val) => _registerModel.email = val,
           ),
           AppSpacer.verticalSmallSpace,
           AppTextFormField(
+            initialValue: _registerModel.password,
+            onChanged: (val) => _registerModel.password = val,
             hint: 'Password',
             obscureText: true,
             keyboardType: TextInputType.visiblePassword,
@@ -219,6 +267,34 @@ class _SignUpViewState extends State<SignUpView> {
         ],
       );
 
+  void _submitUserType() async {
+    Utils.showCircleProgress();
+
+    if (_selectedUserType.value == 1) {
+      if (_selectedImages.value.isEmpty) {
+        context.router.navigatorKey.currentState!.pop();
+        Utils.showToast(
+            type: ToastType.warning, message: 'Döküman yüklemeniz gerekiyor.');
+        return;
+      }
+      var savedPaths = <String>[];
+      for (var i = 0; i < _selectedImages.value.length; i++) {
+        final file = File(_selectedImages.value[i].path);
+        var result =
+            await StorageService.instance.putFileUserDocuments(file, i);
+        savedPaths.add(result);
+      }
+
+      await DatabaseService.instance.setTranslatorDocuments(savedPaths);
+    }
+    var result =
+        await DatabaseService.instance.updateUserType(_selectedUserType.value);
+    context.router.navigatorKey.currentState!.pop();
+    if (result) {
+      context.router.replaceNamed(RoutePath.home.value);
+    }
+  }
+
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -229,6 +305,8 @@ class _SignUpViewState extends State<SignUpView> {
           name: _registerModel.fullName!);
       context.router.navigatorKey.currentState!.pop();
       if (result == AuthStatus.successful) {
+        await DatabaseService.instance
+            .addUserToDocuments(user: AuthService.instance.currentUser!);
         AuthService.instance.sendMailVerification();
         _signUpStepNotifier.value = 1;
       }

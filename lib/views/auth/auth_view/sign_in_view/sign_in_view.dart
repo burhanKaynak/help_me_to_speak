@@ -18,7 +18,8 @@ import '../../../../widgets/app_divider.dart';
 import '../../../../widgets/app_input.dart';
 
 class SingInView extends StatefulWidget {
-  const SingInView({super.key});
+  final VoidCallback onTapSignUp;
+  const SingInView({super.key, required this.onTapSignUp});
 
   @override
   State<SingInView> createState() => _SingInViewState();
@@ -36,10 +37,11 @@ class _SingInViewState extends State<SingInView> {
     return ValueListenableBuilder(
         valueListenable: _verifyNotifier,
         builder: (context, value, child) =>
-            value ? _buildStepSignUp : _buildStepVerify);
+            value ? _buildStepSignIn : _buildStepVerify);
   }
 
-  Widget get _buildStepSignUp => Column(
+  Widget get _buildStepSignIn => Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildSignUpForm,
           Align(
@@ -78,6 +80,10 @@ class _SingInViewState extends State<SingInView> {
             tickness: AppSizer.dividerTicknessSmall,
           ),
           _buildLoginButtonsForAnotherPlatform,
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: TextButton(
+                  onPressed: widget.onTapSignUp, child: const Text('Kayıt Ol')))
         ],
       );
 
@@ -127,12 +133,16 @@ class _SingInViewState extends State<SingInView> {
       child: Column(
         children: [
           AppTextFormField(
+            initialValue: _loginModel.email,
+            onChanged: (val) => _loginModel.email = val,
             onSaved: (val) => _loginModel.email = val,
             hint: 'Email',
             keyboardType: TextInputType.emailAddress,
           ),
           AppSpacer.verticalSmallSpace,
           AppTextFormField(
+            initialValue: _loginModel.password,
+            onChanged: (val) => _loginModel.password = val,
             hint: 'Password',
             onSaved: (val) => _loginModel.password = val,
             obscureText: true,

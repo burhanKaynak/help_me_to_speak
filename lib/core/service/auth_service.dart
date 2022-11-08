@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:help_me_to_speak/core/service/database_service.dart';
 
 import '../error/auth_exeption_handler.dart';
 
@@ -35,10 +34,6 @@ class AuthService {
       password: password,
     )
         .then((value) async {
-      await DatabaseService.instance
-          .collection('users')
-          .add({'uid': value.user!.uid});
-
       _status = AuthStatus.successful;
     }).catchError((e) => _status = AuthExceptionHandler.handleAuthException(e));
     _auth.currentUser!.updateDisplayName(name);

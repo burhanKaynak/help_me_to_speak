@@ -51,16 +51,14 @@ class _AuthViewState extends State<AuthView> {
                     itemBuilder: (context, index) {
                       _currentPage = index;
                       return index == 0
-                          ? const SingInView()
-                          : const SignUpView();
+                          ? SingInView(
+                              onTapSignUp: _changePage,
+                            )
+                          : SignUpView(
+                              onTapSignIn: _changePage,
+                            );
                     }),
               ),
-              TextButton(
-                  onPressed: _changePage,
-                  child: ValueListenableBuilder(
-                    valueListenable: _pageNameNotifier,
-                    builder: (context, value, child) => Text(value),
-                  ))
             ],
           ),
         ),

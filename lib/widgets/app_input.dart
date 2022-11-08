@@ -5,18 +5,20 @@ import '../core/const/app_radius.dart';
 
 class AppTextFormField extends StatelessWidget {
   final String hint;
+  final String? initialValue;
   final bool obscureText;
+  final Function(String?)? onChanged;
   final Function(String?)? onSaved;
   final TextInputType keyboardType;
-  AppTextFormField({
+  const AppTextFormField({
     super.key,
     this.hint = '',
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
     this.onSaved,
+    this.initialValue,
+    this.onChanged,
   });
-
-  final _textController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,9 @@ class AppTextFormField extends StatelessWidget {
         ),
         padding: AppPadding.horizontalPaddingMedium,
         child: TextFormField(
+          initialValue: initialValue,
           autocorrect: true,
+          onChanged: onChanged,
           onSaved: onSaved,
           keyboardType: keyboardType,
           cursorColor: const Color.fromARGB(31, 134, 134, 134),
@@ -37,7 +41,6 @@ class AppTextFormField extends StatelessWidget {
               .textTheme
               .subtitle1!
               .copyWith(color: Colors.black87),
-          controller: _textController,
           decoration: InputDecoration(hintText: hint),
         ));
   }
