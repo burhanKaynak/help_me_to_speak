@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:help_me_to_speak/core/enum/app_route_path_enum.dart';
 import 'package:help_me_to_speak/core/service/auth_service.dart';
+import 'package:help_me_to_speak/core/service/database_service.dart';
+import 'package:help_me_to_speak/widgets/app_circle_image.dart';
 
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_radius.dart';
@@ -31,19 +33,19 @@ class _AccountViewState extends State<AccountView> {
           AppSpacer.verticalMediumSpace,
           _buildAvatar(context),
           AppSpacer.verticalMediumSpace,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              FaIcon(
-                FontAwesomeIcons.globe,
-                size: AppSizer.iconSmall,
-              ),
-              AppSpacer.horizontalSmallSpace,
-              FaIcon(
-                FontAwesomeIcons.globe,
-                size: AppSizer.iconSmall,
-              ),
-            ],
+          FutureBuilder(
+            future: DatabaseService.instance.getTranslatorSupportedLanguages(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Wrap(
+                  spacing: 5,
+                  children: snapshot.data!
+                      .map((e) => AppCircleImage(image: e.thumbnail!))
+                      .toList(),
+                );
+              }
+              return const SizedBox.shrink();
+            },
           ),
           15.verticalSpace,
           _buildIdentification(context),
@@ -105,7 +107,7 @@ class _AccountViewState extends State<AccountView> {
               .copyWith(color: Colors.black),
         ),
         TextSpan(
-          text: 'Translator',
+          text: _authService.getCustomer.type == 1 ? 'Translator' : 'Customer',
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 color: Colors.black54,
               ),

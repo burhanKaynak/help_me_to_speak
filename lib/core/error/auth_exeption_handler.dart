@@ -11,7 +11,7 @@ enum AuthStatus {
 }
 
 class AuthExceptionHandler {
-  static handleAuthException(FirebaseAuthException e) {
+  static AuthStatus handleAuthException(FirebaseAuthException e) {
     AuthStatus status;
     switch (e.code) {
       case 'invalid-email':

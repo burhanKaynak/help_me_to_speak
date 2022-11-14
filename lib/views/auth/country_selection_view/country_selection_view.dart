@@ -15,10 +15,10 @@ class Country {
   Country({required this.title, required this.icon});
 }
 
-class Language {
+class Lang {
   final String title;
   final IconData icon;
-  Language({required this.title, required this.icon});
+  Lang({required this.title, required this.icon});
 }
 
 class CountrySelectionView extends StatefulWidget {
@@ -35,14 +35,14 @@ class _CountrySelectionViewState extends State<CountrySelectionView> {
     Country(title: 'İngiltere', icon: FontAwesomeIcons.globe),
   ];
 
-  final List<Language> _languages = <Language>[
-    Language(title: 'İsveççe', icon: FontAwesomeIcons.globe),
-    Language(title: 'Türkçe', icon: FontAwesomeIcons.globe),
-    Language(title: 'İngilizce', icon: FontAwesomeIcons.globe),
-    Language(title: 'Almanca', icon: FontAwesomeIcons.globe),
-    Language(title: 'İtalyanca', icon: FontAwesomeIcons.globe),
-    Language(title: 'Norveççe', icon: FontAwesomeIcons.globe),
-    Language(title: 'Flemenkçe', icon: FontAwesomeIcons.globe),
+  final List<Lang> _languages = <Lang>[
+    Lang(title: 'İsveççe', icon: FontAwesomeIcons.globe),
+    Lang(title: 'Türkçe', icon: FontAwesomeIcons.globe),
+    Lang(title: 'İngilizce', icon: FontAwesomeIcons.globe),
+    Lang(title: 'Almanca', icon: FontAwesomeIcons.globe),
+    Lang(title: 'İtalyanca', icon: FontAwesomeIcons.globe),
+    Lang(title: 'Norveççe', icon: FontAwesomeIcons.globe),
+    Lang(title: 'Flemenkçe', icon: FontAwesomeIcons.globe),
   ];
 
   @override

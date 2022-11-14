@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/bloc/translator_bloc/translator_bloc.dart';
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_sizer.dart';
 import '../../../core/const/app_spacer.dart';
+import '../../../core/models/response/customer_model.dart';
 import '../../../themes/project_themes.dart';
 import '../../../widgets/app_circle_avatar.dart';
 import '../../../widgets/app_search_field.dart';
@@ -23,6 +26,63 @@ class Translator {
   });
 }
 
+final List<Translator> _translators = <Translator>[
+  Translator(
+      fullName: 'Angelina',
+      avatar:
+          'https://img.freepik.com/free-photo/modern-woman-taking-selfie_23-2147893976.jpg?w=1380&t=st=1664901155~exp=1664901755~hmac=9127862f43915452a82d24ac02ba9768ff5b63354f3f46bcaf54bbf830d34235',
+      isOnline: true,
+      hasChat: true),
+  Translator(
+      fullName: 'Bence Marcus',
+      avatar:
+          'https://img.freepik.com/free-photo/close-up-young-man-looking-camera-against-grey-wall_23-2148130316.jpg?w=1380&t=st=1664901174~exp=1664901774~hmac=1ea39e8e55052b82783e844d869433a19aae1ee2f9b75e36e25892990dabaaa0',
+      isOnline: false,
+      hasChat: true),
+  Translator(
+      fullName: 'Adam Wolf',
+      avatar:
+          'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
+      isOnline: false,
+      hasChat: true),
+  Translator(
+      fullName: 'İsim 1',
+      avatar:
+          'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
+      isOnline: false,
+      hasChat: false),
+  Translator(
+      fullName: 'İsim 2',
+      avatar:
+          'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
+      isOnline: false,
+      hasChat: false),
+  Translator(
+      fullName: 'İsim 3',
+      avatar:
+          'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
+      isOnline: false,
+      hasChat: false),
+  Translator(
+      fullName: 'İsim 4',
+      avatar:
+          'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
+      isOnline: false,
+      hasChat: false),
+  Translator(
+      fullName: 'İsim 5',
+      avatar:
+          'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
+      isOnline: false,
+      hasChat: false),
+  Translator(
+      fullName: 'İsim 6',
+      avatar:
+          'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
+      isOnline: false,
+      hasChat: false),
+];
+
 class TranslatorListView extends StatefulWidget {
   const TranslatorListView({super.key});
 
@@ -31,107 +91,65 @@ class TranslatorListView extends StatefulWidget {
 }
 
 class _TranslatorListViewState extends State<TranslatorListView> {
-  final List<Translator> _translators = <Translator>[
-    Translator(
-        fullName: 'Angelina',
-        avatar:
-            'https://img.freepik.com/free-photo/modern-woman-taking-selfie_23-2147893976.jpg?w=1380&t=st=1664901155~exp=1664901755~hmac=9127862f43915452a82d24ac02ba9768ff5b63354f3f46bcaf54bbf830d34235',
-        isOnline: true,
-        hasChat: true),
-    Translator(
-        fullName: 'Bence Marcus',
-        avatar:
-            'https://img.freepik.com/free-photo/close-up-young-man-looking-camera-against-grey-wall_23-2148130316.jpg?w=1380&t=st=1664901174~exp=1664901774~hmac=1ea39e8e55052b82783e844d869433a19aae1ee2f9b75e36e25892990dabaaa0',
-        isOnline: false,
-        hasChat: true),
-    Translator(
-        fullName: 'Adam Wolf',
-        avatar:
-            'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
-        isOnline: false,
-        hasChat: true),
-    Translator(
-        fullName: 'İsim 1',
-        avatar:
-            'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
-        isOnline: false,
-        hasChat: false),
-    Translator(
-        fullName: 'İsim 2',
-        avatar:
-            'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
-        isOnline: false,
-        hasChat: false),
-    Translator(
-        fullName: 'İsim 3',
-        avatar:
-            'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
-        isOnline: false,
-        hasChat: false),
-    Translator(
-        fullName: 'İsim 4',
-        avatar:
-            'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
-        isOnline: false,
-        hasChat: false),
-    Translator(
-        fullName: 'İsim 5',
-        avatar:
-            'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
-        isOnline: false,
-        hasChat: false),
-    Translator(
-        fullName: 'İsim 6',
-        avatar:
-            'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
-        isOnline: false,
-        hasChat: false),
-  ];
   ThemeData? _themeData;
 
   @override
   Widget build(BuildContext context) {
     _themeData = Theme.of(context);
-    return Padding(
-      padding: AppPadding.horizontalPaddingMedium,
-      child: Column(
-        children: [
-          AppSearchBarField(),
-          AppSpacer.verticalLargeSpace,
-          _buildFilterBar,
-          AppSpacer.verticalLargeSpace,
-          Expanded(
-              child: GridView.builder(
-            itemCount: _translators.length,
-            shrinkWrap: true,
-            gridDelegate:
-                SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 5.0,
-                    mainAxisSpacing: 5.0,
-                    height: AppSizer.gridSmall),
-            itemBuilder: (context, index) {
-              var item = _translators[index];
-              return Column(
-                children: [
-                  AppListCircleAvatar(
-                    url: item.avatar,
-                    isOnline: item.isOnline,
-                    langs: const ['asdasd', 'asdas'],
-                    showAddRemoveButton: true,
-                    hasChat: item.hasChat,
-                  ),
-                  AppSpacer.verticalSmallSpace,
-                  _buildNameAndState(
-                      fullName: item.fullName, isOnline: item.isOnline)
-                ],
-              );
-            },
-          ))
-        ],
+    return BlocProvider(
+      create: (context) => TranslatorBloc()..add(GetTranslators()),
+      child: Padding(
+        padding: AppPadding.horizontalPaddingMedium,
+        child: Column(
+          children: [
+            AppSearchBarField(),
+            AppSpacer.verticalLargeSpace,
+            _buildFilterBar,
+            AppSpacer.verticalLargeSpace,
+            Expanded(child: _translatorBloc())
+          ],
+        ),
       ),
     );
   }
+
+  BlocBuilder<TranslatorBloc, TranslatorState> _translatorBloc() =>
+      BlocBuilder<TranslatorBloc, TranslatorState>(
+        builder: (context, state) {
+          if (state is TranslatorInitial) {
+          } else if (state is TranslatorLoaded) {
+            return _buildTranslatorList(state.translators);
+          } else if (state is TranslatorError) {}
+          return const SizedBox.shrink();
+        },
+      );
+
+  Widget _buildTranslatorList(List<Customer> translators) => GridView.builder(
+        itemCount: translators.length,
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCountAndFixedHeight(
+            crossAxisCount: 3,
+            crossAxisSpacing: 5.0,
+            mainAxisSpacing: 5.0,
+            height: AppSizer.gridSmall),
+        itemBuilder: (context, index) {
+          var item = translators[index];
+          return Column(
+            children: [
+              AppListCircleAvatar(
+                url: item.photoUrl ??
+                    'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
+                isOnline: true,
+                langs: const ['asdasd', 'asdas'],
+                showAddRemoveButton: true,
+                hasChat: false,
+              ),
+              AppSpacer.verticalSmallSpace,
+              _buildNameAndState(fullName: item.displayName!, isOnline: true)
+            ],
+          );
+        },
+      );
 
   Widget _buildNameAndState(
       {required String fullName, required bool isOnline}) {

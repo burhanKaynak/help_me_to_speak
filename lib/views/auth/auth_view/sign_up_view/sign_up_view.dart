@@ -303,13 +303,13 @@ class _SignUpViewState extends State<SignUpView> {
           email: _registerModel.email!,
           password: _registerModel.password!,
           name: _registerModel.fullName!);
-      context.router.navigatorKey.currentState!.pop();
       if (result == AuthStatus.successful) {
         await DatabaseService.instance
-            .addUserToDocuments(user: AuthService.instance.currentUser!);
+            .register(user: AuthService.instance.currentUser!);
         AuthService.instance.sendMailVerification();
         _signUpStepNotifier.value = 1;
       }
+      context.router.navigatorKey.currentState!.pop();
     }
   }
 
