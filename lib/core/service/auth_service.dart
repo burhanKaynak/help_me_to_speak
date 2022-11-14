@@ -7,7 +7,7 @@ import '../error/auth_exeption_handler.dart';
 class AuthService {
   static final instance = AuthService();
   final _auth = FirebaseAuth.instance;
-  late Customer _customer;
+  Customer? _customer;
   late AuthStatus _status;
 
   Future<AuthStatus> login({
@@ -26,6 +26,7 @@ class AuthService {
   }
 
   Future<void> logout() async {
+    _customer = null;
     await _auth.signOut();
   }
 
@@ -74,7 +75,7 @@ class AuthService {
 
   User? get currentUser => _auth.currentUser;
 
-  Customer get getCustomer => _customer;
+  Customer? get getCustomer => _customer;
   Future<bool> setCustomer() async {
     if (_auth.currentUser != null) {
       _customer =

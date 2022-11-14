@@ -107,7 +107,7 @@ class _AccountViewState extends State<AccountView> {
               .copyWith(color: Colors.black),
         ),
         TextSpan(
-          text: _authService.getCustomer.type == 1 ? 'Translator' : 'Customer',
+          text: _authService.getCustomer!.type == 1 ? 'Translator' : 'Customer',
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 color: Colors.black54,
               ),
