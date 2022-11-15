@@ -14,7 +14,12 @@ import 'app_divider.dart';
 class AppCard extends StatelessWidget {
   final Chat chat;
   final bool topDivider;
-  AppCard({super.key, required this.chat, this.topDivider = true});
+
+  AppCard({
+    super.key,
+    required this.chat,
+    this.topDivider = true,
+  });
 
   ThemeData? _themeData;
   @override
@@ -54,10 +59,7 @@ class AppCard extends StatelessWidget {
       child: AppListCircleAvatar(
         url: chat.avatar,
         isOnline: chat.isOnline,
-        langs: const [
-          'sdas',
-          'asdas',
-        ],
+        langs: null,
       ),
     );
   }

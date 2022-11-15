@@ -7,8 +7,9 @@ part of 'customer_model.dart';
 // **************************************************************************
 
 Customer _$CustomerFromJson(Map<String, dynamic> json) => Customer(
-      json['uid'] as String?,
       email: json['email'] as String?,
+      uid: json['uid'] as String?,
+      isApproved: json['is_approved'] as bool?,
       nativeLanguage:
           _$JsonConverterFromJson<Object, DocumentReference<Object?>>(
               json['native_language'], const DocumentConverter().fromJson),
@@ -28,6 +29,7 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
               instance.nativeLanguage, const DocumentConverter().toJson),
       'phone_number': instance.phoneNumber,
       'type': instance.type,
+      'is_approved': instance.isApproved,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

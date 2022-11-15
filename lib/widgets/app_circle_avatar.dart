@@ -56,7 +56,7 @@ class AppCircleAvatar extends StatelessWidget {
 class AppListCircleAvatar extends StatelessWidget {
   final String url;
   final bool isOnline;
-  final List<String> langs;
+  final Widget? langs;
   final bool showLangs;
   final bool showAddRemoveButton;
   final bool hasChat;
@@ -67,7 +67,7 @@ class AppListCircleAvatar extends StatelessWidget {
       this.showAddRemoveButton = false,
       required this.isOnline,
       this.hasChat = false,
-      required this.langs,
+      this.langs,
       this.showLangs = true});
 
   @override
@@ -130,29 +130,8 @@ class AppListCircleAvatar extends StatelessWidget {
           ]),
         ),
         if (showLangs) AppSpacer.verticalLargeSpace,
-        if (showLangs)
-          Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: _buildLangIcons)
+        if (showLangs) langs ?? const SizedBox.shrink()
       ],
     );
-  }
-
-  List<Widget> get _buildLangIcons {
-    var widgetCollection = <Widget>[];
-
-    for (var i = 0; i < langs.length; i++) {
-      widgetCollection.add(
-        FaIcon(
-          FontAwesomeIcons.globe,
-          size: AppSizer.iconSmall,
-        ),
-      );
-      if ((i + 1) != langs.length) {
-        widgetCollection.add(AppSpacer.horizontalLargeSpace);
-      }
-    }
-
-    return widgetCollection;
   }
 }

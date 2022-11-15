@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:help_me_to_speak/core/enum/app_route_path_enum.dart';
 import 'package:help_me_to_speak/core/service/auth_service.dart';
 import 'package:help_me_to_speak/core/service/database_service.dart';
 import 'package:help_me_to_speak/widgets/app_circle_image.dart';
+import 'package:help_me_to_speak/widgets/app_shimmer.dart';
 
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_radius.dart';
@@ -24,6 +24,8 @@ class AccountView extends StatefulWidget {
 
 class _AccountViewState extends State<AccountView> {
   final AuthService _authService = AuthService.instance;
+  final String _defAvatar =
+      'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png';
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -33,23 +35,39 @@ class _AccountViewState extends State<AccountView> {
           AppSpacer.verticalMediumSpace,
           _buildAvatar(context),
           AppSpacer.verticalMediumSpace,
-          FutureBuilder(
-            future: DatabaseService.instance.getTranslatorSupportedLanguages(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Wrap(
-                  spacing: 5,
-                  children: snapshot.data!
-                      .map((e) => AppCircleImage(image: e.thumbnail!))
-                      .toList(),
-                );
-              }
-              return const SizedBox.shrink();
-            },
-          ),
-          15.verticalSpace,
+          if (!_authService.getCustomer!.isApproved!)
+            Wrap(
+              spacing: 10,
+              children: [
+                const FaIcon(FontAwesomeIcons.clock),
+                Text(
+                  'Doğrulama için bekliyor.',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(color: Colors.black54),
+                )
+              ],
+            ),
+          if (_authService.getCustomer!.isApproved!)
+            FutureBuilder(
+              future: DatabaseService.instance
+                  .getTranslatorSupporLanguages(_authService.currentUser!.uid),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Wrap(
+                    spacing: 5,
+                    children: snapshot.data!
+                        .map((e) => AppCircleImage(image: e.thumbnail!))
+                        .toList(),
+                  );
+                }
+                return buildCircleShimmer;
+              },
+            ),
+          AppSpacer.verticalMediumSpace,
           _buildIdentification(context),
-          15.verticalSpace,
+          AppSpacer.verticalMediumSpace,
           buildButton(
               onPressed: null,
               text: 'Şifre Değiştir',
@@ -74,10 +92,8 @@ class _AccountViewState extends State<AccountView> {
 
   Widget _buildAvatar(BuildContext context) => Stack(
         children: [
-          const AppCircleAvatar(
-            url:
-                'https://img.freepik.com/free-photo/modern-woman-taking-selfie_23-2147893976.jpg?w=1380&t=st=1664901155~exp=1664901755~hmac=9127862f43915452a82d24ac02ba9768ff5b63354f3f46bcaf54bbf830d34235',
-          ),
+          AppCircleAvatar(
+              url: _authService.currentUser?.photoURL ?? _defAvatar),
           Positioned(
               right: 0,
               bottom: 0,
@@ -107,7 +123,7 @@ class _AccountViewState extends State<AccountView> {
               .copyWith(color: Colors.black),
         ),
         TextSpan(
-          text: _authService.getCustomer!.type == 1 ? 'Translator' : 'Customer',
+          text: _authService.getCustomer?.type == 1 ? 'Translator' : 'Customer',
           style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 color: Colors.black54,
               ),

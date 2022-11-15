@@ -44,6 +44,7 @@ class AuthService {
       _status = AuthStatus.successful;
     }).catchError((e) => _status = AuthExceptionHandler.handleAuthException(e));
     await _auth.currentUser!.updateDisplayName(name);
+    await DatabaseService.instance.register(user: _auth.currentUser!);
     _customer =
         await DatabaseService.instance.getCustomer(_auth.currentUser!.uid);
     return _status;

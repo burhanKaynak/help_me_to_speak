@@ -11,9 +11,12 @@ class Customer {
   @DocumentConverter()
   final DocumentReference? nativeLanguage;
   final int? phoneNumber, type;
+  final bool? isApproved;
 
-  Customer(this.uid,
+  Customer(
       {required this.email,
+      required this.uid,
+      this.isApproved,
       this.nativeLanguage,
       required this.displayName,
       required this.photoUrl,
