@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:help_me_to_speak/core/service/auth_service.dart';
+import 'package:help_me_to_speak/core/service/database_service.dart';
 
 import '../core/const/app_padding.dart';
 import '../core/const/app_radius.dart';
@@ -56,6 +58,7 @@ class AppCircleAvatar extends StatelessWidget {
 class AppListCircleAvatar extends StatelessWidget {
   final String url;
   final bool isOnline;
+  final String? translatorId;
   final Widget? langs;
   final bool showLangs;
   final bool showAddRemoveButton;
@@ -68,7 +71,8 @@ class AppListCircleAvatar extends StatelessWidget {
       required this.isOnline,
       this.hasChat = false,
       this.langs,
-      this.showLangs = true});
+      this.showLangs = true,
+      this.translatorId});
 
   @override
   Widget build(BuildContext context) {
@@ -103,29 +107,11 @@ class AppListCircleAvatar extends StatelessWidget {
                 ),
               ),
             ),
-            if (showAddRemoveButton)
+            if (showAddRemoveButton && translatorId != null)
               Positioned(
                 bottom: 0,
                 right: 0,
-                child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: AppRadius.circleRadius,
-                      color: hasChat ? colorPrimary : colorLightGreen,
-                    ),
-                    alignment: Alignment.center,
-                    width: AppSizer.circleSmall,
-                    height: AppSizer.circleSmall,
-                    child: hasChat
-                        ? FaIcon(
-                            FontAwesomeIcons.minus,
-                            color: Colors.white,
-                            size: AppSizer.iconSmall,
-                          )
-                        : FaIcon(
-                            FontAwesomeIcons.plus,
-                            color: Colors.white,
-                            size: AppSizer.iconSmall,
-                          )),
+                child: _streamBuilder(translatorId),
               ),
           ]),
         ),
@@ -134,4 +120,45 @@ class AppListCircleAvatar extends StatelessWidget {
       ],
     );
   }
+
+  StreamBuilder _streamBuilder(translatorId) => StreamBuilder(
+        stream: DatabaseService.instance.getHasConversation(translatorId),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return addOrRemoveButton(snapshot.data.docs.length > 0);
+          }
+          return const SizedBox.shrink();
+        },
+      );
+
+  Widget addOrRemoveButton(hasConversation) => InkWell(
+        onTap: () {
+          if (hasConversation) {
+            DatabaseService.instance.deleteConversation(
+                AuthService.instance.currentUser!.uid, translatorId);
+          } else {
+            DatabaseService.instance.createConversation(
+                AuthService.instance.currentUser!.uid, translatorId);
+          }
+        },
+        child: Container(
+            decoration: BoxDecoration(
+              borderRadius: AppRadius.circleRadius,
+              color: hasConversation ? colorPrimary : colorLightGreen,
+            ),
+            alignment: Alignment.center,
+            width: AppSizer.circleSmall,
+            height: AppSizer.circleSmall,
+            child: hasConversation
+                ? FaIcon(
+                    FontAwesomeIcons.minus,
+                    color: Colors.white,
+                    size: AppSizer.iconSmall,
+                  )
+                : FaIcon(
+                    FontAwesomeIcons.plus,
+                    color: Colors.white,
+                    size: AppSizer.iconSmall,
+                  )),
+      );
 }

@@ -35,36 +35,38 @@ class _AccountViewState extends State<AccountView> {
           AppSpacer.verticalMediumSpace,
           _buildAvatar(context),
           AppSpacer.verticalMediumSpace,
-          if (!_authService.getCustomer!.isApproved!)
-            Wrap(
-              spacing: 10,
-              children: [
-                const FaIcon(FontAwesomeIcons.clock),
-                Text(
-                  'Doğrulama için bekliyor.',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(color: Colors.black54),
-                )
-              ],
-            ),
-          if (_authService.getCustomer!.isApproved!)
-            FutureBuilder(
-              future: DatabaseService.instance
-                  .getTranslatorSupporLanguages(_authService.currentUser!.uid),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Wrap(
-                    spacing: 5,
-                    children: snapshot.data!
-                        .map((e) => AppCircleImage(image: e.thumbnail!))
-                        .toList(),
-                  );
-                }
-                return buildCircleShimmer;
-              },
-            ),
+          if (_authService.getCustomer!.isApproved != null)
+            if (!_authService.getCustomer!.isApproved!)
+              Wrap(
+                spacing: 10,
+                children: [
+                  const FaIcon(FontAwesomeIcons.clock),
+                  Text(
+                    'Doğrulama için bekliyor.',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge!
+                        .copyWith(color: Colors.black54),
+                  )
+                ],
+              ),
+          if (_authService.getCustomer!.isApproved != null)
+            if (_authService.getCustomer!.isApproved!)
+              FutureBuilder(
+                future: DatabaseService.instance.getTranslatorSupportLanguages(
+                    _authService.currentUser!.uid),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Wrap(
+                      spacing: 5,
+                      children: snapshot.data!
+                          .map((e) => AppCircleImage(image: e.thumbnail!))
+                          .toList(),
+                    );
+                  }
+                  return buildCircleShimmer;
+                },
+              ),
           AppSpacer.verticalMediumSpace,
           _buildIdentification(context),
           AppSpacer.verticalMediumSpace,

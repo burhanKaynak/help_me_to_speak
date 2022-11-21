@@ -46,11 +46,16 @@ class DatabaseService {
         .doc(AuthService.instance.currentUser!.uid)
         .collection('documents')
         .doc('translator_certificate')
-        .set({'file_paths': storagePath});
+        .set({'file_paths': storagePath})
+        .then((value) => status = true)
+        .onError((error, stackTrace) => status = false);
+
     await _db
         .collection('customers')
         .doc(AuthService.instance.currentUser!.uid)
-        .update({'is_approved': false});
+        .update({'is_approved': false})
+        .then((value) => status = true)
+        .onError((error, stackTrace) => status = false);
 
     return status;
   }
@@ -67,7 +72,7 @@ class DatabaseService {
     return customers;
   }
 
-  Future<Customer> getCustomer(uid) async {
+  Future<Customer> getCustomer(String uid) async {
     var result = await _db.collection('customers').doc(uid).get();
     Customer customers = Customer.fromJson(result.data()!);
     return customers;
@@ -80,7 +85,7 @@ class DatabaseService {
     return language;
   }
 
-  Future<List<Language>> getTranslatorSupporLanguages(uid) async {
+  Future<List<Language>> getTranslatorSupportLanguages(uid) async {
     List<Language> languages = [];
     var result = await _db
         .collection('customers')
@@ -100,7 +105,78 @@ class DatabaseService {
     return languages;
   }
 
-  Future<bool> createConversation() {
-    return Future.value(true);
+  Future<bool> createConversation(currentUid, reciverUid) async {
+    var status = false;
+    var ref = _db.collection('conversations');
+    var result = await ref.add({
+      'members': [currentUid, reciverUid]
+    });
+
+    result
+        .collection('messages')
+        .add({
+          'is_seens': false,
+          'message': 'hello',
+          'sender_id': currentUid,
+          'timestamp': DateTime.now()
+        })
+        .then((value) => status = true)
+        .onError((error, stackTrace) => status = false);
+    return status;
+  }
+
+  Future<bool> deleteConversation(currentUid, reciverUid) async {
+    var status = false;
+    final batch = _db.batch();
+
+    var collection = await _db
+        .collection('conversations')
+        .where('members', arrayContainsAny: [currentUid, reciverUid]).get();
+
+    var messages =
+        await collection.docs.first.reference.collection('messages').get();
+
+    for (final doc in messages.docs) {
+      batch.delete(doc.reference);
+    }
+    batch.delete(collection.docs.first.reference);
+
+    batch.commit();
+    status = true;
+    return status;
+  }
+
+  Future<List<String>> getConversations() async {
+    var members = <String>[];
+    var result = await _db
+        .collection('conversations')
+        .where('members', arrayContains: AuthService.instance.currentUser!.uid)
+        .get();
+
+    for (var element in result.docs) {
+      members =
+          (element.data()['members'] as List).map<String>((e) => e).toList();
+      members.remove(AuthService.instance.currentUser!.uid);
+    }
+
+    return members;
+  }
+
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getConversationSnapShoot(
+      reciverUid) {
+    return _db
+        .collection('conversations')
+        .where('members', arrayContains: reciverUid)
+        .get()
+        .then((value) => value.docChanges.first.doc.reference
+            .collection('messages')
+            .snapshots());
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getHasConversation(reciverUid) {
+    return _db
+        .collection('conversations')
+        .where('members', arrayContains: reciverUid)
+        .snapshots();
   }
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:help_me_to_speak/core/models/response/message_model.dart';
+import 'package:help_me_to_speak/core/service/auth_service.dart';
 
 import '../core/const/app_padding.dart';
 import '../core/const/app_radius.dart';
 import '../core/const/app_sizer.dart';
 import '../core/const/app_spacer.dart';
+import '../core/models/response/chat_model.dart';
 import '../themes/project_themes.dart';
-import '../views/home/chat_list_view/chat_list_view.dart';
 import 'app_circle_avatar.dart';
 import 'app_divider.dart';
 
@@ -14,7 +16,8 @@ import 'app_divider.dart';
 class AppCard extends StatelessWidget {
   final Chat chat;
   final bool topDivider;
-
+  final String _defAvatar =
+      'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png';
   AppCard({
     super.key,
     required this.chat,
@@ -42,7 +45,7 @@ class AppCard extends StatelessWidget {
                 _buildCardLeftSide,
                 AppSpacer.horizontalLargeSpace,
                 Expanded(
-                  child: _buildCardMiddle,
+                  child: _streamBuilder,
                 ),
                 _buildCardRightSide
               ],
@@ -57,14 +60,33 @@ class AppCard extends StatelessWidget {
     return SizedBox(
       height: AppSizer.cardLarge,
       child: AppListCircleAvatar(
-        url: chat.avatar,
-        isOnline: chat.isOnline,
+        url: chat.customer.photoUrl ?? _defAvatar,
+        isOnline: true,
         langs: null,
       ),
     );
   }
 
-  Widget get _buildCardMiddle => SizedBox(
+  StreamBuilder get _streamBuilder => StreamBuilder(
+      stream: chat.snapshot,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          var messages = List<Message>.from(
+              snapshot.data.docs.map((e) => Message.fromJson(e.data())));
+
+          messages.sort((a, b) => b.timestamp.compareTo(a.timestamp));
+
+          var count = messages
+              .where((i) =>
+                  !i.isSeens &&
+                  i.senderId != AuthService.instance.currentUser!.uid)
+              .length;
+          return _buildCardMiddle(messages.first, count);
+        }
+        return const SizedBox.shrink();
+      });
+
+  Widget _buildCardMiddle(Message message, int unseensCount) => SizedBox(
         height: AppSizer.cardLarge,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -76,27 +98,28 @@ class AppCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      chat.fullName,
+                      chat.customer.displayName!,
                       style: _themeData!.textTheme.headline5!
                           .copyWith(color: colorDarkGreen),
                     ),
                     AppSpacer.horizontalLargeSpace,
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: AppRadius.circleRadius,
-                        color: colorLightGreen,
+                    if (unseensCount > 0)
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: AppRadius.circleRadius,
+                          color: colorLightGreen,
+                        ),
+                        alignment: Alignment.center,
+                        width: AppSizer.circleSmall,
+                        height: AppSizer.circleSmall,
+                        child: Text(unseensCount.toString()),
                       ),
-                      alignment: Alignment.center,
-                      width: AppSizer.circleSmall,
-                      height: AppSizer.circleSmall,
-                      child: const Text('1'),
-                    ),
                   ],
                 ),
                 AppSpacer.verticalSmallSpace,
-                Text(chat.isOnline ? 'Şu an Çeviriye Hazır' : 'Çevirimdışı',
-                    style: _themeData!.textTheme.bodyText1!.copyWith(
-                        color: chat.isOnline ? colorLightGreen : colorHint)),
+                Text(true ? 'Çevirimiçi' : 'Çevirimdışı',
+                    style: _themeData!.textTheme.bodyText1!
+                        .copyWith(color: true ? colorLightGreen : colorHint)),
               ],
             ),
             Column(
@@ -105,7 +128,7 @@ class AppCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      chat.lastSeen,
+                      message.timestamp,
                       style: _themeData!.textTheme.caption!
                           .copyWith(color: colorHint),
                     ),
@@ -113,13 +136,11 @@ class AppCard extends StatelessWidget {
                   ],
                 ),
                 AppSpacer.verticalSmallSpace,
-                Text(chat.lastMessage,
+                Text(message.message,
                     overflow: TextOverflow.ellipsis,
                     style: _themeData!.textTheme.bodyText1!.copyWith(
                         color: Colors.black,
-                        fontWeight: chat.isOnline
-                            ? FontWeight.w700
-                            : FontWeight.normal))
+                        fontWeight: true ? FontWeight.w700 : FontWeight.normal))
               ],
             )
           ],

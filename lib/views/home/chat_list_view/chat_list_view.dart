@@ -1,51 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:help_me_to_speak/core/bloc/conversation_bloc/conversation_bloc.dart';
+import 'package:help_me_to_speak/widgets/app_card.dart';
 
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_sizer.dart';
 import '../../../core/const/app_spacer.dart';
 import '../../../themes/project_themes.dart';
-import '../../../widgets/app_card.dart';
 import '../../../widgets/app_divider.dart';
 import '../../../widgets/app_search_field.dart';
-
-class Chat {
-  final String fullName;
-  final String avatar;
-  final bool isOnline;
-  final String lastSeen;
-  final String lastMessage;
-
-  Chat(
-      {required this.fullName,
-      required this.avatar,
-      required this.isOnline,
-      required this.lastSeen,
-      required this.lastMessage});
-}
-
-List<Chat> _chats = <Chat>[
-  Chat(
-      fullName: 'Angelina',
-      avatar:
-          'https://img.freepik.com/free-photo/modern-woman-taking-selfie_23-2147893976.jpg?w=1380&t=st=1664901155~exp=1664901755~hmac=9127862f43915452a82d24ac02ba9768ff5b63354f3f46bcaf54bbf830d34235',
-      isOnline: true,
-      lastSeen: 'Pazartesi',
-      lastMessage: 'Fotoğraf ulaştı, tercüme ediyorum.'),
-  Chat(
-      fullName: 'Bence Marcus',
-      avatar:
-          'https://img.freepik.com/free-photo/close-up-young-man-looking-camera-against-grey-wall_23-2148130316.jpg?w=1380&t=st=1664901174~exp=1664901774~hmac=1ea39e8e55052b82783e844d869433a19aae1ee2f9b75e36e25892990dabaaa0',
-      isOnline: false,
-      lastSeen: '15:20',
-      lastMessage: 'Yahu Orhan değilim ben.'),
-  Chat(
-      fullName: 'Adam Wolf',
-      avatar:
-          'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png',
-      isOnline: false,
-      lastSeen: '2 hafta önce',
-      lastMessage: 'Evet, halletim onu.')
-];
 
 class ChatListView extends StatefulWidget {
   const ChatListView({super.key});
@@ -73,15 +36,28 @@ class _ChatListViewState extends State<ChatListView> {
         AppDivider(
             height: AppSizer.dividerH, tickness: AppSizer.dividerTicknessSmall),
         Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            itemCount: _chats.length,
-            itemBuilder: (context, index) => AppCard(chat: _chats[index]),
+          child: BlocProvider<ConversationBloc>(
+            create: (context) => ConversationBloc()..add(GetConversations()),
+            child: _converstationBlocBuilder,
           ),
         )
       ],
     );
   }
+
+  BlocBuilder<ConversationBloc, ConversationState>
+      get _converstationBlocBuilder =>
+          BlocBuilder<ConversationBloc, ConversationState>(
+            builder: (context, state) {
+              if (state is ConversationLoaded) {
+                return ListView(
+                  padding: EdgeInsets.zero,
+                  children: state.chats.map((e) => AppCard(chat: e)).toList(),
+                );
+              }
+              return Container();
+            },
+          );
 
   Widget get _buildFilterBar => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

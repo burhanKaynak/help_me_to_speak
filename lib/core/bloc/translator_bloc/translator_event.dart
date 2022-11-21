@@ -7,3 +7,9 @@ abstract class TranslatorEvent extends Equatable {
 }
 
 class GetTranslators extends TranslatorEvent {}
+
+class AddTranslatorForChat extends TranslatorEvent {
+  final String currentUid, reciverUid;
+  const AddTranslatorForChat(
+      {required this.currentUid, required this.reciverUid});
+}

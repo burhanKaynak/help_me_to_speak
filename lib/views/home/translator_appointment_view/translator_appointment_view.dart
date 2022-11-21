@@ -5,10 +5,8 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_sizer.dart';
 import '../../../themes/project_themes.dart';
-import '../../../widgets/app_card.dart';
 import '../../../widgets/app_divider.dart';
 import '../../../widgets/app_header.dart';
-import '../chat_list_view/chat_list_view.dart';
 
 class TranslatorAppointmentView extends StatefulWidget {
   const TranslatorAppointmentView({super.key});
@@ -28,16 +26,7 @@ class _TranslatorAppointmentViewState extends State<TranslatorAppointmentView> {
       ),
       body: Column(
         children: [
-          AppCard(
-            topDivider: false,
-            chat: Chat(
-                fullName: 'Angelina',
-                avatar:
-                    'https://img.freepik.com/free-photo/modern-woman-taking-selfie_23-2147893976.jpg?w=1380&t=st=1664901155~exp=1664901755~hmac=9127862f43915452a82d24ac02ba9768ff5b63354f3f46bcaf54bbf830d34235',
-                isOnline: true,
-                lastSeen: 'Pazartesi',
-                lastMessage: 'Fotoğraf ulaştı, tercüme ediyorum.'),
-          ),
+          // AppCard(topDivider: false, chat: null),
           AppDivider(
               height: AppSizer.dividerH,
               tickness: AppSizer.dividerTicknessSmall),

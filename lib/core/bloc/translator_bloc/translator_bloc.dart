@@ -12,5 +12,10 @@ class TranslatorBloc extends Bloc<TranslatorEvent, TranslatorState> {
       var customers = await DatabaseService.instance.getTranslators();
       emit(TranslatorLoaded(customers));
     });
+    on<AddTranslatorForChat>((event, emit) async {
+      var result = await DatabaseService.instance
+          .createConversation(event.currentUid, event.reciverUid);
+      emit(TranslatorAdded(result));
+    });
   }
 }

@@ -27,6 +27,8 @@ dependencies:
   flutter_screenutil: ^5.5.4
   image_picker: ^0.8.6
   equatable: ^2.0.5
+  intl: ^0.17.0
+
 
 
   #Annotation

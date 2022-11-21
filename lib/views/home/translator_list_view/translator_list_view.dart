@@ -15,28 +15,6 @@ import '../../../widgets/app_shimmer.dart';
 import '../../../widgets/app_silver_grid_delegate_fixed_cross_axis_count_and_fixed_heigth.dart';
 
 //TODO: Hacı burda çok karmaşık kod var bunları düzenle.
-class Translator {
-  final String fullName;
-  final String avatar;
-  final bool isOnline;
-  final bool hasChat;
-
-  Translator({
-    required this.fullName,
-    required this.hasChat,
-    required this.avatar,
-    required this.isOnline,
-  });
-}
-
-final List<Translator> _translators = <Translator>[
-  Translator(
-      fullName: 'Angelina',
-      avatar:
-          'https://img.freepik.com/free-photo/modern-woman-taking-selfie_23-2147893976.jpg?w=1380&t=st=1664901155~exp=1664901755~hmac=9127862f43915452a82d24ac02ba9768ff5b63354f3f46bcaf54bbf830d34235',
-      isOnline: true,
-      hasChat: true),
-];
 
 class TranslatorListView extends StatefulWidget {
   const TranslatorListView({super.key});
@@ -63,14 +41,14 @@ class _TranslatorListViewState extends State<TranslatorListView> {
             AppSpacer.verticalLargeSpace,
             _buildFilterBar,
             AppSpacer.verticalLargeSpace,
-            Expanded(child: _translatorBloc())
+            Expanded(child: _translatorBlocBuilder())
           ],
         ),
       ),
     );
   }
 
-  BlocBuilder<TranslatorBloc, TranslatorState> _translatorBloc() =>
+  BlocBuilder<TranslatorBloc, TranslatorState> _translatorBlocBuilder() =>
       BlocBuilder<TranslatorBloc, TranslatorState>(
         builder: (context, state) {
           if (state is TranslatorInitial) {
@@ -94,11 +72,12 @@ class _TranslatorListViewState extends State<TranslatorListView> {
           return Column(
             children: [
               AppListCircleAvatar(
+                translatorId: item.uid,
                 url: item.photoUrl ?? _defAvatar,
                 isOnline: true,
                 langs: FutureBuilder(
                   future: DatabaseService.instance
-                      .getTranslatorSupporLanguages(translators[index].uid),
+                      .getTranslatorSupportLanguages(translators[index].uid),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Wrap(

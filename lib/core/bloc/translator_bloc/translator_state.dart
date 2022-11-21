@@ -13,6 +13,11 @@ class TranslatorLoaded extends TranslatorState {
   const TranslatorLoaded(this.translators);
 }
 
+class TranslatorAdded extends TranslatorState {
+  final bool state;
+  const TranslatorAdded(this.state);
+}
+
 class TranslatorError extends TranslatorState {
   final String errorMessage;
   const TranslatorError(this.errorMessage);
