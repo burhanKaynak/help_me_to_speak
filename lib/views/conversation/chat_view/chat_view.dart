@@ -209,12 +209,12 @@ class _ChatViewState extends State<ChatView>
         ),
       );
 
-  Future<void> _launchUrl(File file) async {
-    Uri uri = Uri.file(file.path);
-    if (!File(uri.toFilePath()).existsSync()) {
-      throw '$uri does not exist!';
-    }
-    if (!await launchUrl(uri)) {
+  Future<void> _launchUrl(Uri uri) async {
+    if (!await launchUrl(
+      uri,
+      mode: LaunchMode.externalNonBrowserApplication,
+      webViewConfiguration: const WebViewConfiguration(enableJavaScript: false),
+    )) {
       throw 'Could not launch $uri';
     }
   }
