@@ -123,29 +123,34 @@ class _ChatViewState extends State<ChatView>
             }
           },
           child: Container(
+            constraints: BoxConstraints(maxWidth: 275.r),
             padding: AppPadding.layoutPadding,
             decoration: BoxDecoration(
                 color: message.senderId != widget.userId
                     ? Colors.white
                     : colorLightGreen.withAlpha(30),
                 borderRadius: AppRadius.rectangleRadius),
-            child:
-                Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              if (message.isFile)
-                const FaIcon(FontAwesomeIcons.download,
-                    color: Colors.blueAccent),
-              Container(
-                width: 225.w,
-                child: Text(
-                  message.message,
-                  style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                      color: !message.isFile ? Colors.black : Colors.blueAccent,
-                      decoration: !message.isFile
-                          ? TextDecoration.none
-                          : TextDecoration.underline),
-                ),
-              ),
-            ]),
+            child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (message.isFile)
+                    const FaIcon(FontAwesomeIcons.download,
+                        color: Colors.blueAccent),
+                  if (message.isFile) AppSpacer.horizontalSmallSpace,
+                  Flexible(
+                    child: Text(
+                      message.message,
+                      style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                          color: !message.isFile
+                              ? Colors.black
+                              : Colors.blueAccent,
+                          decoration: !message.isFile
+                              ? TextDecoration.none
+                              : TextDecoration.underline),
+                    ),
+                  ),
+                ]),
           ),
         )
       ],
