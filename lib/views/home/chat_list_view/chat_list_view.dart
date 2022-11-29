@@ -1,11 +1,14 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:help_me_to_speak/core/bloc/conversation_bloc/conversation_bloc.dart';
+import 'package:help_me_to_speak/core/service/auth_service.dart';
 import 'package:help_me_to_speak/widgets/app_card.dart';
 
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_sizer.dart';
 import '../../../core/const/app_spacer.dart';
+import '../../../core/router/app_router.gr.dart';
 import '../../../themes/project_themes.dart';
 import '../../../widgets/app_divider.dart';
 import '../../../widgets/app_search_field.dart';
@@ -52,7 +55,14 @@ class _ChatListViewState extends State<ChatListView> {
               if (state is ConversationLoaded) {
                 return ListView(
                   padding: EdgeInsets.zero,
-                  children: state.chats.map((e) => AppCard(chat: e)).toList(),
+                  children: state.chats
+                      .map((e) => InkWell(
+                          onTap: () => context.router.push(ChatRoute(
+                                conversationId: e.conversationId,
+                                userId: AuthService.instance.currentUser!.uid,
+                              )),
+                          child: AppCard(chat: e)))
+                      .toList(),
                 );
               }
               return Container();

@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppPadding {
+  static final messageFieldPadding =
+      const EdgeInsets.only(bottom: 20, right: 20, left: 20).r;
+
   ///20 r-width-height
   static final layoutPadding = const EdgeInsets.all(20).r;
 

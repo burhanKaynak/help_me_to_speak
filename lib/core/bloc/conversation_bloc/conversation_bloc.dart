@@ -13,10 +13,13 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
       var result = await DatabaseService.instance.getConversations();
       List<Chat> chats = [];
       for (var item in result) {
-        var customers = await DatabaseService.instance.getCustomer(item);
-        var chatSnapshoot =
-            DatabaseService.instance.getConversationSnapShoot(customers.uid);
-        chats.add(Chat(customers, await chatSnapshoot));
+        for (var doc in item['members']) {
+          var customers = await DatabaseService.instance.getCustomer(doc);
+          var chatSnapshoot =
+              DatabaseService.instance.getConversationSnapShoot(customers.uid);
+          chats.add(
+              Chat(customers, await chatSnapshoot, item['conversationId']));
+        }
       }
       emit(ConversationLoaded(chats));
     });

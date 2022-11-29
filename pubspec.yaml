@@ -20,14 +20,18 @@ dependencies:
   cached_network_image: ^3.2.2
   syncfusion_flutter_datepicker: ^20.3.49
   shimmer: ^2.0.0
+  adaptive_action_sheet: ^2.0.2
   #Theme
 
 
   #Utils
   flutter_screenutil: ^5.5.4
   image_picker: ^0.8.6
+  file_picker: ^5.2.2
   equatable: ^2.0.5
   intl: ^0.17.0
+  after_layout: ^1.2.0
+  mime: ^1.0.2
 
 
 
@@ -44,6 +48,8 @@ dependencies:
   cloud_firestore: ^4.0.4
   firebase_core: ^2.1.1
   flutter_bloc: ^8.1.1
+  path_provider: ^2.0.11
+  url_launcher: ^6.1.7
   
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:help_me_to_speak/core/models/response/message_model.dart';
 import 'package:help_me_to_speak/core/service/auth_service.dart';
+import 'package:intl/intl.dart';
 
 import '../core/const/app_padding.dart';
 import '../core/const/app_radius.dart';
@@ -73,9 +74,7 @@ class AppCard extends StatelessWidget {
         if (snapshot.hasData) {
           var messages = List<Message>.from(
               snapshot.data.docs.map((e) => Message.fromJson(e.data())));
-
           messages.sort((a, b) => b.timestamp.compareTo(a.timestamp));
-
           var count = messages
               .where((i) =>
                   !i.isSeens &&
@@ -86,66 +85,69 @@ class AppCard extends StatelessWidget {
         return const SizedBox.shrink();
       });
 
-  Widget _buildCardMiddle(Message message, int unseensCount) => SizedBox(
-        height: AppSizer.cardLarge,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      chat.customer.displayName!,
-                      style: _themeData!.textTheme.headline5!
-                          .copyWith(color: colorDarkGreen),
-                    ),
-                    AppSpacer.horizontalLargeSpace,
-                    if (unseensCount > 0)
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: AppRadius.circleRadius,
-                          color: colorLightGreen,
-                        ),
-                        alignment: Alignment.center,
-                        width: AppSizer.circleSmall,
-                        height: AppSizer.circleSmall,
-                        child: Text(unseensCount.toString()),
+  Widget _buildCardMiddle(Message message, int unseensCount) {
+    var formatDate = DateFormat('EEEE hh:mm').format(message.timestamp);
+    return SizedBox(
+      height: AppSizer.cardLarge,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    chat.customer.displayName!,
+                    style: _themeData!.textTheme.headline5!
+                        .copyWith(color: colorDarkGreen),
+                  ),
+                  AppSpacer.horizontalLargeSpace,
+                  if (unseensCount > 0)
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: AppRadius.circleRadius,
+                        color: colorLightGreen,
                       ),
-                  ],
-                ),
-                AppSpacer.verticalSmallSpace,
-                Text(true ? 'Çevirimiçi' : 'Çevirimdışı',
-                    style: _themeData!.textTheme.bodyText1!
-                        .copyWith(color: true ? colorLightGreen : colorHint)),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      message.timestamp,
-                      style: _themeData!.textTheme.caption!
-                          .copyWith(color: colorHint),
+                      alignment: Alignment.center,
+                      width: AppSizer.circleSmall,
+                      height: AppSizer.circleSmall,
+                      child: Text(unseensCount.toString()),
                     ),
-                    AppSpacer.horizontalMediumSpace,
-                  ],
-                ),
-                AppSpacer.verticalSmallSpace,
-                Text(message.message,
-                    overflow: TextOverflow.ellipsis,
-                    style: _themeData!.textTheme.bodyText1!.copyWith(
-                        color: Colors.black,
-                        fontWeight: true ? FontWeight.w700 : FontWeight.normal))
-              ],
-            )
-          ],
-        ),
-      );
+                ],
+              ),
+              AppSpacer.verticalSmallSpace,
+              Text(true ? 'Çevirimiçi' : 'Çevirimdışı',
+                  style: _themeData!.textTheme.bodyText1!
+                      .copyWith(color: true ? colorLightGreen : colorHint)),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    formatDate,
+                    style: _themeData!.textTheme.caption!
+                        .copyWith(color: colorHint),
+                  ),
+                  AppSpacer.horizontalMediumSpace,
+                ],
+              ),
+              AppSpacer.verticalSmallSpace,
+              Text(message.message,
+                  overflow: TextOverflow.ellipsis,
+                  style: _themeData!.textTheme.bodyText1!.copyWith(
+                      color: Colors.black,
+                      fontWeight: true ? FontWeight.w700 : FontWeight.normal))
+            ],
+          )
+        ],
+      ),
+    );
+  }
 
   Widget get _buildCardRightSide => SizedBox(
         height: AppSizer.cardLarge,

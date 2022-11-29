@@ -115,6 +115,8 @@ class DatabaseService {
     result
         .collection('messages')
         .add({
+          'is_file': false,
+          'file_path': null,
           'is_seens': false,
           'message': 'hello',
           'sender_id': currentUid,
@@ -146,17 +148,20 @@ class DatabaseService {
     return status;
   }
 
-  Future<List<String>> getConversations() async {
-    var members = <String>[];
+  Future<List<Map<String, dynamic>>> getConversations() async {
+    var members = <Map<String, dynamic>>[];
     var result = await _db
         .collection('conversations')
         .where('members', arrayContains: AuthService.instance.currentUser!.uid)
         .get();
 
     for (var element in result.docs) {
-      members =
-          (element.data()['members'] as List).map<String>((e) => e).toList();
-      members.remove(AuthService.instance.currentUser!.uid);
+      members.add({
+        'conversationId': element.id,
+        'members': (element.data()['members'] as List).where((e) {
+          return e != AuthService.instance.currentUser!.uid;
+        }).toList()
+      });
     }
 
     return members;
@@ -178,5 +183,31 @@ class DatabaseService {
         .collection('conversations')
         .where('members', arrayContains: reciverUid)
         .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getChatMessages(conversationId) {
+    return _db
+        .collection('conversations')
+        .doc(conversationId)
+        .collection('messages')
+        .snapshots();
+  }
+
+  Future<bool> putMessage(
+      conversationId, message, bool isFile, String? filePath) {
+    return _db
+        .collection('conversations')
+        .doc(conversationId)
+        .collection('messages')
+        .add({
+          'is_seens': false,
+          'is_file': isFile,
+          'file_path': filePath,
+          'message': !isFile ? message : filePath?.split('/').last,
+          'sender_id': AuthService.instance.currentUser!.uid,
+          'timestamp': DateTime.now()
+        })
+        .then((value) => true)
+        .onError((error, stackTrace) => false);
   }
 }
