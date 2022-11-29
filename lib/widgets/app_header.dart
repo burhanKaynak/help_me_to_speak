@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -56,7 +57,10 @@ class AppHeaderState extends State<AppHeader> {
         children: [
           Row(
             children: [
-              if (widget.backButton) const FaIcon(FontAwesomeIcons.chevronLeft),
+              if (widget.backButton)
+                InkWell(
+                    onTap: () => context.router.pop(),
+                    child: const FaIcon(FontAwesomeIcons.chevronLeft)),
               if (widget.backButton) AppSpacer.horizontalSmallSpace,
               ValueListenableBuilder(
                   valueListenable: _titleNotifier,
