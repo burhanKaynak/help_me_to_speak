@@ -1,22 +1,21 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../../../core/bloc/rezervation_bloc/rezervation_bloc.dart';
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_sizer.dart';
+import '../../../core/models/response/rezervation_model.dart';
 import '../../../themes/project_themes.dart';
 import '../../../widgets/app_divider.dart';
 import '../../../widgets/app_header.dart';
 
-class TranslatorAppointmentView extends StatefulWidget {
-  const TranslatorAppointmentView({super.key});
+class TranslatorRezervationView extends StatelessWidget {
+  final String translatorId;
+  const TranslatorRezervationView({super.key, required this.translatorId});
 
-  @override
-  State<TranslatorAppointmentView> createState() =>
-      _TranslatorAppointmentViewState();
-}
-
-class _TranslatorAppointmentViewState extends State<TranslatorAppointmentView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,14 +23,44 @@ class _TranslatorAppointmentViewState extends State<TranslatorAppointmentView> {
         title: 'Randevu Al',
         backButton: true,
       ),
-      body: Column(
-        children: [
-          // AppCard(topDivider: false, chat: null),
-          AppDivider(
-              height: AppSizer.dividerH,
-              tickness: AppSizer.dividerTicknessSmall),
-          Expanded(
-            child: Padding(
+      body: BlocProvider(
+        create: (context) =>
+            RezervationBloc()..add(GetRezervation(translatorId)),
+        child: TranslatorRezervationViewController(translatorId: translatorId),
+      ),
+    );
+  }
+}
+
+class TranslatorRezervationViewController extends StatefulWidget {
+  final String translatorId;
+  const TranslatorRezervationViewController(
+      {super.key, required this.translatorId});
+
+  @override
+  State<TranslatorRezervationViewController> createState() =>
+      _TranslatorRezervationViewControllerState();
+}
+
+class _TranslatorRezervationViewControllerState
+    extends State<TranslatorRezervationViewController> {
+  final DateRangePickerController _dateRangePickerController =
+      DateRangePickerController();
+
+  @override
+  void initState() {
+    _dateRangePickerController.selectedDates = [];
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AppDivider(
+            height: AppSizer.dividerH, tickness: AppSizer.dividerTicknessSmall),
+        Expanded(
+          child: Padding(
               padding: AppPadding.layoutPadding,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -41,21 +70,34 @@ class _TranslatorAppointmentViewState extends State<TranslatorAppointmentView> {
                     style: Theme.of(context).textTheme.headline5!.copyWith(
                         color: colorDarkGreen, fontWeight: FontWeight.w400),
                   ),
-                  _buildCalendar,
-                  _buildFooter
+                  const Spacer(),
+                  Expanded(flex: 7, child: _rezervationBlocBuilder()),
+                  Expanded(child: _buildFooter)
                 ],
-              ),
-            ),
-          ),
-        ],
-      ),
+              )),
+        ),
+      ],
     );
   }
 
-  Widget get _buildCalendar => SfDateRangePicker(
+  BlocBuilder<RezervationBloc, RezervationState> _rezervationBlocBuilder() {
+    return BlocBuilder<RezervationBloc, RezervationState>(
+      builder: (context, state) {
+        if (state is RezervationLoaded) {
+          _dateRangePickerController.selectedDates = [];
+          return _buildCalendar(state.data);
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  Widget _buildCalendar(Rezervation data) => SfDateRangePicker(
+        selectionMode: DateRangePickerSelectionMode.multiple,
         endRangeSelectionColor: colorLightGreen,
+        controller: _dateRangePickerController,
         startRangeSelectionColor: colorLightGreen,
-        rangeSelectionColor: colorLightGreen.withOpacity(0.4),
+        selectionColor: colorLightGreen,
         selectionTextStyle: Theme.of(context)
             .textTheme
             .subtitle1!
@@ -82,18 +124,24 @@ class _TranslatorAppointmentViewState extends State<TranslatorAppointmentView> {
                 const BoxDecoration(color: colorHint, shape: BoxShape.circle)),
         enablePastDates: false,
         showTodayButton: false,
-        selectableDayPredicate: (date) {
-          if (date.day == DateTime.now().day + 2) {
-            return false;
-          }
-          return true;
+        selectableDayPredicate: (dateTime) {
+          var busyDate = data.busyDate!.firstWhereOrNull((e) =>
+              e.year == dateTime.year &&
+              e.month == dateTime.month &&
+              e.day == dateTime.day);
+
+          var rezervationDate = data.rezervationDate!.firstWhereOrNull((e) =>
+              e.year == dateTime.year &&
+              e.month == dateTime.month &&
+              e.day == dateTime.day);
+
+          return (busyDate == null && rezervationDate == null) ? true : false;
         },
         headerStyle: DateRangePickerHeaderStyle(
             textStyle: Theme.of(context).textTheme.headline6,
             backgroundColor: colorLightGreen,
             textAlign: TextAlign.center),
         allowViewNavigation: true,
-        selectionMode: DateRangePickerSelectionMode.range,
       );
 
   Widget get _buildFooter => Row(
@@ -138,10 +186,16 @@ class _TranslatorAppointmentViewState extends State<TranslatorAppointmentView> {
             ],
           ),
           ElevatedButton(
-              onPressed: null,
+              onPressed: () {
+                if (_dateRangePickerController.selectedDates!.isNotEmpty) {
+                  context.read<RezervationBloc>().add(SetRezervation(
+                      widget.translatorId,
+                      _dateRangePickerController.selectedDates!));
+                }
+              },
               child: Row(
                 children: [
-                  const Text('Devam'),
+                  const Text('Kaydet'),
                   FaIcon(
                     FontAwesomeIcons.chevronRight,
                     size: AppSizer.iconSmall,

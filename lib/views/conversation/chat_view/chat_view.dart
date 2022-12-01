@@ -19,6 +19,7 @@ import '../../../core/const/app_radius.dart';
 import '../../../core/const/app_sizer.dart';
 import '../../../core/const/app_spacer.dart';
 import '../../../core/models/response/message_model.dart';
+import '../../../core/router/app_router.gr.dart';
 import '../../../themes/project_themes.dart';
 import '../../../widgets/app_divider.dart';
 import '../../../widgets/app_header.dart';
@@ -62,6 +63,8 @@ class _ChatViewState extends State<ChatView>
             const FaIcon(FontAwesomeIcons.video),
           ],
         ),
+        onTapTitle: () => context.router
+            .push(TranslatorRezervationRoute(translatorId: widget.userId)),
         title: 'Angelina',
         backButton: true,
       ),

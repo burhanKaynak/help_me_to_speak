@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:help_me_to_speak/core/models/response/customer_model.dart';
 import 'package:help_me_to_speak/core/models/response/language_model.dart';
+import 'package:help_me_to_speak/core/models/response/rezervation_model.dart';
 import 'package:help_me_to_speak/core/repository/repository.dart';
 import 'package:help_me_to_speak/core/service/auth_service.dart';
 
@@ -209,5 +210,43 @@ class DatabaseService {
         })
         .then((value) => true)
         .onError((error, stackTrace) => false);
+  }
+
+  Future<Rezervation> getRezervation(translatorId) async {
+    var ref = _db.collection('rezervations').doc(translatorId);
+    var doc = await ref.get();
+    var subCollection = await ref.collection('rezervation_dates').get();
+
+    Map<String, dynamic>? busyDates = doc.data();
+    var items = subCollection.docs.map((e) {
+      return e.data()['rezervation_date'];
+    });
+
+    for (var item in items) {
+      if (busyDates!.containsKey('rezervation_date')) {
+        busyDates['rezervation_date'].addAll(item);
+      } else {
+        busyDates.putIfAbsent('rezervation_date', () => item);
+      }
+    }
+
+    var data = Rezervation.fromJson(busyDates!);
+    return data;
+  }
+
+  Future<bool> setRezervation(
+      translatorId, List<DateTime> rezervationDates) async {
+    var result = await _db
+        .collection('rezervations')
+        .doc(translatorId)
+        .collection('rezervation_dates')
+        .add({
+          'customer_id': AuthService.instance.currentUser!.uid,
+          'rezervation_date': rezervationDates
+        })
+        .then((value) => true)
+        .onError((error, stackTrace) => false);
+
+    return result;
   }
 }

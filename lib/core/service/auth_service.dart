@@ -10,6 +10,9 @@ class AuthService {
   Customer? _customer;
   late AuthStatus _status;
 
+  User? get currentUser => _auth.currentUser;
+  Customer? get getCustomer => _customer;
+
   Future<AuthStatus> login({
     required String email,
     required String password,
@@ -59,6 +62,15 @@ class AuthService {
     return _status;
   }
 
+  Future<AuthStatus> changePassword({required String newPassword}) async {
+    await currentUser!
+        .updatePassword(newPassword)
+        .then((value) => _status = AuthStatus.successful)
+        .catchError(
+            (e) => _status = AuthExceptionHandler.handleAuthException(e));
+    return _status;
+  }
+
   Future<AuthStatus> sendMailVerification() {
     _auth.currentUser!
         .sendEmailVerification()
@@ -74,9 +86,6 @@ class AuthService {
     return _auth.currentUser!.emailVerified;
   }
 
-  User? get currentUser => _auth.currentUser;
-
-  Customer? get getCustomer => _customer;
   Future<bool> setCustomer() async {
     if (_auth.currentUser != null) {
       _customer =

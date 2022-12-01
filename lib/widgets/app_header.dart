@@ -12,6 +12,7 @@ import '../core/const/app_spacer.dart';
 import '../themes/project_themes.dart';
 
 class AppHeader extends StatefulWidget implements PreferredSizeWidget {
+  final VoidCallback? onTapTitle;
   final bool backButton;
   final String title;
   final Widget rightChild;
@@ -20,7 +21,8 @@ class AppHeader extends StatefulWidget implements PreferredSizeWidget {
       {super.key,
       this.backButton = false,
       required this.title,
-      this.rightChild = const SizedBox.shrink()});
+      this.rightChild = const SizedBox.shrink(),
+      this.onTapTitle});
 
   @override
   State<AppHeader> createState() => AppHeaderState();
@@ -73,13 +75,16 @@ class AppHeaderState extends State<AppHeader> {
                           );
                         },
                         duration: const Duration(milliseconds: 400),
-                        child: Text(
-                          value,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline5!
-                              .copyWith(color: colorDarkGreen),
-                          key: ValueKey<String>(value),
+                        child: InkWell(
+                          onTap: widget.onTapTitle,
+                          child: Text(
+                            value,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5!
+                                .copyWith(color: colorDarkGreen),
+                            key: ValueKey<String>(value),
+                          ),
                         ),
                       ))
             ],

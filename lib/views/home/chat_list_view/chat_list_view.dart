@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:help_me_to_speak/core/bloc/conversation_bloc/conversation_bloc.dart';
-import 'package:help_me_to_speak/core/service/auth_service.dart';
 import 'package:help_me_to_speak/widgets/app_card.dart';
 
 import '../../../core/const/app_padding.dart';
@@ -59,7 +58,7 @@ class _ChatListViewState extends State<ChatListView> {
                       .map((e) => InkWell(
                           onTap: () => context.router.push(ChatRoute(
                                 conversationId: e.conversationId,
-                                userId: AuthService.instance.currentUser!.uid,
+                                userId: e.customer.uid!,
                               )),
                           child: AppCard(chat: e)))
                       .toList(),
