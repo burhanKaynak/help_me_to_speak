@@ -3,7 +3,8 @@ enum RoutePath {
   welcome('/welcome'),
   auth('/auth'),
   home('/home'),
-  chat('/chat');
+  chat('/chat'),
+  nationalitySelectionMain('/nationalitySelectionMain');
 
   final String value;
   const RoutePath(this.value);

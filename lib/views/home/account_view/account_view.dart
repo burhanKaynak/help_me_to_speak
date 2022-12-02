@@ -79,7 +79,8 @@ class _AccountViewState extends State<AccountView> {
               text: 'Yardım',
               prefix: const FaIcon(FontAwesomeIcons.circleInfo)),
           buildButton(
-              onPressed: null,
+              onPressed: () => context.router
+                  .pushNamed(RoutePath.nationalitySelectionMain.value),
               text: 'Destek Dil Değiştir ',
               prefix: const FaIcon(FontAwesomeIcons.globe)),
           buildButton(

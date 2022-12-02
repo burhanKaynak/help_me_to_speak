@@ -79,6 +79,13 @@ class DatabaseService {
     return customers;
   }
 
+  Future<List<Language>> getLanguages() async {
+    var result = await _db.collection('languages').get();
+    List<Language> languages =
+        result.docs.map((e) => Language.fromJson(e.data())).toList();
+    return languages;
+  }
+
   Future<Language> getCustomerNativeLanguage(DocumentReference ref) async {
     var result = await ref.get();
     Language language =
