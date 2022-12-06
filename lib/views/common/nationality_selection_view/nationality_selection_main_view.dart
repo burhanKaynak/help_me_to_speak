@@ -30,6 +30,7 @@ class _NationalitySelectionViewState extends State<NationalitySelectionView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: const AppHeader(
           title: 'Ülke Ve Dil Seçimi',
         ),
@@ -56,8 +57,14 @@ class _NationalitySelectionViewState extends State<NationalitySelectionView> {
                   physics: const NeverScrollableScrollPhysics(),
                   onPageChanged: (value) => _pageNotifier.value = value,
                   children: [
-                    LiveCityAndLanguageSelectionTab(data: state.data),
-                    SupportLanguagesSelectionTab(data: state.data)
+                    LiveCityAndLanguageSelectionTab(
+                      data: state.data,
+                      countryCubit: _countryCubit,
+                    ),
+                    SupportLanguagesSelectionTab(
+                      data: state.data,
+                      countryCubit: _countryCubit,
+                    )
                   ],
                   controller: _pageController,
                 )),
@@ -93,10 +100,17 @@ class _NationalitySelectionViewState extends State<NationalitySelectionView> {
                 ],
               )),
           ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (_pageController.page! > 0) {
+                  if (await _countryCubit.setCountryAndLanguages()) {
+                    context.router.pop();
+                  }
                   return;
                 }
+
+                if (_countryCubit.selectedCountry.value.isEmpty ||
+                    _countryCubit.selectedNativeLanguage.value.isEmpty) return;
+
                 _changePage(true);
               },
               child: Row(

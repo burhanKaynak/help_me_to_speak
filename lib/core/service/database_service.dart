@@ -79,13 +79,6 @@ class DatabaseService {
     return customers;
   }
 
-  Future<List<Language>> getLanguages() async {
-    var result = await _db.collection('languages').get();
-    List<Language> languages =
-        result.docs.map((e) => Language.fromJson(e.data())).toList();
-    return languages;
-  }
-
   Future<Language> getCustomerNativeLanguage(DocumentReference ref) async {
     var result = await ref.get();
     Language language =
@@ -253,6 +246,64 @@ class DatabaseService {
         })
         .then((value) => true)
         .onError((error, stackTrace) => false);
+
+    return result;
+  }
+
+  Future<List<Language>> getLanguages() async {
+    var result = await _db.collection('languages').get();
+    List<Language> languages = result.docs.map((e) {
+      var params = e.data();
+      params.putIfAbsent('doc_id', () => e.id);
+
+      return Language.fromJson(params);
+    }).toList();
+    return languages;
+  }
+
+  Future<List<Language>> getLanguagesFromRef(
+      List<DocumentReference>? refs) async {
+    var list = <Language>[];
+
+    for (var ref in refs!) {
+      var doc = await ref.get();
+      var params = doc.data() as Map<String, dynamic>;
+      params.putIfAbsent('doc_id', () => doc.id);
+
+      list.add(Language.fromJson(params));
+    }
+
+    return list;
+  }
+
+  Future<bool> setCountryAndLanguages({
+    required Language country,
+    required List<Language> languages,
+    required List<Language> supportLanguages,
+  }) async {
+    var referance =
+        _db.collection('customers').doc(AuthService.instance.currentUser!.uid);
+
+    await referance.update({
+      'country': FieldValue.delete(),
+      'native_languages': FieldValue.delete(),
+      'support_languages': FieldValue.delete()
+    });
+
+    var result = await referance
+        .update({
+          'country': _db.collection('languages').doc(country.docId),
+          'native_languages': languages
+              .map((e) => _db.collection('languages').doc(e.docId))
+              .toList(),
+          'support_languages': supportLanguages
+              .map((e) => _db.collection('languages').doc(e.docId))
+              .toList(),
+        })
+        .then((value) => true)
+        .onError((error, stackTrace) => false);
+
+    await AuthService.instance.setCustomer();
 
     return result;
   }

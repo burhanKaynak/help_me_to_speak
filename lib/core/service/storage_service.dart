@@ -21,6 +21,14 @@ class StorageService {
     return path;
   }
 
+  Future<String> putImage(File file) async {
+    var path =
+        'images/${AuthService.instance.currentUser!.uid}${AuthService.instance.currentUser!.uid}';
+    var result = await _storage.ref(path).putFile(file);
+    var url = await result.ref.getDownloadURL();
+    return url;
+  }
+
   Future<Uri> downloadFile(String path, String conversationId) async {
     final fileFromStorage = await _storage.ref().child(path).getDownloadURL();
     return Uri.parse(fileFromStorage);

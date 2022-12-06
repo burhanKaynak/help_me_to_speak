@@ -1,9 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:help_me_to_speak/core/enum/app_route_path_enum.dart';
+import 'package:help_me_to_speak/core/mixin/file_picker_mix.dart';
 import 'package:help_me_to_speak/core/service/auth_service.dart';
 import 'package:help_me_to_speak/core/service/database_service.dart';
+import 'package:help_me_to_speak/core/service/storage_service.dart';
 import 'package:help_me_to_speak/widgets/app_circle_image.dart';
 import 'package:help_me_to_speak/widgets/app_shimmer.dart';
 
@@ -22,10 +25,11 @@ class AccountView extends StatefulWidget {
   State<AccountView> createState() => _AccountViewState();
 }
 
-class _AccountViewState extends State<AccountView> {
+class _AccountViewState extends State<AccountView> with FilePickerMix {
   final AuthService _authService = AuthService.instance;
-  final String _defAvatar =
-      'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png';
+  late final ValueNotifier<String> _avatar = ValueNotifier(_authService
+          .currentUser?.photoURL ??
+      'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png');
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -75,7 +79,8 @@ class _AccountViewState extends State<AccountView> {
               text: 'Şifre Değiştir',
               prefix: const FaIcon(FontAwesomeIcons.key)),
           buildButton(
-              onPressed: null,
+              onPressed: () =>
+                  context.router.pushNamed(RoutePath.helpCenterList.value),
               text: 'Yardım',
               prefix: const FaIcon(FontAwesomeIcons.circleInfo)),
           buildButton(
@@ -95,21 +100,27 @@ class _AccountViewState extends State<AccountView> {
 
   Widget _buildAvatar(BuildContext context) => Stack(
         children: [
-          AppCircleAvatar(
-              url: _authService.currentUser?.photoURL ?? _defAvatar),
+          ValueListenableBuilder(
+              valueListenable: _avatar,
+              builder: (context, value, child) {
+                return AppCircleAvatar(url: value);
+              }),
           Positioned(
               right: 0,
               bottom: 0,
-              child: Container(
-                alignment: Alignment.center,
-                width: AppSizer.circleMedium,
-                height: AppSizer.circleMedium,
-                decoration: BoxDecoration(
-                    color: colorDarkGreen,
-                    borderRadius: AppRadius.circleRadius),
-                child: FaIcon(
-                  FontAwesomeIcons.pencil,
-                  size: AppSizer.iconSmall,
+              child: InkWell(
+                onTap: updateProfileImage,
+                child: Container(
+                  alignment: Alignment.center,
+                  width: AppSizer.circleMedium,
+                  height: AppSizer.circleMedium,
+                  decoration: BoxDecoration(
+                      color: colorDarkGreen,
+                      borderRadius: AppRadius.circleRadius),
+                  child: FaIcon(
+                    FontAwesomeIcons.pencil,
+                    size: AppSizer.iconSmall,
+                  ),
                 ),
               )),
         ],
@@ -132,4 +143,11 @@ class _AccountViewState extends State<AccountView> {
               ),
         )
       ]));
+
+  Future<void> updateProfileImage() async {
+    var file = await pickFiles(type: FileType.image);
+    var path = await StorageService.instance.putImage(file!);
+    AuthService.instance.updateProfileImage(path);
+    _avatar.value = AuthService.instance.currentUser!.photoURL!;
+  }
 }

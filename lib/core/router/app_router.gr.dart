@@ -11,52 +11,54 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i8;
-import 'package:flutter/material.dart' as _i9;
+import 'package:auto_route/auto_route.dart' as _i9;
+import 'package:flutter/material.dart' as _i10;
 
 import '../../views/auth/auth_view/auth_view.dart' as _i3;
 import '../../views/auth/welcome_view/welcome_view.dart' as _i2;
+import '../../views/common/help_center_list_view/help_center_list_view.dart'
+    as _i6;
 import '../../views/common/nationality_selection_view/nationality_selection_main_view.dart'
-    as _i7;
+    as _i8;
 import '../../views/common/splash_view/splash_view.dart' as _i1;
 import '../../views/conversation/chat_view/chat_view.dart' as _i5;
 import '../../views/home/home_view.dart' as _i4;
 import '../../views/home/translator_appointment_view/translator_rezervation_view.dart'
-    as _i6;
+    as _i7;
 
-class AppRouter extends _i8.RootStackRouter {
-  AppRouter([_i9.GlobalKey<_i9.NavigatorState>? navigatorKey])
+class AppRouter extends _i9.RootStackRouter {
+  AppRouter([_i10.GlobalKey<_i10.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i8.PageFactory> pagesMap = {
+  final Map<String, _i9.PageFactory> pagesMap = {
     SplashRoute.name: (routeData) {
-      return _i8.MaterialPageX<dynamic>(
+      return _i9.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i1.SplashView(),
       );
     },
     WelcomeRoute.name: (routeData) {
-      return _i8.MaterialPageX<dynamic>(
+      return _i9.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i2.WelcomeView(),
       );
     },
     AuthRoute.name: (routeData) {
-      return _i8.MaterialPageX<dynamic>(
+      return _i9.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i3.AuthView(),
       );
     },
     HomeRoute.name: (routeData) {
-      return _i8.MaterialPageX<dynamic>(
+      return _i9.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i4.HomeView(),
       );
     },
     ChatRoute.name: (routeData) {
       final args = routeData.argsAs<ChatRouteArgs>();
-      return _i8.MaterialPageX<dynamic>(
+      return _i9.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i5.ChatView(
           key: args.key,
@@ -65,57 +67,67 @@ class AppRouter extends _i8.RootStackRouter {
         ),
       );
     },
+    HelpCenterListRoute.name: (routeData) {
+      return _i9.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i6.HelpCenterListView(),
+      );
+    },
     TranslatorRezervationRoute.name: (routeData) {
       final args = routeData.argsAs<TranslatorRezervationRouteArgs>();
-      return _i8.MaterialPageX<dynamic>(
+      return _i9.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i6.TranslatorRezervationView(
+        child: _i7.TranslatorRezervationView(
           key: args.key,
           translatorId: args.translatorId,
         ),
       );
     },
     NationalitySelectionRoute.name: (routeData) {
-      return _i8.MaterialPageX<dynamic>(
+      return _i9.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i7.NationalitySelectionView(),
+        child: const _i8.NationalitySelectionView(),
       );
     },
   };
 
   @override
-  List<_i8.RouteConfig> get routes => [
-        _i8.RouteConfig(
+  List<_i9.RouteConfig> get routes => [
+        _i9.RouteConfig(
           '/#redirect',
           path: '/',
           redirectTo: '/splash',
           fullMatch: true,
         ),
-        _i8.RouteConfig(
+        _i9.RouteConfig(
           SplashRoute.name,
           path: '/splash',
         ),
-        _i8.RouteConfig(
+        _i9.RouteConfig(
           WelcomeRoute.name,
           path: '/welcome',
         ),
-        _i8.RouteConfig(
+        _i9.RouteConfig(
           AuthRoute.name,
           path: '/auth',
         ),
-        _i8.RouteConfig(
+        _i9.RouteConfig(
           HomeRoute.name,
           path: '/home',
         ),
-        _i8.RouteConfig(
+        _i9.RouteConfig(
           ChatRoute.name,
           path: '/chat',
         ),
-        _i8.RouteConfig(
+        _i9.RouteConfig(
+          HelpCenterListRoute.name,
+          path: '/helpCenterList',
+        ),
+        _i9.RouteConfig(
           TranslatorRezervationRoute.name,
           path: '/rezervation',
         ),
-        _i8.RouteConfig(
+        _i9.RouteConfig(
           NationalitySelectionRoute.name,
           path: '/nationalitySelectionMain',
         ),
@@ -124,7 +136,7 @@ class AppRouter extends _i8.RootStackRouter {
 
 /// generated route for
 /// [_i1.SplashView]
-class SplashRoute extends _i8.PageRouteInfo<void> {
+class SplashRoute extends _i9.PageRouteInfo<void> {
   const SplashRoute()
       : super(
           SplashRoute.name,
@@ -136,7 +148,7 @@ class SplashRoute extends _i8.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.WelcomeView]
-class WelcomeRoute extends _i8.PageRouteInfo<void> {
+class WelcomeRoute extends _i9.PageRouteInfo<void> {
   const WelcomeRoute()
       : super(
           WelcomeRoute.name,
@@ -148,7 +160,7 @@ class WelcomeRoute extends _i8.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.AuthView]
-class AuthRoute extends _i8.PageRouteInfo<void> {
+class AuthRoute extends _i9.PageRouteInfo<void> {
   const AuthRoute()
       : super(
           AuthRoute.name,
@@ -160,7 +172,7 @@ class AuthRoute extends _i8.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.HomeView]
-class HomeRoute extends _i8.PageRouteInfo<void> {
+class HomeRoute extends _i9.PageRouteInfo<void> {
   const HomeRoute()
       : super(
           HomeRoute.name,
@@ -172,9 +184,9 @@ class HomeRoute extends _i8.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.ChatView]
-class ChatRoute extends _i8.PageRouteInfo<ChatRouteArgs> {
+class ChatRoute extends _i9.PageRouteInfo<ChatRouteArgs> {
   ChatRoute({
-    _i9.Key? key,
+    _i10.Key? key,
     required String userId,
     required String conversationId,
   }) : super(
@@ -197,7 +209,7 @@ class ChatRouteArgs {
     required this.conversationId,
   });
 
-  final _i9.Key? key;
+  final _i10.Key? key;
 
   final String userId;
 
@@ -210,11 +222,23 @@ class ChatRouteArgs {
 }
 
 /// generated route for
-/// [_i6.TranslatorRezervationView]
+/// [_i6.HelpCenterListView]
+class HelpCenterListRoute extends _i9.PageRouteInfo<void> {
+  const HelpCenterListRoute()
+      : super(
+          HelpCenterListRoute.name,
+          path: '/helpCenterList',
+        );
+
+  static const String name = 'HelpCenterListRoute';
+}
+
+/// generated route for
+/// [_i7.TranslatorRezervationView]
 class TranslatorRezervationRoute
-    extends _i8.PageRouteInfo<TranslatorRezervationRouteArgs> {
+    extends _i9.PageRouteInfo<TranslatorRezervationRouteArgs> {
   TranslatorRezervationRoute({
-    _i9.Key? key,
+    _i10.Key? key,
     required String translatorId,
   }) : super(
           TranslatorRezervationRoute.name,
@@ -234,7 +258,7 @@ class TranslatorRezervationRouteArgs {
     required this.translatorId,
   });
 
-  final _i9.Key? key;
+  final _i10.Key? key;
 
   final String translatorId;
 
@@ -245,8 +269,8 @@ class TranslatorRezervationRouteArgs {
 }
 
 /// generated route for
-/// [_i7.NationalitySelectionView]
-class NationalitySelectionRoute extends _i8.PageRouteInfo<void> {
+/// [_i8.NationalitySelectionView]
+class NationalitySelectionRoute extends _i9.PageRouteInfo<void> {
   const NationalitySelectionRoute()
       : super(
           NationalitySelectionRoute.name,

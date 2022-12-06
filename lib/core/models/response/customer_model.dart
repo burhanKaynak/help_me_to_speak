@@ -6,18 +6,24 @@ part 'customer_model.g.dart';
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Customer {
-  final String? uid, email, displayName, photoUrl;
+  final String? uid, email, displayName;
+  String? photoUrl;
 
   @DocumentConverter()
-  final DocumentReference? nativeLanguage;
+  final List<DocumentReference>? nativeLanguages, supportLanguages;
+  @DocumentConverter()
+  final DocumentReference? country;
+
   final int? phoneNumber, type;
   final bool? isApproved;
 
   Customer(
       {required this.email,
       required this.uid,
+      this.country,
+      this.supportLanguages,
       this.isApproved,
-      this.nativeLanguage,
+      this.nativeLanguages,
       required this.displayName,
       required this.photoUrl,
       required this.phoneNumber,

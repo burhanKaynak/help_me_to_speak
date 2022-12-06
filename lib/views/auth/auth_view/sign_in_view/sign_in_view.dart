@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:help_me_to_speak/core/enum/app_route_path_enum.dart';
@@ -12,6 +13,7 @@ import 'package:help_me_to_speak/core/utils/utils.dart';
 import '../../../../core/const/app_padding.dart';
 import '../../../../core/const/app_sizer.dart';
 import '../../../../core/const/app_spacer.dart';
+import '../../../../core/locale/locale_keys.g.dart';
 import '../../../../themes/project_themes.dart';
 import '../../../../widgets/app_buttons.dart';
 import '../../../../widgets/app_divider.dart';
@@ -59,7 +61,7 @@ class _SingInViewState extends State<SingInView> {
                       children: [
                         AppTextFormField(
                           onSaved: (val) => _loginModel.email = val,
-                          hint: 'Email',
+                          hint: LocaleKeys.email.tr(),
                           keyboardType: TextInputType.emailAddress,
                         ),
                         AppSpacer.verticalMediumSpace,
@@ -71,10 +73,11 @@ class _SingInViewState extends State<SingInView> {
                   ),
                 ),
               ),
-              child: const Text('Şifremi unuttum'),
+              child: Text(LocaleKeys.forgot_password.tr()),
             ),
           ),
-          buildButton(onPressed: _submitLoginForm, text: 'Giriş Yap'),
+          buildButton(
+              onPressed: _submitLoginForm, text: LocaleKeys.sign_in.tr()),
           AppOrDivider(
             height: AppSizer.dividerH,
             tickness: AppSizer.dividerTicknessSmall,
@@ -83,7 +86,8 @@ class _SingInViewState extends State<SingInView> {
           Align(
               alignment: Alignment.bottomCenter,
               child: TextButton(
-                  onPressed: widget.onTapSignUp, child: const Text('Kayıt Ol')))
+                  onPressed: widget.onTapSignUp,
+                  child: Text(LocaleKeys.sign_up.tr())))
         ],
       );
 
@@ -136,14 +140,14 @@ class _SingInViewState extends State<SingInView> {
             initialValue: _loginModel.email,
             onChanged: (val) => _loginModel.email = val,
             onSaved: (val) => _loginModel.email = val,
-            hint: 'Email',
+            hint: LocaleKeys.email.tr(),
             keyboardType: TextInputType.emailAddress,
           ),
           AppSpacer.verticalSmallSpace,
           AppTextFormField(
             initialValue: _loginModel.password,
             onChanged: (val) => _loginModel.password = val,
-            hint: 'Password',
+            hint: LocaleKeys.password.tr(),
             onSaved: (val) => _loginModel.password = val,
             obscureText: true,
             keyboardType: TextInputType.visiblePassword,
@@ -188,7 +192,8 @@ class _SingInViewState extends State<SingInView> {
               icon: const Icon(
                 FontAwesomeIcons.google,
               ),
-              text: 'Google ile giriş yap'),
+              text: LocaleKeys.sign_in_with_paltform
+                  .tr(namedArgs: {'platform': 'Google'})),
           AppSpacer.verticalSmallSpace,
           buildSignWithAnotherPlatform(context,
               color: Colors.white,
@@ -197,13 +202,15 @@ class _SingInViewState extends State<SingInView> {
                 FontAwesomeIcons.apple,
                 color: Colors.black,
               ),
-              text: 'Apple ile giriş yap'),
+              text: LocaleKeys.sign_in_with_paltform
+                  .tr(namedArgs: {'platform': 'Apple'})),
           AppSpacer.verticalSmallSpace,
           buildSignWithAnotherPlatform(
               color: Colors.indigo,
               icon: const Icon(FontAwesomeIcons.facebookF),
               context,
-              text: 'Facebook ile giriş yap'),
+              text: LocaleKeys.sign_in_with_paltform
+                  .tr(namedArgs: {'platform': 'Facebook'})),
         ],
       );
 }

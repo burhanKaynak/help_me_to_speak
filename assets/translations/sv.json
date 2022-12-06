@@ -1,0 +1,19 @@
+{
+    "welcome_page":{
+        "they_are_here":"Översättare finns här för dig 24/7",
+        "great_translator":"Bra översättare för alla",
+        "anytime_you":"När du behöver det...",
+        "instant_help":"Omedelbar hjälp medan du pratar"
+    },
+
+    "skip":"Hoppa",
+    "full_name":"Namn efternamn",
+    "or":"Eller",
+    "sign_in_with_paltform":"Logga in med {platform}",
+    "sign_up_with_paltform":"Registrera dig hos {platform}",
+    "sign_in":"Logga in",
+    "sign_up":"Registrera",
+    "email":"E-post",
+    "password":"Lösenord",
+    "forgot_password":"Jag har glömt mitt lösenord"
+}

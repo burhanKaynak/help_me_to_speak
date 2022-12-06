@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:help_me_to_speak/views/auth/auth_view/auth_view.dart';
 import 'package:help_me_to_speak/views/auth/welcome_view/welcome_view.dart';
+import 'package:help_me_to_speak/views/common/help_center_list_view/help_center_list_view.dart';
 import 'package:help_me_to_speak/views/common/splash_view/splash_view.dart';
 import 'package:help_me_to_speak/views/conversation/chat_view/chat_view.dart';
 import 'package:help_me_to_speak/views/home/home_view.dart';
@@ -16,6 +17,7 @@ import '../../views/common/nationality_selection_view/nationality_selection_main
     AutoRoute(page: AuthView, path: '/auth'),
     AutoRoute(page: HomeView, path: '/home'),
     AutoRoute(page: ChatView, path: '/chat'),
+    AutoRoute(page: HelpCenterListView, path: '/helpCenterList'),
     AutoRoute(page: TranslatorRezervationView, path: '/rezervation'),
     AutoRoute(
       page: NationalitySelectionView,

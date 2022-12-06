@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/const/app_padding.dart';
+import '../../../core/locale/locale_keys.g.dart';
 import 'sign_in_view/sign_in_view.dart';
 import 'sign_up_view/sign_up_view.dart';
 
@@ -17,7 +19,7 @@ class _AuthViewState extends State<AuthView> {
       PageController(initialPage: 0, keepPage: false, viewportFraction: 1);
   late int _currentPage;
   final ValueNotifier<String> _pageNameNotifier =
-      ValueNotifier<String>('Hesap Oluştur');
+      ValueNotifier<String>(LocaleKeys.sign_in.tr());
 
   bool _animationComplated = true;
 
@@ -42,9 +44,9 @@ class _AuthViewState extends State<AuthView> {
                     controller: _pageController,
                     onPageChanged: (value) {
                       if (value == 0) {
-                        _pageNameNotifier.value = 'Hesap Oluştur';
+                        _pageNameNotifier.value = LocaleKeys.sign_in.tr();
                       } else {
-                        _pageNameNotifier.value = 'Giriş Yap';
+                        _pageNameNotifier.value = LocaleKeys.sign_up.tr();
                       }
                     },
                     itemCount: 2,

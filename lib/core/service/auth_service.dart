@@ -33,6 +33,11 @@ class AuthService {
     await _auth.signOut();
   }
 
+  Stream<void> updateProfileImage(String path) {
+    _customer!.photoUrl = path;
+    return _auth.currentUser!.updatePhotoURL(path).asStream();
+  }
+
   Future<AuthStatus> createAccount({
     required String email,
     required String password,

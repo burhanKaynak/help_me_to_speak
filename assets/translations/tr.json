@@ -1,0 +1,19 @@
+{
+    "welcome_page":{
+        "they_are_here":"Çevirmenler 7/24 senin için burada",
+        "great_translator":"Herkes için harika çevirmen",
+        "anytime_you":"Ne zaman ihtiyacın olursa...",
+        "instant_help":"Konuşurken anında yardım"
+    },
+
+    "skip":"Atla",
+    "or":"Veya",
+    "full_name":"İsim Soyisim",
+    "sign_in_with_paltform":"{platform} giriş yap",
+    "sign_up_with_paltform":"{platform} ile kayıt ol",
+    "sign_in":"Giriş yap",
+    "sign_up":"Kayıt ol",
+    "email":"E-posta",
+    "password":"Şifre",
+    "forgot_password":"Şifremi unuttum"
+}

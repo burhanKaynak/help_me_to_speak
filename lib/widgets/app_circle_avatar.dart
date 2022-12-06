@@ -44,7 +44,7 @@ class AppCircleAvatar extends StatelessWidget {
                   imageUrl: url,
                   width: AppSizer.imageLargeW,
                   height: AppSizer.imageLargeH,
-                  fit: BoxFit.fitHeight,
+                  fit: BoxFit.fill,
                 ),
               ),
             ),

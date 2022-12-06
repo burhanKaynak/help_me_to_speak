@@ -50,6 +50,8 @@ dependencies:
   firebase_core: ^2.1.1
   flutter_bloc: ^8.1.1
   path_provider: ^2.0.11
+  easy_localization: ^3.0.1
+  easy_localization_loader: ^1.0.1+1
   url_launcher: ^6.1.7
   
 dev_dependencies:
@@ -68,6 +70,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/translations/
 
   # fonts:
   #   - family: Schyler

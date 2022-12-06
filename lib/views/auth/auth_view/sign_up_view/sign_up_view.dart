@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -18,6 +19,7 @@ import '../../../../core/const/app_padding.dart';
 import '../../../../core/const/app_sizer.dart';
 import '../../../../core/const/app_spacer.dart';
 import '../../../../core/error/auth_exeption_handler.dart';
+import '../../../../core/locale/locale_keys.g.dart';
 import '../../../../core/service/database_service.dart';
 import '../../../../themes/project_themes.dart';
 import '../../../../widgets/app_buttons.dart';
@@ -80,7 +82,7 @@ class _SignUpViewState extends State<SignUpView> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildSignUpForm,
-          buildButton(onPressed: _submitForm, text: 'Kayıt Ol'),
+          buildButton(onPressed: _submitForm, text: LocaleKeys.sign_up.tr()),
           AppOrDivider(
             height: AppSizer.dividerH,
             tickness: AppSizer.dividerTicknessSmall,
@@ -90,7 +92,7 @@ class _SignUpViewState extends State<SignUpView> {
               alignment: Alignment.bottomCenter,
               child: TextButton(
                   onPressed: widget.onTapSignIn,
-                  child: const Text('Giriş Yap')))
+                  child: Text(LocaleKeys.sign_in.tr())))
         ],
       );
 
@@ -217,7 +219,7 @@ class _SignUpViewState extends State<SignUpView> {
           AppTextFormField(
             initialValue: _registerModel.fullName,
             onChanged: (val) => _registerModel.fullName = val,
-            hint: 'İsim Soyisim',
+            hint: LocaleKeys.full_name.tr(),
             keyboardType: TextInputType.emailAddress,
             onSaved: (val) => _registerModel.fullName = val,
           ),
@@ -225,7 +227,7 @@ class _SignUpViewState extends State<SignUpView> {
           AppTextFormField(
             initialValue: _registerModel.email,
             onChanged: (val) => _registerModel.email = val,
-            hint: 'Email',
+            hint: LocaleKeys.email.tr(),
             keyboardType: TextInputType.emailAddress,
             onSaved: (val) => _registerModel.email = val,
           ),
@@ -233,7 +235,7 @@ class _SignUpViewState extends State<SignUpView> {
           AppTextFormField(
             initialValue: _registerModel.password,
             onChanged: (val) => _registerModel.password = val,
-            hint: 'Password',
+            hint: LocaleKeys.password.tr(),
             obscureText: true,
             keyboardType: TextInputType.visiblePassword,
             onSaved: (val) => _registerModel.password = val,
@@ -248,7 +250,8 @@ class _SignUpViewState extends State<SignUpView> {
               icon: const Icon(
                 FontAwesomeIcons.google,
               ),
-              text: 'Google ile kayıt ol'),
+              text: LocaleKeys.sign_up_with_paltform
+                  .tr(namedArgs: {'platform': 'Google'})),
           AppSpacer.verticalSmallSpace,
           buildSignWithAnotherPlatform(context,
               color: Colors.white,
@@ -257,13 +260,15 @@ class _SignUpViewState extends State<SignUpView> {
                 FontAwesomeIcons.apple,
                 color: Colors.black,
               ),
-              text: 'Apple ile kayıt ol'),
+              text: LocaleKeys.sign_up_with_paltform
+                  .tr(namedArgs: {'platform': 'Apple'})),
           AppSpacer.verticalSmallSpace,
           buildSignWithAnotherPlatform(
               color: Colors.indigo,
               icon: const Icon(FontAwesomeIcons.facebookF),
               context,
-              text: 'Facebook ile kayıt ol'),
+              text: LocaleKeys.sign_up_with_paltform
+                  .tr(namedArgs: {'platform': 'Facebook'})),
         ],
       );
 

@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../core/const/app_padding.dart';
 import '../core/const/app_sizer.dart';
+import '../core/locale/locale_keys.g.dart';
 import '../themes/project_themes.dart';
 
 class AppOrDivider extends StatelessWidget {
@@ -24,7 +26,7 @@ class AppOrDivider extends StatelessWidget {
           ),
           Container(
             margin: AppPadding.horizontalPaddingMedium,
-            child: Text('Veya',
+            child: Text(LocaleKeys.or.tr(),
                 style: Theme.of(context)
                     .textTheme
                     .subtitle2!

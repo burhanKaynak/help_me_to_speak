@@ -8,6 +8,7 @@ part of 'language_model.dart';
 
 Language _$LanguageFromJson(Map<String, dynamic> json) => Language(
       callingCode: json['calling_code'] as String?,
+      docId: json['doc_id'] as String?,
       countryName: json['country_name'] as String?,
       isoCode: json['iso_code'] as String?,
       language: json['language'] as String?,
@@ -20,4 +21,5 @@ Map<String, dynamic> _$LanguageToJson(Language instance) => <String, dynamic>{
       'iso_code': instance.isoCode,
       'language': instance.language,
       'thumbnail': instance.thumbnail,
+      'doc_id': instance.docId,
     };

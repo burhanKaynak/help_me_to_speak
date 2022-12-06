@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:help_me_to_speak/core/enum/app_route_path_enum.dart';
 import 'package:im_stepper/stepper.dart';
 
 import '../../../core/const/app_padding.dart';
+import '../../../core/locale/locale_keys.g.dart';
 
 class Slide {
   final String imageUrl;
@@ -23,19 +25,19 @@ class _WelcomeViewState extends State<WelcomeView> {
   final List<Slide> _page = <Slide>[
     Slide(
         imageUrl: 'assets/images/slide_page_image_1.png',
-        title: 'Great translator for everyone',
+        title: LocaleKeys.welcome_page_great_translator.tr(),
         color: Colors.transparent),
     Slide(
         imageUrl: 'assets/images/slide_page_image_2.png',
-        title: 'Anytime you need...',
+        title: LocaleKeys.welcome_page_anytime_you.tr(),
         color: Colors.transparent),
     Slide(
         imageUrl: 'assets/images/slide_page_image_3.png',
-        title: 'Instant help while talking',
+        title: LocaleKeys.welcome_page_instant_help.tr(),
         color: Colors.transparent),
     Slide(
         imageUrl: 'assets/images/slide_page_image_4.png',
-        title: 'Great translator for everyone',
+        title: LocaleKeys.welcome_page_great_translator.tr(),
         color: Colors.transparent)
   ];
 
@@ -91,7 +93,7 @@ class _WelcomeViewState extends State<WelcomeView> {
               ],
             ),
             Row(
-              children: const [Text('Skip'), Icon(Icons.chevron_right)],
+              children: [Text(LocaleKeys.skip.tr()), Icon(Icons.chevron_right)],
             )
           ],
         ),
@@ -109,16 +111,16 @@ class _WelcomeViewState extends State<WelcomeView> {
                 onPressed: () =>
                     context.router.replaceNamed(RoutePath.auth.value),
                 child: Row(
-                  children: const [
+                  children: [
                     Expanded(
                         child: Align(
                             alignment: Alignment.center,
-                            child: Text('Sign in with BankID'))),
-                    Icon(Icons.payment)
+                            child: Text(LocaleKeys.sign_in.tr()))),
+                    const Icon(Icons.payment)
                   ],
                 )),
-            const Text(
-              'Your translator are here \n for you 24/7',
+            Text(
+              LocaleKeys.welcome_page_they_are_here.tr(),
               textAlign: TextAlign.center,
             ),
             _buildDots

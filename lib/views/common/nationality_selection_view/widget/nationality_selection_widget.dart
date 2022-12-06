@@ -12,6 +12,7 @@ import '../../../../widgets/app_search_field.dart';
 
 Widget buildListHeader(context,
     {required String title,
+    Function(String)? onChanged,
     required String description,
     required String searchBarHint}) {
   return Padding(
@@ -35,6 +36,7 @@ Widget buildListHeader(context,
         ),
         AppSpacer.verticalMediumSpace,
         AppSearchBarField(
+          onChanged: onChanged,
           hint: searchBarHint,
         ),
       ],
@@ -42,7 +44,10 @@ Widget buildListHeader(context,
   );
 }
 
-Widget buildListTile(List<Language> data) {
+Widget buildListTile(
+    List<Language> data,
+    ValueNotifier<List<Language>> selectedItems,
+    Function(bool?, Language item) onChanged) {
   return Column(
     children: [
       Expanded(
@@ -52,21 +57,25 @@ Widget buildListTile(List<Language> data) {
               children: [
                 Padding(
                   padding: AppPadding.horizontalPaddingMedium,
-                  child: CheckboxListTile(
-                    value: true,
-                    onChanged: (value) => null,
-                    title: Row(
-                      children: [
-                        AppCircleImage(image: data[index].thumbnail!),
-                        AppSpacer.horizontalMediumSpace,
-                        Text(
-                          data[index].countryName!,
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1!
-                              .copyWith(color: Colors.black54),
-                        )
-                      ],
+                  child: ValueListenableBuilder(
+                    valueListenable: selectedItems,
+                    builder: (context, value, child) => CheckboxListTile(
+                      value: selectedItems.value
+                          .any((e) => e.docId == data[index].docId),
+                      onChanged: (value) => onChanged(value, data[index]),
+                      title: Row(
+                        children: [
+                          AppCircleImage(image: data[index].thumbnail!),
+                          AppSpacer.horizontalMediumSpace,
+                          Text(
+                            data[index].countryName!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .subtitle1!
+                                .copyWith(color: Colors.black54),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),

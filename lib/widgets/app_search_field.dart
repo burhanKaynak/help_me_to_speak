@@ -6,7 +6,9 @@ import '../core/const/app_sizer.dart';
 
 class AppSearchBarField extends StatelessWidget {
   final String hint;
-  AppSearchBarField({super.key, this.hint = 'Bir tecüman arayın'});
+  final Function(String)? onChanged;
+  AppSearchBarField(
+      {super.key, this.hint = 'Bir tecüman arayın', this.onChanged});
 
   final _textController = TextEditingController(text: '');
 
@@ -20,6 +22,7 @@ class AppSearchBarField extends StatelessWidget {
       ),
       padding: AppPadding.inputPadding,
       child: TextField(
+          onChanged: onChanged,
           cursorColor: const Color.fromARGB(31, 134, 134, 134),
           style: Theme.of(context)
               .textTheme
