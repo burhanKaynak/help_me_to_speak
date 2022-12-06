@@ -67,7 +67,14 @@ class AuthService {
     return _status;
   }
 
-  Future<AuthStatus> changePassword({required String newPassword}) async {
+  Future<AuthStatus> changePassword(
+      {required String newPassword, required currentPassword}) async {
+    await currentUser!
+        .reauthenticateWithCredential(EmailAuthProvider.credential(
+      email: _customer!.email!,
+      password: currentPassword,
+    ));
+
     await currentUser!
         .updatePassword(newPassword)
         .then((value) => _status = AuthStatus.successful)

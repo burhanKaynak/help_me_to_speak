@@ -15,5 +15,7 @@
     "sign_up":"Kayıt ol",
     "email":"E-posta",
     "password":"Şifre",
+    "re_password":"Şifre Tekrar",
+    "current_password":"Mevcut Şifre",
     "forgot_password":"Şifremi unuttum"
 }

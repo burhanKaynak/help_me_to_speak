@@ -6,12 +6,14 @@ import '../core/const/app_radius.dart';
 class AppTextFormField extends StatelessWidget {
   final String hint;
   final String? initialValue;
+  final String? Function(String?)? validator;
   final bool obscureText;
   final Function(String?)? onChanged;
   final Function(String?)? onSaved;
   final TextInputType keyboardType;
   const AppTextFormField({
     super.key,
+    this.validator,
     this.hint = '',
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
@@ -32,6 +34,7 @@ class AppTextFormField extends StatelessWidget {
         child: TextFormField(
           initialValue: initialValue,
           autocorrect: true,
+          validator: validator,
           onChanged: onChanged,
           onSaved: onSaved,
           keyboardType: keyboardType,

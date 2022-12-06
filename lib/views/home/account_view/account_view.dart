@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:help_me_to_speak/core/enum/app_route_path_enum.dart';
+import 'package:help_me_to_speak/core/error/auth_exeption_handler.dart';
 import 'package:help_me_to_speak/core/mixin/file_picker_mix.dart';
 import 'package:help_me_to_speak/core/service/auth_service.dart';
 import 'package:help_me_to_speak/core/service/database_service.dart';
@@ -14,9 +16,11 @@ import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_radius.dart';
 import '../../../core/const/app_sizer.dart';
 import '../../../core/const/app_spacer.dart';
+import '../../../core/locale/locale_keys.g.dart';
 import '../../../themes/project_themes.dart';
 import '../../../widgets/app_buttons.dart';
 import '../../../widgets/app_circle_avatar.dart';
+import '../../../widgets/app_input.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({super.key});
@@ -30,6 +34,8 @@ class _AccountViewState extends State<AccountView> with FilePickerMix {
   late final ValueNotifier<String> _avatar = ValueNotifier(_authService
           .currentUser?.photoURL ??
       'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png');
+  final _forgotPasswordformKey = GlobalKey<FormState>();
+  var _updatePasswordParams = {};
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -75,7 +81,7 @@ class _AccountViewState extends State<AccountView> with FilePickerMix {
           _buildIdentification(context),
           AppSpacer.verticalMediumSpace,
           buildButton(
-              onPressed: null,
+              onPressed: showBottomPasswordChangeSheet,
               text: 'Şifre Değiştir',
               prefix: const FaIcon(FontAwesomeIcons.key)),
           buildButton(
@@ -150,4 +156,59 @@ class _AccountViewState extends State<AccountView> with FilePickerMix {
     AuthService.instance.updateProfileImage(path);
     _avatar.value = AuthService.instance.currentUser!.photoURL!;
   }
+
+  void showBottomPasswordChangeSheet() => showBottomSheet(
+        context: context,
+        builder: (context) => Container(
+          padding: AppPadding.layoutPadding,
+          height: AppSizer.bottomSheetMedium,
+          color: colorBackground,
+          child: Form(
+            key: _forgotPasswordformKey,
+            child: Column(
+              children: [
+                AppTextFormField(
+                  onSaved: (p0) => _updatePasswordParams.putIfAbsent(
+                      'currentPassword', () => p0),
+                  hint: LocaleKeys.current_password.tr(),
+                  validator: (p0) => p0 == null ? 'Boş olamaz' : null,
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                AppSpacer.verticalMediumSpace,
+                AppTextFormField(
+                  hint: LocaleKeys.password.tr(),
+                  onSaved: (p0) =>
+                      _updatePasswordParams.putIfAbsent('password', () => p0),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (p0) => p0 == null ? 'Boş olamaz' : null,
+                ),
+                AppSpacer.verticalMediumSpace,
+                AppTextFormField(
+                  hint: LocaleKeys.re_password.tr(),
+                  onSaved: (p0) =>
+                      _updatePasswordParams.putIfAbsent('password', () => p0),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (p0) => p0 == null ? 'Boş olamaz' : null,
+                ),
+                const Spacer(),
+                buildButton(
+                    onPressed: () async {
+                      if (_forgotPasswordformKey.currentState!.validate()) {
+                        _forgotPasswordformKey.currentState!.save();
+                        var result = await _authService.changePassword(
+                            newPassword: _updatePasswordParams['password'],
+                            currentPassword:
+                                _updatePasswordParams['currentPassword']);
+
+                        if (result == AuthStatus.successful) {
+                          context.router.pop();
+                        }
+                      }
+                    },
+                    text: 'Gönder')
+              ],
+            ),
+          ),
+        ),
+      );
 }
