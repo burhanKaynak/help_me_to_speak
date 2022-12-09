@@ -20,6 +20,7 @@ dependencies:
   cached_network_image: ^3.2.2
   syncfusion_flutter_datepicker: ^20.3.59
   shimmer: ^2.0.0
+  awesome_select: ^6.0.0
   adaptive_action_sheet: ^2.0.2
   #Theme
 

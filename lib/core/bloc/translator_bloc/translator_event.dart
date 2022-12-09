@@ -8,6 +8,11 @@ abstract class TranslatorEvent extends Equatable {
 
 class GetTranslators extends TranslatorEvent {}
 
+class SearchTranslators extends TranslatorEvent {
+  final String text;
+  const SearchTranslators(this.text);
+}
+
 class AddTranslatorForChat extends TranslatorEvent {
   final String currentUid, reciverUid;
   const AddTranslatorForChat(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/core/enum/toast_type.dart';
-import 'package:help_me_to_speak/themes/project_themes.dart';
 
+import '../../themes/project_themes.dart';
 import '../const/app_spacer.dart';
+import '../enum/toast_type_enum.dart';
 import '../router/app_router.gr.dart';
 
 class Utils {
@@ -46,5 +46,20 @@ class Utils {
         ],
       ),
     ));
+  }
+
+  String replaceSymbolAndTr(String val) {
+    val = val.toLowerCase();
+
+    val = val.replaceAll('ı', 'i');
+    val = val.replaceAll('ö', 'o');
+    val = val.replaceAll('ü', 'u');
+    val = val.replaceAll('ş', 's');
+    val = val.replaceAll('ğ', 'g');
+    val = val.replaceAll('ç', 'c');
+
+    var symbolRegExp = RegExp(
+        r"[\&\-\.\ \,\^\+\%\/\!\@\=\(\)\é\*\<\>\#\$\£\½\{\[\]\}\|\?\_\'\\]");
+    return val.replaceAll(symbolRegExp, '');
   }
 }
