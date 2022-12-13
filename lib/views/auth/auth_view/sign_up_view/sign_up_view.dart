@@ -82,12 +82,21 @@ class _SignUpViewState extends State<SignUpView> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildSignUpForm,
-          buildButton(onPressed: _submitForm, text: LocaleKeys.sign_up.tr()),
-          AppOrDivider(
-            height: AppSizer.dividerH,
-            tickness: AppSizer.dividerTicknessSmall,
-          ),
-          _buildLoginButtonsForAnotherPlatform,
+          Expanded(
+              child: ListView(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              buildButton(
+                  onPressed: _submitForm, text: LocaleKeys.sign_up.tr()),
+              AppOrDivider(
+                height: AppSizer.dividerH,
+                tickness: AppSizer.dividerTicknessSmall,
+              ),
+              _buildLoginButtonsForAnotherPlatform,
+            ],
+          )),
           Align(
               alignment: Alignment.bottomCenter,
               child: TextButton(

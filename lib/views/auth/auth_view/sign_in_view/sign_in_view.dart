@@ -4,16 +4,16 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/core/enum/app_route_path_enum.dart';
-import 'package:help_me_to_speak/core/error/auth_exeption_handler.dart';
-import 'package:help_me_to_speak/core/models/request/login_model.dart';
-import 'package:help_me_to_speak/core/service/auth_service.dart';
-import 'package:help_me_to_speak/core/utils/utils.dart';
 
 import '../../../../core/const/app_padding.dart';
 import '../../../../core/const/app_sizer.dart';
 import '../../../../core/const/app_spacer.dart';
+import '../../../../core/enum/app_route_path_enum.dart';
+import '../../../../core/error/auth_exeption_handler.dart';
 import '../../../../core/locale/locale_keys.g.dart';
+import '../../../../core/models/request/login_model.dart';
+import '../../../../core/service/auth_service.dart';
+import '../../../../core/utils/utils.dart';
 import '../../../../themes/project_themes.dart';
 import '../../../../widgets/app_buttons.dart';
 import '../../../../widgets/app_divider.dart';
@@ -76,13 +76,22 @@ class _SingInViewState extends State<SingInView> {
               child: Text(LocaleKeys.forgot_password.tr()),
             ),
           ),
-          buildButton(
-              onPressed: _submitLoginForm, text: LocaleKeys.sign_in.tr()),
-          AppOrDivider(
-            height: AppSizer.dividerH,
-            tickness: AppSizer.dividerTicknessSmall,
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                buildButton(
+                    onPressed: _submitLoginForm, text: LocaleKeys.sign_in.tr()),
+                AppOrDivider(
+                  height: AppSizer.dividerH,
+                  tickness: AppSizer.dividerTicknessSmall,
+                ),
+                _buildLoginButtonsForAnotherPlatform,
+              ],
+            ),
           ),
-          _buildLoginButtonsForAnotherPlatform,
           Align(
               alignment: Alignment.bottomCenter,
               child: TextButton(

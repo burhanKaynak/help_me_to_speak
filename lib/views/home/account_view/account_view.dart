@@ -3,24 +3,24 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/core/enum/app_route_path_enum.dart';
-import 'package:help_me_to_speak/core/error/auth_exeption_handler.dart';
-import 'package:help_me_to_speak/core/mixin/file_picker_mix.dart';
-import 'package:help_me_to_speak/core/service/auth_service.dart';
-import 'package:help_me_to_speak/core/service/database_service.dart';
-import 'package:help_me_to_speak/core/service/storage_service.dart';
-import 'package:help_me_to_speak/widgets/app_circle_image.dart';
-import 'package:help_me_to_speak/widgets/app_shimmer.dart';
 
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_radius.dart';
 import '../../../core/const/app_sizer.dart';
 import '../../../core/const/app_spacer.dart';
+import '../../../core/enum/app_route_path_enum.dart';
+import '../../../core/error/auth_exeption_handler.dart';
 import '../../../core/locale/locale_keys.g.dart';
+import '../../../core/mixin/file_picker_mix.dart';
+import '../../../core/service/auth_service.dart';
+import '../../../core/service/database_service.dart';
+import '../../../core/service/storage_service.dart';
 import '../../../themes/project_themes.dart';
 import '../../../widgets/app_buttons.dart';
 import '../../../widgets/app_circle_avatar.dart';
+import '../../../widgets/app_circle_image.dart';
 import '../../../widgets/app_input.dart';
+import '../../../widgets/app_shimmer.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({super.key});
@@ -139,8 +139,8 @@ class _AccountViewState extends State<AccountView> with FilePickerMix {
           text: '${_authService.currentUser!.displayName}\n',
           style: Theme.of(context)
               .textTheme
-              .titleLarge!
-              .copyWith(color: Colors.black),
+              .headline5!
+              .copyWith(color: Colors.black, fontWeight: FontWeight.w500),
         ),
         TextSpan(
           text: _authService.getCustomer?.type == 1 ? 'Translator' : 'Customer',

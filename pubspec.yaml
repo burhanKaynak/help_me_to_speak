@@ -22,6 +22,7 @@ dependencies:
   shimmer: ^2.0.0
   awesome_select: ^6.0.0
   adaptive_action_sheet: ^2.0.2
+  adaptive_dialog: ^1.8.0+1
   #Theme
 
 
@@ -54,6 +55,8 @@ dependencies:
   easy_localization: ^3.0.1
   easy_localization_loader: ^1.0.1+1
   url_launcher: ^6.1.7
+  permission_handler: ^10.2.0
+  agora_rtc_engine: ^6.0.0
   
 dev_dependencies:
   flutter_test:

@@ -81,8 +81,10 @@ class AppHeaderState extends State<AppHeader> {
                             value,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline5!
-                                .copyWith(color: colorDarkGreen),
+                                .headline4!
+                                .copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: colorDarkGreen),
                             key: ValueKey<String>(value),
                           ),
                         ),

@@ -37,7 +37,7 @@ class _AuthViewState extends State<AuthView> {
             children: [
               Expanded(flex: 1, child: _buildLogo),
               Expanded(
-                flex: 3,
+                flex: 2,
                 child: PageView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     pageSnapping: true,

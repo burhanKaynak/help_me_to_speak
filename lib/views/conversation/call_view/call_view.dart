@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../core/const/app_common_const.dart';
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_radius.dart';
 import '../../../core/const/app_sizer.dart';
@@ -34,10 +35,7 @@ class _CallViewState extends State<CallView> {
   Widget get _buildHeader => Column(
         children: [
           const AppListCircleAvatar(
-              url:
-                  'https://img.freepik.com/free-photo/modern-woman-taking-selfie_23-2147893976.jpg?w=1380&t=st=1664901155~exp=1664901755~hmac=9127862f43915452a82d24ac02ba9768ff5b63354f3f46bcaf54bbf830d34235',
-              isOnline: true,
-              langs: null),
+              url: CommonConst.defAvatar, isOnline: true, langs: null),
           AppSpacer.verticalSmallSpace,
           Text(
             'Angelina',

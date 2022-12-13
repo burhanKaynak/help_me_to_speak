@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../../core/bloc/translator_bloc/translator_bloc.dart';
+import '../../../core/const/app_common_const.dart';
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_sizer.dart';
 import '../../../core/const/app_spacer.dart';
-import '../../../core/const/common_const.dart';
 import '../../../core/enum/available_conversation_type_enum.dart';
 import '../../../core/enum/translator_status_enum.dart';
 import '../../../core/models/response/customer_model.dart';
@@ -86,7 +86,7 @@ class _TranslatorListViewState extends State<TranslatorListView> {
             children: [
               AppListCircleAvatar(
                 translatorId: item.uid,
-                url: item.photoUrl ?? Common.defAvatar,
+                url: item.photoUrl ?? CommonConst.defAvatar,
                 isOnline: true,
                 langs: FutureBuilder(
                   future: DatabaseService.instance

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/core/models/response/message_model.dart';
-import 'package:help_me_to_speak/core/service/auth_service.dart';
 import 'package:intl/intl.dart';
 
 import '../core/const/app_padding.dart';
@@ -9,6 +7,8 @@ import '../core/const/app_radius.dart';
 import '../core/const/app_sizer.dart';
 import '../core/const/app_spacer.dart';
 import '../core/models/response/chat_model.dart';
+import '../core/models/response/message_model.dart';
+import '../core/service/auth_service.dart';
 import '../themes/project_themes.dart';
 import 'app_circle_avatar.dart';
 import 'app_divider.dart';
@@ -98,11 +98,9 @@ class AppCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(
-                    chat.customer.displayName!,
-                    style: _themeData!.textTheme.headline5!
-                        .copyWith(color: colorDarkGreen),
-                  ),
+                  Text(chat.customer.displayName!,
+                      style: _themeData!.textTheme.headline5!.copyWith(
+                          fontWeight: FontWeight.w500, color: colorDarkGreen)),
                   AppSpacer.horizontalLargeSpace,
                   if (unseensCount > 0)
                     Container(
