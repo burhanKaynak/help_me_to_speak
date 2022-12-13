@@ -90,7 +90,9 @@ class _TranslatorListViewState extends State<TranslatorListView> {
                 isOnline: true,
                 langs: FutureBuilder(
                   future: DatabaseService.instance
-                      .getTranslatorSupportLanguages(translators[index].uid),
+                      .getTranslatorSupportLanguagesByRef(
+                    translators[index].languagesOfTranslate!,
+                  ),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return Wrap(
@@ -122,7 +124,8 @@ class _TranslatorListViewState extends State<TranslatorListView> {
       children: [
         Text(
           fullName,
-          style: _themeData!.textTheme.headline6!
+          style: _themeData!.textTheme.headline5!
+              .copyWith(fontWeight: FontWeight.w500)
               .copyWith(color: colorDarkGreen, overflow: TextOverflow.ellipsis),
         ),
         Text(isOnline ? 'Şu an Çeviriye Hazır' : 'Çevirimdışı',
@@ -172,6 +175,8 @@ class _TranslatorListViewState extends State<TranslatorListView> {
                       .toList();
 
                   return AppMultiSelectorWithImage(
+                      onModalClose: (p0, p1) =>
+                          _translatorBloc.add(const SearchTranslators('')),
                       selectedValue: _translatorBloc.listLanguage,
                       selectedChoice: _translatorBloc.listLanguage
                           .map((e) => S2Choice(value: e, title: e.language))
@@ -204,6 +209,9 @@ class _TranslatorListViewState extends State<TranslatorListView> {
           ),
           Expanded(
             child: AppMultiSelectorWithIcon(
+                onModalClose: (p0, p1) {
+                  _translatorBloc.add(const SearchTranslators(''));
+                },
                 selectedChoice: _translatorBloc.listTranslatorStatus
                     .map((e) => S2Choice(value: e, title: e.value))
                     .toList(),
@@ -227,6 +235,9 @@ class _TranslatorListViewState extends State<TranslatorListView> {
           ),
           Expanded(
             child: AppMultiSelectorWithIcon(
+                onModalClose: (p0, p1) {
+                  _translatorBloc.add(const SearchTranslators(''));
+                },
                 selectedChoice: _translatorBloc.listAvaibleConversationList
                     .map((e) => S2Choice(value: e, title: e.value))
                     .toList(),

@@ -1,14 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:help_me_to_speak/core/bloc/conversation_bloc/conversation_bloc.dart';
-import 'package:help_me_to_speak/widgets/app_card.dart';
+import 'package:permission_handler/permission_handler.dart';
 
+import '../../../core/bloc/conversation_bloc/conversation_bloc.dart';
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_sizer.dart';
 import '../../../core/const/app_spacer.dart';
+import '../../../core/enum/app_route_path_enum.dart';
 import '../../../core/router/app_router.gr.dart';
+import '../../../core/service/permission_service.dart';
 import '../../../themes/project_themes.dart';
+import '../../../widgets/app_card.dart';
 import '../../../widgets/app_divider.dart';
 import '../../../widgets/app_search_field.dart';
 
@@ -60,7 +63,22 @@ class _ChatListViewState extends State<ChatListView> {
                                 conversationId: e.conversationId,
                                 userId: e.customer.uid!,
                               )),
-                          child: AppCard(chat: e)))
+                          child: AppCard(
+                            chat: e,
+                            onTapVoiceCall: () {
+                              PermissionService.of(context)
+                                  .getPermission([Permission.microphone]);
+                              context.router.pushNamed(RoutePath.call.value);
+                            },
+                            onTapVideoCall: () {
+                              PermissionService.of(context).getPermission(
+                                  [Permission.microphone, Permission.camera]);
+                            },
+                            onTapChat: () => context.router.push(ChatRoute(
+                              conversationId: e.conversationId,
+                              userId: e.customer.uid!,
+                            )),
+                          )))
                       .toList(),
                 );
               }

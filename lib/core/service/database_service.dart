@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:help_me_to_speak/core/models/response/customer_model.dart';
-import 'package:help_me_to_speak/core/models/response/language_model.dart';
-import 'package:help_me_to_speak/core/models/response/rezervation_model.dart';
-import 'package:help_me_to_speak/core/repository/repository.dart';
-import 'package:help_me_to_speak/core/service/auth_service.dart';
+
+import '../models/response/customer_model.dart';
+import '../models/response/language_model.dart';
+import '../models/response/rezervation_model.dart';
+import '../repository/repository.dart';
+import 'auth_service.dart';
 
 class DatabaseService {
   static final instance = DatabaseService();
@@ -70,6 +71,7 @@ class DatabaseService {
 
     List<Customer> customers = List<Customer>.from(
         result.docs.map((e) => Customer.fromJson(e.data())));
+
     return customers;
   }
 
@@ -91,7 +93,7 @@ class DatabaseService {
     var result = await _db
         .collection('customers')
         .doc(uid)
-        .collection('support_languages')
+        .collection('languages_of_translate')
         .where("isActive", isEqualTo: true)
         .get();
 
@@ -103,6 +105,18 @@ class DatabaseService {
           .add(Language.fromJson((getDocument.data() as Map<String, dynamic>)));
     }
 
+    return languages;
+  }
+
+  Future<List<Language>> getTranslatorSupportLanguagesByRef(
+      List<DocumentReference>? refs) async {
+    List<Language> languages = [];
+    if (refs == null) return languages;
+
+    for (var item in refs) {
+      var data = await _db.collection('languages').doc(item.id).get();
+      languages.add(Language.fromJson(data.data()!));
+    }
     return languages;
   }
 

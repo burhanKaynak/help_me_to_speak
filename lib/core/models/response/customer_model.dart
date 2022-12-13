@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:help_me_to_speak/core/converter/document_converter.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../converter/document_converter.dart';
 
 part 'customer_model.g.dart';
 
@@ -10,17 +11,23 @@ class Customer {
   String? photoUrl;
 
   @DocumentConverter()
-  final List<DocumentReference>? nativeLanguages, supportLanguages;
+  final List<DocumentReference>? nativeLanguages,
+      supportLanguages,
+      languagesOfTranslate;
   @DocumentConverter()
   final DocumentReference? country;
 
   final int? phoneNumber, type;
-  final bool? isApproved;
+  final bool? isApproved, availableChat, availableVideoCall, availableVoiceCall;
 
   Customer(
       {required this.email,
       required this.uid,
       this.country,
+      this.availableChat,
+      this.availableVideoCall,
+      this.languagesOfTranslate,
+      this.availableVoiceCall,
       this.supportLanguages,
       this.isApproved,
       this.nativeLanguages,

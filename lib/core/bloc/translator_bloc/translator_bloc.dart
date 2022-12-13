@@ -44,6 +44,47 @@ class TranslatorBloc extends Bloc<TranslatorEvent, TranslatorState> {
       String secondString = Utils().replaceSymbolAndTr(event.text);
       return firstString.contains(secondString);
     }).toList();
+    searchDataList = _getAvailableConversation(searchDataList);
+    searchDataList = _getAvaibleLanguages(searchDataList);
+
     emit(TranslatorLoaded(searchDataList));
+  }
+
+  List<Customer> _getAvailableConversation(List<Customer> customers) {
+    if (listAvaibleConversationList.isNotEmpty) {
+      customers = customers.where((e) {
+        var contains = <AvaibleConversationType>[];
+
+        if (e.availableChat!) {
+          contains.add(AvaibleConversationType.chat);
+        }
+        if (e.availableVideoCall!) {
+          contains.add(AvaibleConversationType.videoCall);
+        }
+        if (e.availableVoiceCall!) {
+          contains.add(AvaibleConversationType.voiceCall);
+        }
+
+        return contains
+            .any((item) => listAvaibleConversationList.contains(item));
+      }).toList();
+    }
+    return customers;
+  }
+
+  List<Customer> _getAvaibleLanguages(List<Customer> customers) {
+    if (listLanguage.isEmpty) return customers;
+    var filteredCustomers = <Customer>[];
+
+    for (var item in customers) {
+      var result = item.languagesOfTranslate!.any((element) {
+        return listLanguage.any((item) => item.docId == element.id);
+      });
+      if (result) {
+        filteredCustomers.add(item);
+      }
+    }
+
+    return filteredCustomers;
   }
 }

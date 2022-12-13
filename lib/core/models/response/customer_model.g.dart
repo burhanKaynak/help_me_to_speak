@@ -11,6 +11,12 @@ Customer _$CustomerFromJson(Map<String, dynamic> json) => Customer(
       uid: json['uid'] as String?,
       country: _$JsonConverterFromJson<Object, DocumentReference<Object?>>(
           json['country'], const DocumentConverter().fromJson),
+      availableChat: json['available_chat'] as bool?,
+      availableVideoCall: json['available_video_call'] as bool?,
+      languagesOfTranslate: (json['languages_of_translate'] as List<dynamic>?)
+          ?.map((e) => const DocumentConverter().fromJson(e as Object))
+          .toList(),
+      availableVoiceCall: json['available_voice_call'] as bool?,
       supportLanguages: (json['support_languages'] as List<dynamic>?)
           ?.map((e) => const DocumentConverter().fromJson(e as Object))
           .toList(),
@@ -35,11 +41,17 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
       'support_languages': instance.supportLanguages
           ?.map(const DocumentConverter().toJson)
           .toList(),
+      'languages_of_translate': instance.languagesOfTranslate
+          ?.map(const DocumentConverter().toJson)
+          .toList(),
       'country': _$JsonConverterToJson<Object, DocumentReference<Object?>>(
           instance.country, const DocumentConverter().toJson),
       'phone_number': instance.phoneNumber,
       'type': instance.type,
       'is_approved': instance.isApproved,
+      'available_chat': instance.availableChat,
+      'available_video_call': instance.availableVideoCall,
+      'available_voice_call': instance.availableVoiceCall,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

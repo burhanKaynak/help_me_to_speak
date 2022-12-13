@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:help_me_to_speak/core/models/response/customer_model.dart';
-import 'package:help_me_to_speak/core/service/database_service.dart';
 
 import '../error/auth_exeption_handler.dart';
+import '../models/response/customer_model.dart';
+import 'database_service.dart';
 
 class AuthService {
   static final instance = AuthService();
@@ -23,6 +23,7 @@ class AuthService {
         .catchError(
             (e) => _status = AuthExceptionHandler.handleAuthException(e));
 
+    if (_status != AuthStatus.successful) return _status;
     _customer =
         await DatabaseService.instance.getCustomer(_auth.currentUser!.uid);
     return _status;

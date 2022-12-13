@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
+import '../core/const/app_common_const.dart';
 import '../core/const/app_padding.dart';
 import '../core/const/app_radius.dart';
 import '../core/const/app_sizer.dart';
@@ -17,11 +18,15 @@ import 'app_divider.dart';
 class AppCard extends StatelessWidget {
   final Chat chat;
   final bool topDivider;
-  final String _defAvatar =
-      'https://www.ktoeos.org/wp-content/uploads/2021/11/default-avatar.png';
+
+  final VoidCallback? onTapVoiceCall, onTapVideoCall, onTapChat;
+
   AppCard({
     super.key,
     required this.chat,
+    this.onTapVideoCall,
+    this.onTapChat,
+    this.onTapVoiceCall,
     this.topDivider = true,
   });
 
@@ -61,7 +66,7 @@ class AppCard extends StatelessWidget {
     return SizedBox(
       height: AppSizer.cardLarge,
       child: AppListCircleAvatar(
-        url: chat.customer.photoUrl ?? _defAvatar,
+        url: chat.customer.photoUrl ?? CommonConst.defAvatar,
         isOnline: true,
         langs: null,
       ),
@@ -151,11 +156,18 @@ class AppCard extends StatelessWidget {
         height: AppSizer.cardLarge,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            IconButton(onPressed: null, icon: FaIcon(FontAwesomeIcons.phone)),
-            IconButton(onPressed: null, icon: FaIcon(FontAwesomeIcons.video)),
+          children: [
             IconButton(
-                onPressed: null, icon: FaIcon(FontAwesomeIcons.solidMessage)),
+                onPressed:
+                    chat.customer.availableVoiceCall! ? onTapVoiceCall : null,
+                icon: const FaIcon(FontAwesomeIcons.phone)),
+            IconButton(
+                onPressed:
+                    chat.customer.availableVideoCall! ? onTapVideoCall : null,
+                icon: const FaIcon(FontAwesomeIcons.video)),
+            IconButton(
+                onPressed: chat.customer.availableChat! ? onTapChat : null,
+                icon: const FaIcon(FontAwesomeIcons.solidMessage)),
           ],
         ),
       );

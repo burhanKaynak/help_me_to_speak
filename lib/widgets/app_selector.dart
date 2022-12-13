@@ -14,12 +14,14 @@ class AppMultiSelectorWithIcon<T> extends StatelessWidget {
   final List<S2Choice<T>> selectedChoice;
   final String title;
   final Widget tile;
+  final Function(S2MultiState<T>, bool)? onModalClose;
   final Function(S2MultiSelected<T> value) onChanged;
 
   const AppMultiSelectorWithIcon(
       {super.key,
       required this.selectedValue,
       required this.list,
+      this.onModalClose,
       required this.title,
       required this.tile,
       required this.onChanged,
@@ -32,6 +34,7 @@ class AppMultiSelectorWithIcon<T> extends StatelessWidget {
       selectedChoice: selectedChoice,
       title: title,
       choiceItems: list,
+      onModalClose: onModalClose,
       modalConfirm: true,
       modalType: S2ModalType.bottomSheet,
       onChange: onChanged,
@@ -49,7 +52,7 @@ class AppMultiSelectorWithIcon<T> extends StatelessWidget {
                     .subtitle1!
                     .copyWith(color: Colors.black)),
             IconButton(
-                onPressed: () => value.closeModal(),
+                onPressed: () => value.closeModal(confirmed: false),
                 icon: const FaIcon(FontAwesomeIcons.xmark))
           ],
         ),
@@ -72,7 +75,8 @@ class AppMultiSelectorWithIcon<T> extends StatelessWidget {
       ),
       modalFooterBuilder: (context, value) => Padding(
           padding: AppPadding.horizontalPaddingMedium,
-          child: buildButton(onPressed: () => null, text: 'Kaydet')),
+          child:
+              buildButton(onPressed: () => value.closeModal(), text: 'Kaydet')),
     );
   }
 }
@@ -81,6 +85,7 @@ class AppMultiSelectorWithImage<T> extends StatelessWidget {
   final List<S2Choice<T>> list;
   final List<S2Choice<T>> selectedChoice;
   final List<T> selectedValue;
+  final Function(S2MultiState<T>, bool)? onModalClose;
 
   final String title;
   final Widget tile;
@@ -89,6 +94,7 @@ class AppMultiSelectorWithImage<T> extends StatelessWidget {
   const AppMultiSelectorWithImage(
       {super.key,
       required this.list,
+      this.onModalClose,
       required this.title,
       required this.tile,
       required this.onChanged,
@@ -99,6 +105,7 @@ class AppMultiSelectorWithImage<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return SmartSelect<T>.multiple(
       title: title,
+      onModalClose: onModalClose,
       choiceItems: list,
       selectedChoice: selectedChoice,
       selectedValue: selectedValue,
@@ -119,7 +126,7 @@ class AppMultiSelectorWithImage<T> extends StatelessWidget {
                     .subtitle1!
                     .copyWith(color: Colors.black)),
             IconButton(
-                onPressed: () => value.closeModal(),
+                onPressed: () => value.closeModal(confirmed: false),
                 icon: const FaIcon(FontAwesomeIcons.xmark))
           ],
         ),
@@ -139,7 +146,8 @@ class AppMultiSelectorWithImage<T> extends StatelessWidget {
       ),
       modalFooterBuilder: (context, value) => Padding(
           padding: AppPadding.horizontalPaddingMedium,
-          child: buildButton(onPressed: () => null, text: 'Kaydet')),
+          child:
+              buildButton(onPressed: () => value.closeModal(), text: 'Kaydet')),
     );
   }
 }
