@@ -37,6 +37,42 @@ class _TranslatorListViewState extends State<TranslatorListView> {
       _notifierStatus = ValueNotifier('All'),
       _notifierConversation = ValueNotifier('All');
 
+  final List<S2Choice<AvailableConversationType>> _listConversationType = [
+    S2Choice<AvailableConversationType>(
+        meta: FontAwesomeIcons.solidMessage,
+        title: AvailableConversationType.chat.value,
+        value: AvailableConversationType.chat),
+    S2Choice<AvailableConversationType>(
+        meta: FontAwesomeIcons.video,
+        title: AvailableConversationType.videoCall.value,
+        value: AvailableConversationType.videoCall),
+    S2Choice<AvailableConversationType>(
+        meta: FontAwesomeIcons.phone,
+        title: AvailableConversationType.voiceCall.value,
+        value: AvailableConversationType.voiceCall),
+  ];
+
+  final List<S2Choice<TranslatorStatus>> _listTranslatorStatus = [
+    S2Choice<TranslatorStatus>(
+        meta: FontAwesomeIcons.user,
+        title: TranslatorStatus.online.value,
+        value: TranslatorStatus.online),
+    S2Choice<TranslatorStatus>(
+        meta: FontAwesomeIcons.userSlash,
+        title: TranslatorStatus.busy.value,
+        value: TranslatorStatus.busy),
+  ];
+
+  @override
+  void dispose() {
+    _notifierLanguage.dispose();
+    _notifierStatus.dispose();
+    _notifierConversation.dispose();
+
+    _translatorBloc.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     _themeData = Theme.of(context);
@@ -87,7 +123,7 @@ class _TranslatorListViewState extends State<TranslatorListView> {
               AppListCircleAvatar(
                 translatorId: item.uid,
                 url: item.photoUrl ?? CommonConst.defAvatar,
-                isOnline: true,
+                isOnline: item.isAvailable!,
                 langs: FutureBuilder(
                   future: DatabaseService.instance
                       .getTranslatorSupportLanguagesByRef(
@@ -109,7 +145,8 @@ class _TranslatorListViewState extends State<TranslatorListView> {
                 hasChat: false,
               ),
               AppSpacer.verticalSmallSpace,
-              _buildNameAndState(fullName: item.displayName!, isOnline: true)
+              _buildNameAndState(
+                  fullName: item.displayName!, isOnline: item.isAvailable!)
             ],
           );
         },
@@ -128,38 +165,12 @@ class _TranslatorListViewState extends State<TranslatorListView> {
               .copyWith(fontWeight: FontWeight.w500)
               .copyWith(color: colorDarkGreen, overflow: TextOverflow.ellipsis),
         ),
-        Text(isOnline ? 'Şu an Çeviriye Hazır' : 'Çevirimdışı',
+        Text(isOnline ? 'Şu an Çeviriye Hazır' : 'Şu an Çeviriye Hazır Değil',
             style: _themeData!.textTheme.caption!
                 .copyWith(color: isOnline ? colorLightGreen : colorHint)),
       ],
     );
   }
-
-  final List<S2Choice<AvaibleConversationType>> _listConversationType = [
-    S2Choice<AvaibleConversationType>(
-        meta: FontAwesomeIcons.solidMessage,
-        title: AvaibleConversationType.chat.value,
-        value: AvaibleConversationType.chat),
-    S2Choice<AvaibleConversationType>(
-        meta: FontAwesomeIcons.video,
-        title: AvaibleConversationType.videoCall.value,
-        value: AvaibleConversationType.videoCall),
-    S2Choice<AvaibleConversationType>(
-        meta: FontAwesomeIcons.phone,
-        title: AvaibleConversationType.voiceCall.value,
-        value: AvaibleConversationType.voiceCall),
-  ];
-
-  final List<S2Choice<TranslatorStatus>> _listTranslatorStatus = [
-    S2Choice<TranslatorStatus>(
-        meta: FontAwesomeIcons.user,
-        title: TranslatorStatus.online.value,
-        value: TranslatorStatus.online),
-    S2Choice<TranslatorStatus>(
-        meta: FontAwesomeIcons.userSlash,
-        title: TranslatorStatus.busy.value,
-        value: TranslatorStatus.busy),
-  ];
 
   Widget get _buildFilterBar => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -238,10 +249,10 @@ class _TranslatorListViewState extends State<TranslatorListView> {
                 onModalClose: (p0, p1) {
                   _translatorBloc.add(const SearchTranslators(''));
                 },
-                selectedChoice: _translatorBloc.listAvaibleConversationList
+                selectedChoice: _translatorBloc.listAvailableConversationList
                     .map((e) => S2Choice(value: e, title: e.value))
                     .toList(),
-                selectedValue: _translatorBloc.listAvaibleConversationList,
+                selectedValue: _translatorBloc.listAvailableConversationList,
                 list: _listConversationType,
                 title: 'İletişim',
                 tile: ValueListenableBuilder(
@@ -251,7 +262,7 @@ class _TranslatorListViewState extends State<TranslatorListView> {
                           filter: 'İletişim:', contents: value);
                     }),
                 onChanged: (value) {
-                  _translatorBloc.listAvaibleConversationList = value.value;
+                  _translatorBloc.listAvailableConversationList = value.value;
                   if (value.value.isNotEmpty) {
                     _notifierConversation.value =
                         value.value.map((e) => e.value).join(', ');

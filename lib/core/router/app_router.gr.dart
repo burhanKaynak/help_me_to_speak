@@ -26,6 +26,7 @@ import '../../views/conversation/chat_view/chat_view.dart' as _i5;
 import '../../views/home/home_view.dart' as _i4;
 import '../../views/home/translator_appointment_view/translator_rezervation_view.dart'
     as _i7;
+import '../models/response/customer_model.dart' as _i12;
 
 class AppRouter extends _i10.RootStackRouter {
   AppRouter([_i11.GlobalKey<_i11.NavigatorState>? navigatorKey])
@@ -63,7 +64,7 @@ class AppRouter extends _i10.RootStackRouter {
         routeData: routeData,
         child: _i5.ChatView(
           key: args.key,
-          userId: args.userId,
+          translator: args.translator,
           conversationId: args.conversationId,
         ),
       );
@@ -198,14 +199,14 @@ class HomeRoute extends _i10.PageRouteInfo<void> {
 class ChatRoute extends _i10.PageRouteInfo<ChatRouteArgs> {
   ChatRoute({
     _i11.Key? key,
-    required String userId,
+    required _i12.Customer translator,
     required String conversationId,
   }) : super(
           ChatRoute.name,
           path: '/chat',
           args: ChatRouteArgs(
             key: key,
-            userId: userId,
+            translator: translator,
             conversationId: conversationId,
           ),
         );
@@ -216,19 +217,19 @@ class ChatRoute extends _i10.PageRouteInfo<ChatRouteArgs> {
 class ChatRouteArgs {
   const ChatRouteArgs({
     this.key,
-    required this.userId,
+    required this.translator,
     required this.conversationId,
   });
 
   final _i11.Key? key;
 
-  final String userId;
+  final _i12.Customer translator;
 
   final String conversationId;
 
   @override
   String toString() {
-    return 'ChatRouteArgs{key: $key, userId: $userId, conversationId: $conversationId}';
+    return 'ChatRouteArgs{key: $key, translator: $translator, conversationId: $conversationId}';
   }
 }
 

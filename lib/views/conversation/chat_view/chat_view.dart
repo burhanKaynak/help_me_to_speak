@@ -8,9 +8,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:help_me_to_speak/core/mixin/file_picker_mix.dart';
-import 'package:help_me_to_speak/core/service/database_service.dart';
-import 'package:help_me_to_speak/core/service/storage_service.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,17 +15,21 @@ import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_radius.dart';
 import '../../../core/const/app_sizer.dart';
 import '../../../core/const/app_spacer.dart';
+import '../../../core/mixin/file_picker_mix.dart';
+import '../../../core/models/response/customer_model.dart';
 import '../../../core/models/response/message_model.dart';
 import '../../../core/router/app_router.gr.dart';
+import '../../../core/service/database_service.dart';
+import '../../../core/service/storage_service.dart';
 import '../../../themes/project_themes.dart';
 import '../../../widgets/app_divider.dart';
 import '../../../widgets/app_header.dart';
 
 class ChatView extends StatefulWidget {
-  final String userId;
+  final Customer translator;
   final String conversationId;
   const ChatView(
-      {super.key, required this.userId, required this.conversationId});
+      {super.key, required this.translator, required this.conversationId});
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -63,9 +64,9 @@ class _ChatViewState extends State<ChatView>
             const FaIcon(FontAwesomeIcons.video),
           ],
         ),
-        onTapTitle: () => context.router
-            .push(TranslatorRezervationRoute(translatorId: widget.userId)),
-        title: 'Angelina',
+        onTapTitle: () => context.router.push(
+            TranslatorRezervationRoute(translatorId: widget.translator.uid!)),
+        title: widget.translator.displayName!,
         backButton: true,
       ),
       body: Column(
@@ -94,7 +95,7 @@ class _ChatViewState extends State<ChatView>
             children: messages.map<Widget>((e) {
               return ListTile(
                 title: Align(
-                  alignment: widget.userId != e.senderId
+                  alignment: widget.translator.uid != e.senderId
                       ? Alignment.centerLeft
                       : Alignment.centerRight,
                   child: _buildTextBar(e),
@@ -129,7 +130,7 @@ class _ChatViewState extends State<ChatView>
             constraints: BoxConstraints(maxWidth: 275.r),
             padding: AppPadding.layoutPadding,
             decoration: BoxDecoration(
-                color: message.senderId != widget.userId
+                color: message.senderId != widget.translator.uid
                     ? Colors.white
                     : colorLightGreen.withAlpha(30),
                 borderRadius: AppRadius.rectangleRadius),
@@ -192,7 +193,7 @@ class _ChatViewState extends State<ChatView>
                               }
                             });
                           },
-                          icon: FaIcon(FontAwesomeIcons.paperclip)),
+                          icon: const FaIcon(FontAwesomeIcons.paperclip)),
                       IconButton(
                           onPressed: () {
                             DatabaseService.instance.putMessage(

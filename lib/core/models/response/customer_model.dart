@@ -18,11 +18,16 @@ class Customer {
   final DocumentReference? country;
 
   final int? phoneNumber, type;
-  final bool? isApproved, availableChat, availableVideoCall, availableVoiceCall;
+  bool? isApproved,
+      availableChat,
+      availableVideoCall,
+      availableVoiceCall,
+      isAvailable;
 
   Customer(
       {required this.email,
       required this.uid,
+      this.isAvailable = false,
       this.country,
       this.availableChat,
       this.availableVideoCall,

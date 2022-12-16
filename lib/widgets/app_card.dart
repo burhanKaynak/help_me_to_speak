@@ -18,6 +18,7 @@ import 'app_divider.dart';
 class AppCard extends StatelessWidget {
   final Chat chat;
   final bool topDivider;
+  final Widget? langs;
 
   final VoidCallback? onTapVoiceCall, onTapVideoCall, onTapChat;
 
@@ -25,6 +26,7 @@ class AppCard extends StatelessWidget {
     super.key,
     required this.chat,
     this.onTapVideoCall,
+    this.langs,
     this.onTapChat,
     this.onTapVoiceCall,
     this.topDivider = true,
@@ -67,8 +69,8 @@ class AppCard extends StatelessWidget {
       height: AppSizer.cardLarge,
       child: AppListCircleAvatar(
         url: chat.customer.photoUrl ?? CommonConst.defAvatar,
-        isOnline: true,
-        langs: null,
+        isOnline: chat.customer.isAvailable!,
+        langs: langs,
       ),
     );
   }
@@ -121,9 +123,14 @@ class AppCard extends StatelessWidget {
                 ],
               ),
               AppSpacer.verticalSmallSpace,
-              Text(true ? 'Çevirimiçi' : 'Çevirimdışı',
-                  style: _themeData!.textTheme.bodyText1!
-                      .copyWith(color: true ? colorLightGreen : colorHint)),
+              Text(
+                  chat.customer.isAvailable!
+                      ? 'Şu an Çeviriye Hazır'
+                      : 'Şu an Çeviriye Hazır Değil',
+                  style: _themeData!.textTheme.bodyText1!.copyWith(
+                      color: chat.customer.isAvailable!
+                          ? colorLightGreen
+                          : colorHint)),
             ],
           ),
           Column(

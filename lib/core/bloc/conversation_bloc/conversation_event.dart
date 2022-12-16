@@ -8,3 +8,8 @@ abstract class ConversationEvent extends Equatable {
 }
 
 class GetConversations extends ConversationEvent {}
+
+class SearchConversations extends ConversationEvent {
+  final String text;
+  const SearchConversations(this.text);
+}

@@ -9,6 +9,7 @@ part of 'customer_model.dart';
 Customer _$CustomerFromJson(Map<String, dynamic> json) => Customer(
       email: json['email'] as String?,
       uid: json['uid'] as String?,
+      isAvailable: json['is_available'] as bool? ?? false,
       country: _$JsonConverterFromJson<Object, DocumentReference<Object?>>(
           json['country'], const DocumentConverter().fromJson),
       availableChat: json['available_chat'] as bool?,
@@ -52,6 +53,7 @@ Map<String, dynamic> _$CustomerToJson(Customer instance) => <String, dynamic>{
       'available_chat': instance.availableChat,
       'available_video_call': instance.availableVideoCall,
       'available_voice_call': instance.availableVoiceCall,
+      'is_available': instance.isAvailable,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(
