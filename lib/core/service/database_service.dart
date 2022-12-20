@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../enum/call_state_enum.dart';
+import '../models/response/call_model.dart';
 import '../models/response/customer_model.dart';
 import '../models/response/language_model.dart';
 import '../models/response/rezervation_model.dart';
@@ -320,5 +322,45 @@ class DatabaseService {
     await AuthService.instance.setCustomer();
 
     return result;
+  }
+
+  Future<String> makeCall(Call call, reciverId) async {
+    Map<String, dynamic> params = call.toJson();
+    params.putIfAbsent('members', () => [call.senderId, reciverId]);
+    var result = await _db.collection('calls').add(params);
+    return result.id;
+  }
+
+  Future<bool> endCall(callId) async {
+    var result = await _db
+        .collection('calls')
+        .doc(callId)
+        .update(
+            {'call_ended': DateTime.now(), 'state': CallState.rejected.value})
+        .then((value) => true)
+        .onError((error, stackTrace) => false);
+    return result;
+  }
+
+  Future<bool> answerCall(callId) async {
+    var result = await _db
+        .collection('calls')
+        .doc(callId)
+        .update({'state': CallState.answered.value})
+        .then((value) => true)
+        .onError((error, stackTrace) => false);
+    return result;
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> listenCalling(callId) {
+    return _db.collection('calls').doc(callId).snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> listenEveryCalling() {
+    return _db
+        .collection('calls')
+        .where('members', arrayContains: AuthService.instance.currentUser!.uid)
+        .where('state', isEqualTo: CallState.calling.value)
+        .snapshots();
   }
 }

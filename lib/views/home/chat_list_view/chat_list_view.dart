@@ -9,11 +9,13 @@ import '../../../core/bloc/conversation_bloc/conversation_bloc.dart';
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_sizer.dart';
 import '../../../core/const/app_spacer.dart';
-import '../../../core/enum/app_route_path_enum.dart';
 import '../../../core/enum/available_conversation_type_enum.dart';
+import '../../../core/enum/call_state_enum.dart';
 import '../../../core/enum/translator_status_enum.dart';
+import '../../../core/models/response/call_model.dart';
 import '../../../core/models/response/language_model.dart';
 import '../../../core/router/app_router.gr.dart';
+import '../../../core/service/auth_service.dart';
 import '../../../core/service/database_service.dart';
 import '../../../core/service/permission_service.dart';
 import '../../../themes/project_themes.dart';
@@ -139,10 +141,27 @@ class _ChatListViewState extends State<ChatListView> {
                                 return buildCircleShimmer;
                               },
                             ),
-                            onTapVoiceCall: () {
+                            onTapVoiceCall: () async {
                               PermissionService.of(context)
                                   .getPermission([Permission.microphone]);
-                              context.router.pushNamed(RoutePath.call.value);
+
+                              Call call = Call(
+                                AuthService.instance.currentUser!.uid,
+                                CallState.calling,
+                                DateTime.now(),
+                                null,
+                                'null',
+                              );
+
+                              call.docId = await DatabaseService.instance
+                                  .makeCall(call, e.customer.uid);
+
+                              context.router.push(CallRoute(
+                                type: 0,
+                                call: call,
+                                conversationId: e.conversationId,
+                                customer: e.customer,
+                              ));
                             },
                             onTapVideoCall: () {
                               PermissionService.of(context).getPermission(

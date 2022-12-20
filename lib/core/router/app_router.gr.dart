@@ -26,6 +26,7 @@ import '../../views/conversation/chat_view/chat_view.dart' as _i5;
 import '../../views/home/home_view.dart' as _i4;
 import '../../views/home/translator_appointment_view/translator_rezervation_view.dart'
     as _i7;
+import '../models/response/call_model.dart' as _i13;
 import '../models/response/customer_model.dart' as _i12;
 
 class AppRouter extends _i10.RootStackRouter {
@@ -86,9 +87,16 @@ class AppRouter extends _i10.RootStackRouter {
       );
     },
     CallRoute.name: (routeData) {
+      final args = routeData.argsAs<CallRouteArgs>();
       return _i10.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i8.CallView(),
+        child: _i8.CallView(
+          key: args.key,
+          conversationId: args.conversationId,
+          type: args.type,
+          customer: args.customer,
+          call: args.call,
+        ),
       );
     },
     NationalitySelectionRoute.name: (routeData) {
@@ -282,14 +290,51 @@ class TranslatorRezervationRouteArgs {
 
 /// generated route for
 /// [_i8.CallView]
-class CallRoute extends _i10.PageRouteInfo<void> {
-  const CallRoute()
-      : super(
+class CallRoute extends _i10.PageRouteInfo<CallRouteArgs> {
+  CallRoute({
+    _i11.Key? key,
+    required String conversationId,
+    required int type,
+    required _i12.Customer customer,
+    required _i13.Call call,
+  }) : super(
           CallRoute.name,
           path: '/call',
+          args: CallRouteArgs(
+            key: key,
+            conversationId: conversationId,
+            type: type,
+            customer: customer,
+            call: call,
+          ),
         );
 
   static const String name = 'CallRoute';
+}
+
+class CallRouteArgs {
+  const CallRouteArgs({
+    this.key,
+    required this.conversationId,
+    required this.type,
+    required this.customer,
+    required this.call,
+  });
+
+  final _i11.Key? key;
+
+  final String conversationId;
+
+  final int type;
+
+  final _i12.Customer customer;
+
+  final _i13.Call call;
+
+  @override
+  String toString() {
+    return 'CallRouteArgs{key: $key, conversationId: $conversationId, type: $type, customer: $customer, call: $call}';
+  }
 }
 
 /// generated route for

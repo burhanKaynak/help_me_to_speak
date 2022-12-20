@@ -28,7 +28,9 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
     for (var item in result) {
       for (var doc in item['members']) {
         var customers = await DatabaseService.instance.getCustomer(doc);
-        customers.isAvailable = await _isAvailable(customers.uid);
+        if (customers.type != 0) {
+          customers.isAvailable = await _isAvailable(customers.uid);
+        }
 
         var chatSnapshoot =
             DatabaseService.instance.getConversationSnapShoot(customers.uid);

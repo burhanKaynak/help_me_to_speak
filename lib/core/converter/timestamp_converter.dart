@@ -8,7 +8,7 @@ class TimestampConverter implements JsonConverter<DateTime, Object> {
   DateTime fromJson(Object json) => (json as Timestamp).toDate();
 
   @override
-  Object toJson(object) {
-    return Object();
+  DateTime toJson(object) {
+    return object;
   }
 }
