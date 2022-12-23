@@ -105,9 +105,13 @@ class AppCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(chat.customer.displayName!,
-                      style: _themeData!.textTheme.headline5!.copyWith(
-                          fontWeight: FontWeight.w500, color: colorDarkGreen)),
+                  Expanded(
+                    child: Text(chat.customer.displayName!,
+                        overflow: TextOverflow.ellipsis,
+                        style: _themeData!.textTheme.headline5!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: colorDarkGreen)),
+                  ),
                   AppSpacer.horizontalLargeSpace,
                   if (unseensCount > 0)
                     Container(
@@ -165,15 +169,18 @@ class AppCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-                onPressed:
-                    chat.customer.availableVoiceCall! ? onTapVoiceCall : null,
+                onPressed: chat.customer.availableVoiceCall ?? true
+                    ? onTapVoiceCall
+                    : null,
                 icon: const FaIcon(FontAwesomeIcons.phone)),
             IconButton(
-                onPressed:
-                    chat.customer.availableVideoCall! ? onTapVideoCall : null,
+                onPressed: chat.customer.availableVideoCall ?? true
+                    ? onTapVideoCall
+                    : null,
                 icon: const FaIcon(FontAwesomeIcons.video)),
             IconButton(
-                onPressed: chat.customer.availableChat! ? onTapChat : null,
+                onPressed:
+                    chat.customer.availableChat ?? true ? onTapChat : null,
                 icon: const FaIcon(FontAwesomeIcons.solidMessage)),
           ],
         ),

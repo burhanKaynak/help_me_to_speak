@@ -11,8 +11,11 @@ import '../../../core/const/app_sizer.dart';
 import '../../../core/const/app_spacer.dart';
 import '../../../core/enum/available_conversation_type_enum.dart';
 import '../../../core/enum/call_state_enum.dart';
+import '../../../core/enum/call_type_enum.dart';
+import '../../../core/enum/conversation_type_enum.dart';
 import '../../../core/enum/translator_status_enum.dart';
 import '../../../core/models/response/call_model.dart';
+import '../../../core/models/response/chat_model.dart';
 import '../../../core/models/response/language_model.dart';
 import '../../../core/router/app_router.gr.dart';
 import '../../../core/service/auth_service.dart';
@@ -123,50 +126,34 @@ class _ChatListViewState extends State<ChatListView> {
                               )),
                           child: AppCard(
                             chat: e,
-                            langs: FutureBuilder(
-                              future: DatabaseService.instance
-                                  .getTranslatorSupportLanguagesByRef(
-                                e.customer.languagesOfTranslate!,
-                              ),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return Wrap(
-                                    spacing: 5,
-                                    children: snapshot.data!
-                                        .map((e) =>
-                                            AppCircleImage(image: e.thumbnail!))
-                                        .toList(),
-                                  );
-                                }
-                                return buildCircleShimmer;
-                              },
-                            ),
-                            onTapVoiceCall: () async {
-                              PermissionService.of(context)
-                                  .getPermission([Permission.microphone]);
-
-                              Call call = Call(
-                                AuthService.instance.currentUser!.uid,
-                                CallState.calling,
-                                DateTime.now(),
-                                null,
-                                'null',
-                              );
-
-                              call.docId = await DatabaseService.instance
-                                  .makeCall(call, e.customer.uid);
-
-                              context.router.push(CallRoute(
-                                type: 0,
-                                call: call,
-                                conversationId: e.conversationId,
-                                customer: e.customer,
-                              ));
-                            },
-                            onTapVideoCall: () {
-                              PermissionService.of(context).getPermission(
-                                  [Permission.microphone, Permission.camera]);
-                            },
+                            langs: e.customer.type == 1
+                                ? FutureBuilder(
+                                    future: DatabaseService.instance
+                                        .getTranslatorSupportLanguagesByRef(
+                                      e.customer.languagesOfTranslate!,
+                                    ),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Wrap(
+                                          spacing: 5,
+                                          children: snapshot.data!
+                                              .map((e) => AppCircleImage(
+                                                  image: e.thumbnail!))
+                                              .toList(),
+                                        );
+                                      }
+                                      return buildCircleShimmer;
+                                    },
+                                  )
+                                : const SizedBox.shrink(),
+                            onTapVoiceCall: () => makeCall(
+                                e,
+                                [Permission.microphone],
+                                ConversationType.voiceCall),
+                            onTapVideoCall: () => makeCall(
+                                e,
+                                [Permission.microphone, Permission.camera],
+                                ConversationType.videoCall),
                             onTapChat: () => context.router.push(ChatRoute(
                               conversationId: e.conversationId,
                               translator: e.customer,
@@ -297,4 +284,23 @@ class _ChatListViewState extends State<ChatListView> {
                     .bodyText1!
                     .copyWith(color: colorLightGreen)),
           ]));
+
+  void makeCall(Chat chat, List<Permission> permission,
+      ConversationType conversationType) async {
+    PermissionService.of(context).getPermission(permission);
+
+    Call call = Call(AuthService.instance.currentUser!.uid, CallState.calling,
+        DateTime.now(), null, 'null', conversationType);
+
+    call.docId =
+        await DatabaseService.instance.makeCall(call, chat.customer.uid);
+
+    context.router.push(CallRoute(
+      callType: CallType.caller,
+      conversationType: conversationType,
+      call: call,
+      conversationId: chat.conversationId,
+      customer: chat.customer,
+    ));
+  }
 }

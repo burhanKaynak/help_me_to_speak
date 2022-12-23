@@ -1,10 +1,13 @@
+import 'package:agora_uikit/agora_uikit.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../core/enum/call_type_enum.dart';
 import '../../core/models/response/call_model.dart';
 import '../../core/router/app_router.gr.dart';
 import '../../core/service/database_service.dart';
+import '../../core/service/permission_service.dart';
 import '../../widgets/app_header.dart';
 import 'account_view/account_view.dart';
 import 'chat_list_view/chat_list_view.dart';
@@ -83,6 +86,9 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void callListener(Map<String, dynamic> data, docId) async {
+    await PermissionService.of(context)
+        .getPermission([Permission.microphone, Permission.camera]);
+
     Call caller = Call.fromJson(data);
     caller.docId = docId;
     var conversations = await DatabaseService.instance.getConversations();
@@ -94,7 +100,8 @@ class _HomeViewState extends State<HomeView> {
 
     if (context.router.current.path != '/call') {
       context.router.push(CallRoute(
-        type: 1,
+        conversationType: caller.conversationType,
+        callType: CallType.callee,
         call: caller,
         conversationId: getConversation['conversationId'],
         customer: customer,

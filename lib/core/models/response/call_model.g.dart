@@ -14,12 +14,16 @@ Call _$CallFromJson(Map<String, dynamic> json) => Call(
       _$JsonConverterFromJson<Object, DateTime>(
           json['call_ended'], const TimestampConverter().fromJson),
       json['doc_id'] as String?,
+      const ConversationTypeConverter()
+          .fromJson(json['conversation_type'] as String),
     );
 
 Map<String, dynamic> _$CallToJson(Call instance) => <String, dynamic>{
       'sender_id': instance.senderId,
       'doc_id': instance.docId,
       'state': const CallStateConverter().toJson(instance.state),
+      'conversation_type':
+          const ConversationTypeConverter().toJson(instance.conversationType),
       'call_started': _$JsonConverterToJson<Object, DateTime>(
           instance.callStarted, const TimestampConverter().toJson),
       'call_ended': _$JsonConverterToJson<Object, DateTime>(

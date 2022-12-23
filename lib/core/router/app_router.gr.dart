@@ -26,7 +26,9 @@ import '../../views/conversation/chat_view/chat_view.dart' as _i5;
 import '../../views/home/home_view.dart' as _i4;
 import '../../views/home/translator_appointment_view/translator_rezervation_view.dart'
     as _i7;
-import '../models/response/call_model.dart' as _i13;
+import '../enum/call_type_enum.dart' as _i13;
+import '../enum/conversation_type_enum.dart' as _i15;
+import '../models/response/call_model.dart' as _i14;
 import '../models/response/customer_model.dart' as _i12;
 
 class AppRouter extends _i10.RootStackRouter {
@@ -93,9 +95,10 @@ class AppRouter extends _i10.RootStackRouter {
         child: _i8.CallView(
           key: args.key,
           conversationId: args.conversationId,
-          type: args.type,
+          callType: args.callType,
           customer: args.customer,
           call: args.call,
+          conversationType: args.conversationType,
         ),
       );
     },
@@ -294,18 +297,20 @@ class CallRoute extends _i10.PageRouteInfo<CallRouteArgs> {
   CallRoute({
     _i11.Key? key,
     required String conversationId,
-    required int type,
+    required _i13.CallType callType,
     required _i12.Customer customer,
-    required _i13.Call call,
+    required _i14.Call call,
+    required _i15.ConversationType conversationType,
   }) : super(
           CallRoute.name,
           path: '/call',
           args: CallRouteArgs(
             key: key,
             conversationId: conversationId,
-            type: type,
+            callType: callType,
             customer: customer,
             call: call,
+            conversationType: conversationType,
           ),
         );
 
@@ -316,24 +321,27 @@ class CallRouteArgs {
   const CallRouteArgs({
     this.key,
     required this.conversationId,
-    required this.type,
+    required this.callType,
     required this.customer,
     required this.call,
+    required this.conversationType,
   });
 
   final _i11.Key? key;
 
   final String conversationId;
 
-  final int type;
+  final _i13.CallType callType;
 
   final _i12.Customer customer;
 
-  final _i13.Call call;
+  final _i14.Call call;
+
+  final _i15.ConversationType conversationType;
 
   @override
   String toString() {
-    return 'CallRouteArgs{key: $key, conversationId: $conversationId, type: $type, customer: $customer, call: $call}';
+    return 'CallRouteArgs{key: $key, conversationId: $conversationId, callType: $callType, customer: $customer, call: $call, conversationType: $conversationType}';
   }
 }
 
