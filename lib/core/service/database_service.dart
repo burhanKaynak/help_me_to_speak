@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../enum/call_state_enum.dart';
+import '../models/response/appointment_model.dart';
 import '../models/response/call_model.dart';
 import '../models/response/customer_model.dart';
 import '../models/response/language_model.dart';
-import '../models/response/rezervation_model.dart';
 import '../repository/repository.dart';
 import 'auth_service.dart';
 
@@ -228,37 +228,37 @@ class DatabaseService {
         .onError((error, stackTrace) => false);
   }
 
-  Future<Rezervation> getRezervation(translatorId) async {
-    var ref = _db.collection('rezervations').doc(translatorId);
+  Future<Appointment> getAppointmens(translatorId) async {
+    var ref = _db.collection('appointments').doc(translatorId);
     var doc = await ref.get();
-    var subCollection = await ref.collection('rezervation_dates').get();
+    var subCollection = await ref.collection('appointment_dates').get();
 
     Map<String, dynamic>? busyDates = doc.data();
     var items = subCollection.docs.map((e) {
-      return e.data()['rezervation_date'];
+      return e.data()['appointment_date'];
     });
 
     for (var item in items) {
-      if (busyDates!.containsKey('rezervation_date')) {
-        busyDates['rezervation_date'].addAll(item);
+      if (busyDates!.containsKey('appointment_date')) {
+        busyDates['appointment_date'].addAll(item);
       } else {
-        busyDates.putIfAbsent('rezervation_date', () => item);
+        busyDates.putIfAbsent('appointment_date', () => item);
       }
     }
 
-    var data = Rezervation.fromJson(busyDates!);
+    var data = Appointment.fromJson(busyDates!);
     return data;
   }
 
-  Future<bool> setRezervation(
-      translatorId, List<DateTime> rezervationDates) async {
+  Future<bool> setAppointment(
+      translatorId, List<DateTime> appointmentDates) async {
     var result = await _db
-        .collection('rezervations')
+        .collection('appointments')
         .doc(translatorId)
-        .collection('rezervation_dates')
+        .collection('appointment_dates')
         .add({
           'customer_id': AuthService.instance.currentUser!.uid,
-          'rezervation_date': rezervationDates
+          'appointment_date': appointmentDates
         })
         .then((value) => true)
         .onError((error, stackTrace) => false);

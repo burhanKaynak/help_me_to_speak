@@ -113,14 +113,14 @@ class TranslatorBloc extends Bloc<TranslatorEvent, TranslatorState> {
     var day = DateTime.now().day;
     var month = DateTime.now().month;
     var year = DateTime.now().year;
-    var rezervations = await DatabaseService.instance.getRezervation(id);
+    var appointments = await DatabaseService.instance.getAppointmens(id);
 
-    var busyDate = rezervations.busyDate!
+    var busyDate = appointments.busyDate!
         .any((e) => e.day == day && e.month == month && e.year == year);
 
-    var rezervationDate = rezervations.rezervationDate!
+    var appointmentsDate = appointments.appointmentDate!
         .any((e) => e.day == day && e.month == month && e.year == year);
 
-    return !rezervationDate && !busyDate;
+    return !appointmentsDate && !busyDate;
   }
 }

@@ -8,7 +8,7 @@ import '../../views/common/splash_view/splash_view.dart';
 import '../../views/conversation/call_view/call_view.dart';
 import '../../views/conversation/chat_view/chat_view.dart';
 import '../../views/home/home_view.dart';
-import '../../views/home/translator_appointment_view/translator_rezervation_view.dart';
+import '../../views/home/translator_appointment_view/translator_appointment_view.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'View,Route',
@@ -19,7 +19,7 @@ import '../../views/home/translator_appointment_view/translator_rezervation_view
     AutoRoute(page: HomeView, path: '/home'),
     AutoRoute(page: ChatView, path: '/chat'),
     AutoRoute(page: HelpCenterListView, path: '/helpCenterList'),
-    AutoRoute(page: TranslatorRezervationView, path: '/rezervation'),
+    AutoRoute(page: TranslatorAppointmentView, path: '/appointment'),
     AutoRoute(page: CallView, path: '/call'),
     AutoRoute(
       page: NationalitySelectionView,

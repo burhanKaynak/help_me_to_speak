@@ -1,25 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'rezervation_model.dart';
+part of 'appointment_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Rezervation _$RezervationFromJson(Map<String, dynamic> json) => Rezervation(
+Appointment _$AppointmentFromJson(Map<String, dynamic> json) => Appointment(
       busyDate: (json['busy_date'] as List<dynamic>?)
           ?.map((e) => const TimestampConverter().fromJson(e as Object))
           .toList(),
-      rezervationDate: (json['rezervation_date'] as List<dynamic>?)
+      appointmentDate: (json['appointment_date'] as List<dynamic>?)
           ?.map((e) => const TimestampConverter().fromJson(e as Object))
           .toList(),
     );
 
-Map<String, dynamic> _$RezervationToJson(Rezervation instance) =>
+Map<String, dynamic> _$AppointmentToJson(Appointment instance) =>
     <String, dynamic>{
       'busy_date':
           instance.busyDate?.map(const TimestampConverter().toJson).toList(),
-      'rezervation_date': instance.rezervationDate
+      'appointment_date': instance.appointmentDate
           ?.map(const TimestampConverter().toJson)
           .toList(),
     };

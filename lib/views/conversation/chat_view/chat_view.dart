@@ -65,7 +65,7 @@ class _ChatViewState extends State<ChatView>
           ],
         ),
         onTapTitle: () => context.router.push(
-            TranslatorRezervationRoute(translatorId: widget.translator.uid!)),
+            TranslatorAppointmentRoute(translatorId: widget.translator.uid!)),
         title: widget.translator.displayName!,
         backButton: true,
       ),

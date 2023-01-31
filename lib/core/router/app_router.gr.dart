@@ -24,7 +24,7 @@ import '../../views/common/splash_view/splash_view.dart' as _i1;
 import '../../views/conversation/call_view/call_view.dart' as _i8;
 import '../../views/conversation/chat_view/chat_view.dart' as _i5;
 import '../../views/home/home_view.dart' as _i4;
-import '../../views/home/translator_appointment_view/translator_rezervation_view.dart'
+import '../../views/home/translator_appointment_view/translator_appointment_view.dart'
     as _i7;
 import '../enum/call_type_enum.dart' as _i13;
 import '../enum/conversation_type_enum.dart' as _i15;
@@ -78,11 +78,11 @@ class AppRouter extends _i10.RootStackRouter {
         child: const _i6.HelpCenterListView(),
       );
     },
-    TranslatorRezervationRoute.name: (routeData) {
-      final args = routeData.argsAs<TranslatorRezervationRouteArgs>();
+    TranslatorAppointmentRoute.name: (routeData) {
+      final args = routeData.argsAs<TranslatorAppointmentRouteArgs>();
       return _i10.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i7.TranslatorRezervationView(
+        child: _i7.TranslatorAppointmentView(
           key: args.key,
           translatorId: args.translatorId,
         ),
@@ -143,8 +143,8 @@ class AppRouter extends _i10.RootStackRouter {
           path: '/helpCenterList',
         ),
         _i10.RouteConfig(
-          TranslatorRezervationRoute.name,
-          path: '/rezervation',
+          TranslatorAppointmentRoute.name,
+          path: '/appointment',
         ),
         _i10.RouteConfig(
           CallRoute.name,
@@ -257,26 +257,26 @@ class HelpCenterListRoute extends _i10.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.TranslatorRezervationView]
-class TranslatorRezervationRoute
-    extends _i10.PageRouteInfo<TranslatorRezervationRouteArgs> {
-  TranslatorRezervationRoute({
+/// [_i7.TranslatorAppointmentView]
+class TranslatorAppointmentRoute
+    extends _i10.PageRouteInfo<TranslatorAppointmentRouteArgs> {
+  TranslatorAppointmentRoute({
     _i11.Key? key,
     required String translatorId,
   }) : super(
-          TranslatorRezervationRoute.name,
-          path: '/rezervation',
-          args: TranslatorRezervationRouteArgs(
+          TranslatorAppointmentRoute.name,
+          path: '/appointment',
+          args: TranslatorAppointmentRouteArgs(
             key: key,
             translatorId: translatorId,
           ),
         );
 
-  static const String name = 'TranslatorRezervationRoute';
+  static const String name = 'TranslatorAppointmentRoute';
 }
 
-class TranslatorRezervationRouteArgs {
-  const TranslatorRezervationRouteArgs({
+class TranslatorAppointmentRouteArgs {
+  const TranslatorAppointmentRouteArgs({
     this.key,
     required this.translatorId,
   });
@@ -287,7 +287,7 @@ class TranslatorRezervationRouteArgs {
 
   @override
   String toString() {
-    return 'TranslatorRezervationRouteArgs{key: $key, translatorId: $translatorId}';
+    return 'TranslatorAppointmentRouteArgs{key: $key, translatorId: $translatorId}';
   }
 }
 

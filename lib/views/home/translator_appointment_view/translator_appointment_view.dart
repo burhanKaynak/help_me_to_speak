@@ -4,17 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-import '../../../core/bloc/rezervation_bloc/rezervation_bloc.dart';
+import '../../../core/bloc/appointment_bloc/appointment_bloc.dart';
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_sizer.dart';
-import '../../../core/models/response/rezervation_model.dart';
+import '../../../core/models/response/appointment_model.dart';
 import '../../../themes/project_themes.dart';
 import '../../../widgets/app_divider.dart';
 import '../../../widgets/app_header.dart';
 
-class TranslatorRezervationView extends StatelessWidget {
+class TranslatorAppointmentView extends StatelessWidget {
   final String translatorId;
-  const TranslatorRezervationView({super.key, required this.translatorId});
+  const TranslatorAppointmentView({super.key, required this.translatorId});
 
   @override
   Widget build(BuildContext context) {
@@ -25,25 +25,25 @@ class TranslatorRezervationView extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) =>
-            RezervationBloc()..add(GetRezervation(translatorId)),
-        child: TranslatorRezervationViewController(translatorId: translatorId),
+            AppointmentBloc()..add(GetAppointment(translatorId)),
+        child: TranslatorAppointmentViewController(translatorId: translatorId),
       ),
     );
   }
 }
 
-class TranslatorRezervationViewController extends StatefulWidget {
+class TranslatorAppointmentViewController extends StatefulWidget {
   final String translatorId;
-  const TranslatorRezervationViewController(
+  const TranslatorAppointmentViewController(
       {super.key, required this.translatorId});
 
   @override
-  State<TranslatorRezervationViewController> createState() =>
-      _TranslatorRezervationViewControllerState();
+  State<TranslatorAppointmentViewController> createState() =>
+      _TranslatorAppointmentViewControllerState();
 }
 
-class _TranslatorRezervationViewControllerState
-    extends State<TranslatorRezervationViewController> {
+class _TranslatorAppointmentViewControllerState
+    extends State<TranslatorAppointmentViewController> {
   final DateRangePickerController _dateRangePickerController =
       DateRangePickerController();
 
@@ -71,7 +71,7 @@ class _TranslatorRezervationViewControllerState
                         color: colorDarkGreen, fontWeight: FontWeight.w400),
                   ),
                   const Spacer(),
-                  Expanded(flex: 7, child: _rezervationBlocBuilder()),
+                  Expanded(flex: 7, child: _appointmentBlocBuilder()),
                   Expanded(child: _buildFooter)
                 ],
               )),
@@ -80,10 +80,10 @@ class _TranslatorRezervationViewControllerState
     );
   }
 
-  BlocBuilder<RezervationBloc, RezervationState> _rezervationBlocBuilder() {
-    return BlocBuilder<RezervationBloc, RezervationState>(
+  BlocBuilder<AppointmentBloc, AppointmentState> _appointmentBlocBuilder() {
+    return BlocBuilder<AppointmentBloc, AppointmentState>(
       builder: (context, state) {
-        if (state is RezervationLoaded) {
+        if (state is AppointmentLoaded) {
           _dateRangePickerController.selectedDates = [];
           return _buildCalendar(state.data);
         }
@@ -92,7 +92,7 @@ class _TranslatorRezervationViewControllerState
     );
   }
 
-  Widget _buildCalendar(Rezervation data) => SfDateRangePicker(
+  Widget _buildCalendar(Appointment data) => SfDateRangePicker(
         selectionMode: DateRangePickerSelectionMode.multiple,
         endRangeSelectionColor: colorLightGreen,
         controller: _dateRangePickerController,
@@ -130,12 +130,12 @@ class _TranslatorRezervationViewControllerState
               e.month == dateTime.month &&
               e.day == dateTime.day);
 
-          var rezervationDate = data.rezervationDate!.firstWhereOrNull((e) =>
+          var appointmentDate = data.appointmentDate!.firstWhereOrNull((e) =>
               e.year == dateTime.year &&
               e.month == dateTime.month &&
               e.day == dateTime.day);
 
-          return (busyDate == null && rezervationDate == null) ? true : false;
+          return (busyDate == null && appointmentDate == null) ? true : false;
         },
         headerStyle: DateRangePickerHeaderStyle(
             textStyle: Theme.of(context).textTheme.headline6,
@@ -188,7 +188,7 @@ class _TranslatorRezervationViewControllerState
           ElevatedButton(
               onPressed: () {
                 if (_dateRangePickerController.selectedDates!.isNotEmpty) {
-                  context.read<RezervationBloc>().add(SetRezervation(
+                  context.read<AppointmentBloc>().add(SetAppointment(
                       widget.translatorId,
                       _dateRangePickerController.selectedDates!));
                 }

@@ -16,7 +16,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
   List<TranslatorStatus> listTranslatorStatus = [];
   List<Language> listLanguage = [];
 
-  List<Chat> _conversationList = [];
+  final List<Chat> _conversationList = [];
 
   ConversationBloc() : super(ConversationInitial()) {
     on<GetConversations>(_getConversations);
@@ -116,14 +116,14 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationState> {
     var day = DateTime.now().day;
     var month = DateTime.now().month;
     var year = DateTime.now().year;
-    var rezervations = await DatabaseService.instance.getRezervation(id);
+    var appointments = await DatabaseService.instance.getAppointmens(id);
 
-    var busyDate = rezervations.busyDate!
+    var busyDate = appointments.busyDate!
         .any((e) => e.day == day && e.month == month && e.year == year);
 
-    var rezervationDate = rezervations.rezervationDate!
+    var appointmentDate = appointments.appointmentDate!
         .any((e) => e.day == day && e.month == month && e.year == year);
 
-    return !rezervationDate && !busyDate;
+    return !appointmentDate && !busyDate;
   }
 }
