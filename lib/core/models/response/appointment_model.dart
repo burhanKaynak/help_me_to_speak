@@ -7,8 +7,10 @@ part 'appointment_model.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Appointment {
   @TimestampConverter()
+  @JsonKey(defaultValue: [])
   List<DateTime>? busyDate;
   @TimestampConverter()
+  @JsonKey(defaultValue: [])
   List<DateTime>? appointmentDate;
 
   Appointment({this.busyDate, this.appointmentDate});

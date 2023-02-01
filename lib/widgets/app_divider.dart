@@ -48,14 +48,16 @@ class AppOrDivider extends StatelessWidget {
 class AppDivider extends StatelessWidget {
   final double height;
   final double tickness;
-  const AppDivider({super.key, required this.height, required this.tickness});
+  final Color? color;
+  const AppDivider(
+      {super.key, required this.height, required this.tickness, this.color});
 
   @override
   Widget build(BuildContext context) {
     return Divider(
       height: height,
       thickness: tickness,
-      color: Colors.white,
+      color: color ?? Colors.white,
     );
   }
 }

@@ -90,6 +90,11 @@ class _AccountViewState extends State<AccountView> with FilePickerMix {
               text: 'Yardım',
               prefix: const FaIcon(FontAwesomeIcons.circleInfo)),
           buildButton(
+              onPressed: () =>
+                  context.router.pushNamed(RoutePath.product.value),
+              text: 'Ürünler',
+              prefix: const FaIcon(FontAwesomeIcons.coins)),
+          buildButton(
               onPressed: () => context.router
                   .pushNamed(RoutePath.nationalitySelectionMain.value),
               text: 'Destek Dil Değiştir ',

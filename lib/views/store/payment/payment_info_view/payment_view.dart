@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../themes/project_themes.dart';
-import '../../../widgets/app_header.dart';
+import '../../../../themes/project_themes.dart';
+import '../../../../widgets/app_header.dart';
 import 'payment_tab/payment_info_tab.dart';
 import 'payment_tab/payment_order_history_tab.dart';
 

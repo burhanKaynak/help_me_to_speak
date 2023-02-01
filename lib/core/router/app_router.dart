@@ -9,6 +9,7 @@ import '../../views/conversation/call_view/call_view.dart';
 import '../../views/conversation/chat_view/chat_view.dart';
 import '../../views/home/home_view.dart';
 import '../../views/home/translator_appointment_view/translator_appointment_view.dart';
+import '../../views/store/product/product_view.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'View,Route',
@@ -21,6 +22,7 @@ import '../../views/home/translator_appointment_view/translator_appointment_view
     AutoRoute(page: HelpCenterListView, path: '/helpCenterList'),
     AutoRoute(page: TranslatorAppointmentView, path: '/appointment'),
     AutoRoute(page: CallView, path: '/call'),
+    AutoRoute(page: ProductView, path: '/product'),
     AutoRoute(
       page: NationalitySelectionView,
       path: '/nationalitySelectionMain',

@@ -5,6 +5,7 @@ enum RoutePath {
   home('/home'),
   chat('/chat'),
   call('/call'),
+  product('/product'),
   helpCenterList('/helpCenterList'),
   nationalitySelectionMain('/nationalitySelectionMain');
 

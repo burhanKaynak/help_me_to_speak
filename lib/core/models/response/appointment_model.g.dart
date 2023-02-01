@@ -8,11 +8,13 @@ part of 'appointment_model.dart';
 
 Appointment _$AppointmentFromJson(Map<String, dynamic> json) => Appointment(
       busyDate: (json['busy_date'] as List<dynamic>?)
-          ?.map((e) => const TimestampConverter().fromJson(e as Object))
-          .toList(),
+              ?.map((e) => const TimestampConverter().fromJson(e as Object))
+              .toList() ??
+          [],
       appointmentDate: (json['appointment_date'] as List<dynamic>?)
-          ?.map((e) => const TimestampConverter().fromJson(e as Object))
-          .toList(),
+              ?.map((e) => const TimestampConverter().fromJson(e as Object))
+              .toList() ??
+          [],
     );
 
 Map<String, dynamic> _$AppointmentToJson(Appointment instance) =>

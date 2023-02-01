@@ -233,20 +233,19 @@ class DatabaseService {
     var doc = await ref.get();
     var subCollection = await ref.collection('appointment_dates').get();
 
-    Map<String, dynamic>? busyDates = doc.data();
+    Map<String, dynamic>? busyDates = doc.data() ?? {};
     var items = subCollection.docs.map((e) {
       return e.data()['appointment_date'];
-    });
+    }).toList();
 
     for (var item in items) {
-      if (busyDates!.containsKey('appointment_date')) {
+      if (busyDates.containsKey('appointment_date')) {
         busyDates['appointment_date'].addAll(item);
       } else {
         busyDates.putIfAbsent('appointment_date', () => item);
       }
     }
-
-    var data = Appointment.fromJson(busyDates!);
+    var data = Appointment.fromJson(busyDates);
     return data;
   }
 

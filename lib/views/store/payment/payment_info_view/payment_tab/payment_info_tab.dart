@@ -2,12 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../../core/const/app_padding.dart';
-import '../../../../core/const/app_radius.dart';
-import '../../../../core/const/app_sizer.dart';
-import '../../../../core/const/app_spacer.dart';
-import '../../../../themes/project_themes.dart';
-import '../../../../widgets/app_divider.dart';
+import '../../../../../core/const/app_padding.dart';
+import '../../../../../core/const/app_radius.dart';
+import '../../../../../core/const/app_sizer.dart';
+import '../../../../../core/const/app_spacer.dart';
+import '../../../../../themes/project_themes.dart';
+import '../../../../../widgets/app_divider.dart';
 
 class PaymentInfoTab extends StatelessWidget {
   const PaymentInfoTab({super.key});
