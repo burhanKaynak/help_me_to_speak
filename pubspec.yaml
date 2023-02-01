@@ -60,6 +60,7 @@ dependencies:
   permission_handler: ^10.2.0
   agora_rtc_engine: ^6.0.0
   flutter_stripe: ^7.0.0
+  http: ^0.13.5
   
 dev_dependencies:
   flutter_test:
