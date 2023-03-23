@@ -81,13 +81,13 @@ class _VoiceCallViewState extends State<VoiceCallView> {
   }
 
   @override
-  void dispose() async {
-    _watchTimer.dispose();
+  void dispose() {
     _dispose();
     super.dispose();
   }
 
   Future<void> _dispose() async {
+    _watchTimer.dispose();
     await _rtcEngine.leaveChannel();
     await _rtcEngine.release();
   }

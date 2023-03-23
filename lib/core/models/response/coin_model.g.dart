@@ -7,11 +7,13 @@ part of 'coin_model.dart';
 // **************************************************************************
 
 Coin _$CoinFromJson(Map<String, dynamic> json) => Coin(
-      (json['quantity'] as num?)?.toDouble() ?? 0,
-      (json['price'] as num?)?.toDouble() ?? 0,
+      id: json['id'] as int? ?? 0,
+      quantity: json['quantity'] as int? ?? 0,
+      price: (json['price'] as num?)?.toDouble() ?? 0,
     );
 
 Map<String, dynamic> _$CoinToJson(Coin instance) => <String, dynamic>{
+      'id': instance.id,
       'quantity': instance.quantity,
       'price': instance.price,
     };

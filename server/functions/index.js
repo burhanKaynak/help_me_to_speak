@@ -1,92 +1,81 @@
 const functions = require("firebase-functions");
-const stripe = require("stripe")(functions.config().stripe.testkey);
+const stripe = require('stripe')(functions.config().stripe.testkey);
 
 
+const generateResponse = function (intent) {
+    switch (intent.satus) {
+        case 'requires_action':
+            return {
+                clientSecret: intent.clientSecret,
+                requiresAction: true,
+                status: intent.satus
+            };
+
+        case 'requires_payment_method':
+            return {
+                'error': 'Your card was denied, please provide a new payment method',
+            };
+        case 'succeeded':
+            return {
+                clientSecret: intent.clientSecret,
+                status: intent.satus
+            };
+
+
+    }
+
+};
 const calculateOrderAmount = (items) => {
     prices = [];
-    catalog =[
-        {'id':'1','price':150.0},
-        {'id':'2','price':100.0},
-        {'id':'3','price':50.0},
-        {'id':'4','price':25.0}
-    ];
+    catalog = [
+        { 'id': '0', 'price': 150 },
+        { 'id': '1', 'price': 100 },
+        { 'id': '2', 'price': 50 },
+        { 'id': '3', 'price': 25 },
+    ]
 
-    items.forEach(item => {
-        price = catalog.find(x=> x.id == item.id).price;
+    items.forEach(element => {
+        price = catalog.find(x => x.id == items.id).price;
         prices.push(price);
     });
-
-    return parseInt(prices.reduce((a,b)=> a+b)*100);
-}
-
-
-const generateResponse = function (intent){
-switch (intent.status) {
-    case 'requires_action':
-        return {
-            clientSecret: intent.clientSacret,
-            requiresAction: true,
-            status: intent.status
-        };
-    case 'requires_payment_method':
-        return {
-            'error': 'Your card was denied, please provvide a new payment method'
-        };
-
-          case 'succeeded':
-            console.log('Payment Succeeded.');
-
-        return {clientSecret: intent.clientSecret, status: intent.status};
- }
- return {
-    error: 'Failed'
+    return parseInt(prices.reduce((a, b) => a + b) * 100);
 };
-};
-exports.StripePayEndPointMethodId = functions.https.onRequest(async (req,res)=>{
-    const{peymentMethodId, items, currency, useStripeSdk,} =req.body;
-    const orderAmount = 1000;
 
+exports.StripePayEndpointMethodId = functions.https.onRequest(async (req, res) => {
+    const { paymentMethodId, items, currency, useStriperSdk } = req.body;
+    const orderAmount = calculateOrderAmount(items);
     try {
-            if(peymentMethodId){
-                //create a new paymentIntent
-                const params ={
-                    amount: orderAmount,
-                    confirm:true,
-                    confirmation_method:'manual',
-                    currency:currency,
-                    payment_method: peymentMethodId,
-                    use_stripe_sdk: useStripeSdk
-                };
-
-                const intent = await stripe.paymentIntents.create(params);
-                console.log('intent: '+intent);
-                return res.send(generateResponse(intent));
+        if (paymentMethodId) {
+            const params = {
+                amount: orderAmount,
+                confirm: true,
+                confirmation_method: 'manual',
+                currency: currency,
+                payment_method: paymentMethodId,
+                use_stripe_sdk: useStriperSdk
             }
-            return req.sendStatus(400);
+            const intent = await stripe.paymentIntents.create(params);
+            console.log(`intent: ${intent}`);
+            return res.send(generateResponse(intent));
 
-    } catch (e) {
-        res.send({error: e.message});
+        }
+        return res.sendStatus(400);
+    } catch (error) {
+        return res.send({ error: error.message });
+
     }
 });
-exports.StripePayEndPointIntentId = functions.https.onRequest(async (req, res)=>{
-    const{paymentIntentId} = req.body;
-    
+
+exports.StripePayEndpointIntentId = functions.https.onRequest(async (req, res) => {
+    const { paymentIntentId } = req.body;
     try {
-        if(paymentIntentId){
+        if (paymentMethodId) {
             const intent = await stripe.paymentIntents.confirm(paymentIntentId);
             return res.send(generateResponse(intent));
         }
         return res.sendStatus(400);
-    } catch (e) {
-        return res.send({error: e.message});
+    } catch (error) {
+        return res.send({ error: error.message });
+
     }
 });
-
-
-// // Create and deploy your first functions
-// // https://firebase.google.com/docs/functions/get-started
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });

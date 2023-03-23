@@ -13,10 +13,10 @@ import '../../../widgets/app_input.dart';
 
 class ProductView extends StatelessWidget {
   final List<Coin> coins = [
-    Coin(150, 150),
-    Coin(100, 100),
-    Coin(50, 50),
-    Coin(25, 25),
+    Coin(id: 0, quantity: 1, price: 150),
+    Coin(id: 1, quantity: 1, price: 100),
+    Coin(id: 2, quantity: 1, price: 50),
+    Coin(id: 3, quantity: 1, price: 25),
   ];
 
   ProductView({super.key});
