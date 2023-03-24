@@ -1,14 +1,15 @@
 const functions = require("firebase-functions");
-const stripe = require('stripe')(functions.config().stripe.testkey);
+const stripe = require('stripe')(functions.config().stripe.key);
+const util = require('util');
 
 
 const generateResponse = function (intent) {
-    switch (intent.satus) {
+    switch (intent.status) {
         case 'requires_action':
             return {
-                clientSecret: intent.clientSecret,
+                clientSecret: intent['client_secret'],
                 requiresAction: true,
-                status: intent.satus
+                status: intent['status']
             };
 
         case 'requires_payment_method':
@@ -17,8 +18,8 @@ const generateResponse = function (intent) {
             };
         case 'succeeded':
             return {
-                clientSecret: intent.clientSecret,
-                status: intent.satus
+                clientSecret: intent['client_secret'],
+                status: intent['status']
             };
 
 
@@ -35,7 +36,8 @@ const calculateOrderAmount = (items) => {
     ]
 
     items.forEach(element => {
-        price = catalog.find(x => x.id == items.id).price;
+
+        price = catalog.find(x => x.id == element.id).price;
         prices.push(price);
     });
     return parseInt(prices.reduce((a, b) => a + b) * 100);
@@ -55,8 +57,9 @@ exports.StripePayEndpointMethodId = functions.https.onRequest(async (req, res) =
                 use_stripe_sdk: useStriperSdk
             }
             const intent = await stripe.paymentIntents.create(params);
-            console.log(`intent: ${intent}`);
-            return res.send(generateResponse(intent));
+
+            const body = generateResponse(intent);
+            return res.send(body);
 
         }
         return res.sendStatus(400);

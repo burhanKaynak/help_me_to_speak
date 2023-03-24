@@ -1,7 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
+import '../../../core/bloc/payment_bloc/payment_bloc.dart';
 import '../../../core/const/app_padding.dart';
 import '../../../core/const/app_sizer.dart';
 import '../../../core/const/app_spacer.dart';
@@ -61,7 +65,7 @@ class ProductView extends StatelessWidget {
                 Expanded(
                   child: Text(
                     textAlign: TextAlign.center,
-                    '${coin.quantity.toString()} TL',
+                    '${coin.price.toString()} TL',
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge!
@@ -77,32 +81,61 @@ class ProductView extends StatelessWidget {
   void _openCreditCardSheet(BuildContext context, Coin coin) =>
       appShowModalBottomSheet(context,
           sheetHeight: SheetHeight.high,
-          child: Column(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(
-                      width: AppSizer.imageSmallW,
-                      height: AppSizer.imageSmallW,
-                      child: CachedNetworkImage(imageUrl: _coinThumb)),
-                  AppSpacer.verticalSmallSpace,
-                  Text(
-                    textAlign: TextAlign.center,
-                    '${coin.quantity.toString()} TL',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(color: Colors.black),
-                  )
-                ],
-              ),
-              AppSpacer.verticalMediumSpace,
-              const CardFormField(
-                enablePostalCode: false,
-              ),
-              buildButton(onPressed: () => null, text: 'Öde')
-            ],
+          child: BlocProvider<PaymentBloc>(
+            create: (context) => PaymentBloc(),
+            child: BlocBuilder<PaymentBloc, PaymentState>(
+              builder: (context, state) {
+                CardFormEditController controller = CardFormEditController(
+                    initialDetails: state.cardFieldInputDetails);
+                if (state.status == PaymentStatus.initial) {
+                  return Column(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          SizedBox(
+                              width: AppSizer.imageSmallW,
+                              height: AppSizer.imageSmallW,
+                              child: CachedNetworkImage(imageUrl: _coinThumb)),
+                          AppSpacer.verticalSmallSpace,
+                          Text(
+                            textAlign: TextAlign.center,
+                            '${coin.price.toString()} TL',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(color: Colors.black),
+                          )
+                        ],
+                      ),
+                      AppSpacer.verticalMediumSpace,
+                      CardFormField(
+                        controller: controller,
+                        enablePostalCode: false,
+                      ),
+                      buildButton(
+                          onPressed: () {
+                            (controller.details.complete)
+                                ? context.read<PaymentBloc>().add(
+                                    PaymentCreateIntent(
+                                        billingDetails: BillingDetails(
+                                            email: FirebaseAuth
+                                                .instance.currentUser!.email),
+                                        items: [coin.toJson()]))
+                                : print(false);
+                            // context.read<PaymentBloc>().add(PaymentStart());
+                          },
+                          text: 'Öde')
+                    ],
+                  );
+                } else if (state.status == PaymentStatus.succes) {
+                  context.router.pop();
+                } else if (state.status == PaymentStatus.failure) {
+                  return Text('Payment Failure');
+                }
+                return const Center(child: CircularProgressIndicator());
+              },
+            ),
           ));
 
   Widget _creditCardForm() => Form(

@@ -14,7 +14,7 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
   PaymentBloc() : super(const PaymentState()) {
     on<PaymentStart>(_onPaymentStart);
     on<PaymentCreateIntent>(_onPaymentCreateIntent);
-    on<PaymentConfirmIntent>(_onPaymentConfirmMethod);
+    on<PaymentConfirmIntent>(_onPaymentConfirmIntent);
   }
 
   void _onPaymentStart(PaymentStart event, Emitter<PaymentState> emit) async {
@@ -51,13 +51,13 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     }
   }
 
-  void _onPaymentConfirmMethod(
+  void _onPaymentConfirmIntent(
       PaymentConfirmIntent event, Emitter<PaymentState> emit) async {
     try {
       final paymentIntent = await _stripe.handleNextAction(event.clientSecret);
       if (paymentIntent.status == PaymentIntentsStatus.RequiresConfirmation) {
         var results =
-            await _callPayEndpointIntent(paymentIntentId: paymentIntent.id);
+            await _callPayEndpointIntentId(paymentIntentId: paymentIntent.id);
 
         if (results['error'] != null) {
           emit(state.copyWith(status: PaymentStatus.failure));
@@ -71,10 +71,10 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
     }
   }
 
-  Future<Map<String, dynamic>> _callPayEndpointIntent(
+  Future<Map<String, dynamic>> _callPayEndpointIntentId(
       {required paymentIntentId}) async {
     final url = Uri.parse(
-        'https://us-central1-help-me-to-speak-dev.cloudfunctions.net/StripePayEndPointIntentId');
+        'https://us-central1-help-me-to-speak-dev.cloudfunctions.net/StripePayEndpointIntentId');
 
     final response = await http.post(url,
         headers: {'Content-Type': 'application/json'},
@@ -89,13 +89,13 @@ class PaymentBloc extends Bloc<PaymentEvent, PaymentState> {
       required currency,
       required items}) async {
     final url = Uri.parse(
-        'https://us-central1-help-me-to-speak-dev.cloudfunctions.net/StripePayEndPointMethodId');
+        'https://us-central1-help-me-to-speak-dev.cloudfunctions.net/StripePayEndpointMethodId');
 
     final response = await http.post(url,
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'useStripe': useStripe,
-          'paymentMethodId': paymentMethodId.id,
+          'paymentMethodId': paymentMethodId,
           'currency': currency,
           'items': items
         }));
