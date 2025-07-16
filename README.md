@@ -115,9 +115,5 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 ---
 
-Feel free to fork, contribute, and enhance the project. PRs are welcome!
-
----
-
 Made with ❤️ by [burhanKaynak](https://github.com/burhanKaynak)
 
